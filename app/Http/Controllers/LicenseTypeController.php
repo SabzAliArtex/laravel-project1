@@ -86,7 +86,7 @@ class LicenseTypeController extends Controller
         $user->is_deleted = 1;
         $user->save();
         Session::flash("success", "Deleted successfully");
-        return back();
+        return back();  
     }
     /**
      * Show the form for creating a new resource.
