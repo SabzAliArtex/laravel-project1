@@ -1,0 +1,15 @@
+$bg_color : #7a97b3;
+$color : white;
+
+
+
+
+
+.card-header{
+	background-color: $bg_color;
+	color: $color;
+	font-weight: bold;
+}
+.card-body{
+	background: aliceblue !important;
+}
