@@ -51,7 +51,7 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                    {{__(' Welcome ').' '.Auth::user()->first_name.'-->'.Auth::user()->userrole->role }}
+                    {{__(' Welcome ').' '.Auth::user()->first_name.'-->'.Auth::user()->role }}
                     <style type="text/css">
                         .boxes{
                             margin-top:1em;

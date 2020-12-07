@@ -43,6 +43,7 @@ class LicenseController extends Controller
      */
     public function store(Request $request)
     {
+        
         $this->validate($request, [
             "license" => "required",
             "license_type" => "required",

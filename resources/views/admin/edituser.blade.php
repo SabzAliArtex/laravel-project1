@@ -83,8 +83,12 @@
                                 <select class="form-control @error('role') is-invalid @enderror role" name="role" >
                                     
                                     <option value=""> Please Select Role </option>
-                                   @foreach($roles as $role)
-                                    <option value="{{ $role->id }}" @if($role->id == $user->userrole->id) selected @endif> {{ $role->role }} </option>
+                                
+                                   //below one mine
+                                    @foreach($roles as $role)
+
+                             
+                                <option value="{{ $role['id'] }}"  @if($role['id'] == $user->userrole->id) selected  @endif > {{ $role->role }}</option>
                                    @endforeach
                                 </select>
 

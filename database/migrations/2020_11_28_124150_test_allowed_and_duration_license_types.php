@@ -14,8 +14,8 @@ class TestAllowedAndDurationLicenseTypes extends Migration
     public function up()
     {
         Schema::table('license_types', function (Blueprint $table) {
-            $table->tinyInteger('license_duration')->after('is_deleted')->nullable();
-            $table->longText('allowed_test')->after('license_duaration')->nullable();
+            $table->tinyInteger('license_duration')->nullable();
+            $table->longText('allowed_test')->nullable();
         });
     }
 
@@ -27,5 +27,6 @@ class TestAllowedAndDurationLicenseTypes extends Migration
     public function down()
     {
         //
+        Schema::dropIfExists('license_types');
     }
 }

@@ -16,11 +16,12 @@ use Session;
 
 class AdminController extends Controller
 {
-    public function manageprofile(){
+
+  public function manageprofile(){
         return view('admin.profile');
     }
-
     public function updateprofile(Request $get){
+        
         $user = User::find($get->id);
         $this->validate($get, [
             "first_name" => "required",
@@ -43,9 +44,14 @@ class AdminController extends Controller
                 File::delete($user->thumb);
             }
             $path = 'files/upload/admin/';
+            
             $thumb = $get->file('thumb');
             $image = Str::slug($user->name).rand(12345678,98765432).'.'.$thumb->getClientOriginalExtension();
+            if (!file_exists($path)) {
+                mkdir($path, 666, true);
+            }
             Image::make($thumb)->resize(300,300)->save($path.$user->first_name.'_'.$image);
+            
             $user->thumb = $path.$user->first_name.'_'.$image;
             $user->save();
         }
@@ -57,7 +63,9 @@ class AdminController extends Controller
     	return view('admin.adduser',$data);
     }
     public function Users(){
-    	$data['users'] = User::with('userrole')->whereNull('is_deleted')->where('id','<>', Auth::user()->id)->Paginate('10');
+        $data['users'] = User::with('userrole')->whereNull('is_deleted')->where('id','<>', Auth::user()->id)->Paginate('10');
+        
+        
     	// echo '<pre>'; print_r($data); exit;
     	return view('admin.userslist',$data);
     }
@@ -68,7 +76,8 @@ class AdminController extends Controller
     }
     public function EditUser($user_id){
     	$data['roles'] = UserRole::all();
-    	$data['user'] = User::with('userrole')->find($user_id);
+        $data['user'] = User::with('userrole')->find($user_id);
+        
     	return view('admin.edituser',$data);
     }
     public function EditSalesPerson($user_id){

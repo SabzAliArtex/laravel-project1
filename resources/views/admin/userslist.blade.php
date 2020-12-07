@@ -37,7 +37,7 @@
                                         <td> {{ $key+1 }} </td>
                                         <td> {{ $user->first_name.' '.$user->last_name }} </td>
                                         <td> {{ $user->email }} </td>
-                                        <td> {{ $user->userrole->role }} </td>
+                                        <td> {{ $user->role }} </td>
                                         <td> {{ $user->is_active == 1 ? 'Active' : 'Inactive' }} </td>
                                         <td> 
                                             <a href="{{ route('edituser',['id'=>$user->id]) }}"> {{ __('Edit') }}  </a>
