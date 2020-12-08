@@ -2,8 +2,8 @@
 
 @section('content')
 <div class="container">
-    <div class="row">
-        <div class="col-md-12">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
             @if (session('success'))
                 <div class="alert alert-success" role="alert">
                     {{ session('success') }}
@@ -127,7 +127,7 @@
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
-                                    {{ __('Update') }}
+                                    {{ __('Add') }}
                                 </button>
                             </div>
                         </div>

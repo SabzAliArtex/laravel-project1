@@ -86,7 +86,7 @@ class BasicAuthController extends Controller
         $user =  User::create([
             'first_name' => $get['first_name'],
             'last_name' => $get['last_name'],
-            'role' => 1,
+            'role' => 2,
             'email' => $get['email'],
             'verify_token' => $token,
             'phone' => $get['phone'],

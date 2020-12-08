@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <div class="row">
+    <div class="row justify-content-center">
         <div class="col-md-12">
             @if (session('success'))
                 <div class="alert alert-success" role="alert">
@@ -40,7 +40,12 @@
                                         <td> {{ $user->userrole->role }} </td>
                                         <td> {{ $user->is_active == 1 ? 'Active' : 'Inactive' }} </td>
                                         <td> 
-                                            <a href="{{ route('edituser',['id'=>$user->id]) }}"> {{ __('Edit') }}  </a>
+                                            @if($user->role == 3)
+                                            <a href="{{ route('editsalesperson',['id'=>$user->id]) }}"> {{ __('Edit') }}  </a >  
+                                             @else 
+                                                <a href="{{ route('edituser',['id'=>$user->id]) }}"> {{ __('Edit') }}  </a>
+                                            
+                                            @endif
                                             |
                                             <a href="{{ route('deleteuser',['id'=>$user->id]) }}" onclick="return confirm('Are you sure.')"> {{ __('Delete') }}  </a>
                                         </td>
