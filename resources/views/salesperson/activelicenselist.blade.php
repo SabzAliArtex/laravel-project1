@@ -31,7 +31,6 @@
                                 <th> {{ __('Sales Person Name') }} </th> 
                                 <th> {{ __('Trial Activated At') }} </th> 
                                 <th> {{ __('Activated At') }} </th> 
-                                <th> {{ __('Actions') }} </th> 
                             </tr>
                         </thead>
                         <tbody>
@@ -53,11 +52,6 @@
                                         <td> {{ $license->sales_person ? $license->sales_person->first_name.' '.$license->sales_person->last_name : '' }} </td>
                                         <td> {{ $license->trial_activated_at }} </td>
                                         <td> {{ $license->license_activated_at }} </td>
-                                        <td> 
-                                            <a href="{{ route('editlicense',['license'=>$license->license]) }}"> {{ __('Edit') }}  </a>
-                                            |
-                                            <a href="{{ route('deletelicense',['id'=>$license->id]) }}" onclick="return confirm('Are you sure.')"> {{ __('Delete') }}  </a>
-                                        </td>
                                     </tr>
                                 @endforeach
                         </tbody>

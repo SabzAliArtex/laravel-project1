@@ -61,11 +61,40 @@ class LicenseController extends Controller
         Session::flash("success", "License addedd successfully!");
         return back();
     }
+    public function EditLicense($license)
+    {
+        $licenses = License::where('license', $license)->firstOrFail();
+        $sales_persons = User::where([['is_active','1'],['role','3']])->get();
+        $Licensetypes = Licensetype::where('is_active','1')->get();
+
+        return view('admin.license.editLicense',compact("licenses","sales_persons","Licensetypes"));
+    }
+    public function EditLicensePost(Request $request)
+    {
+        $License = License::find($request['id']);
+        $this->validate($request, [
+            "license_type" => "required",
+        ],[
+            "license_type.required" => "Pleas select license ",
+        ]);
+
+        if(!$License){
+            Session::flash("error", "Something went wrong!");
+            return back(); 
+        }
+
+        $License->license_type_id = $request['license_type'];
+        $License->sales_person_id = $request['sales_person'];
+        $License->save();
+
+        Session::flash("success", "License updated successfully!");
+        return back();
+    }
     public function DeleteLicense($id){
-        $user = License::find($id);
+        $License = License::find($id);
         
-        $user->is_deleted = 1;
-        $user->save();
+        $License->is_deleted = 1;
+        $License->save();
         Session::flash("success", "Deleted successfully");
         return back();
     }

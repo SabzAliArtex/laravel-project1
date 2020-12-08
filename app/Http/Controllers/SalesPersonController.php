@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\User;
+use App\License;
 use Hash;
 use File;
 use Str;
 use Image;
 use Session;
 
-class ClientController extends Controller
+class SalesPersonController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -23,10 +25,10 @@ class ClientController extends Controller
     }
     public function userHome()
     {
-        return view('user.home');
+        return view('salesperson.home');
     }
     public function manageprofile(){
-        return view('user.profile');
+        return view('salesperson.profile');
     }
     public function updateprofile(Request $get){
         $user = User::find($get->id);
@@ -40,7 +42,7 @@ class ClientController extends Controller
         $user->first_name = $get->first_name;
         $user->last_name = $get->last_name;
         $user->save();
-        $path  = 'files/upload/user/';
+        $path  = 'files/upload/salesperson/';
         if($get->file('thumb')){
             $this->validate($get, [
                 "thumb" => "mimes:png,jpg,jpeg"
@@ -59,72 +61,17 @@ class ClientController extends Controller
             $user->thumb = $path.$user->first_name.'_'.$image;
             $user->save();
         }
-        Session::flash("success", "User information has been updated");
+        Session::flash("success", "salesperson information has been updated");
         return back();
     }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+    public function LicensesAll(){
+    	$licenses = License::with('sales_person')->where('sales_person_id',Auth::user()->id)->where('is_deleted',NULL)->orderByRaw('id DESC')->get();
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+    	return view('salesperson.licenselist',compact('licenses'));
     }
+    public function LicensesActivated(){
+    	$licenses = License::with('sales_person')->where('sales_person_id',Auth::user()->id)->where('is_deleted',NULL)->where('license_activated_at', '!=' , NULL)->orderByRaw('id DESC')->get();
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+    	return view('salesperson.activelicenselist',compact('licenses'));
     }
 }

@@ -71,41 +71,41 @@
                         <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">
                             <div class="thumb">
                                 Total Users
-                                <p> 10 </p>
+                                <p> {{ App\User::count() }} </p>
                             </div>
                         </div>
 
                         <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">
                             <div class="thumb">
                                 Sales Persons
-                                <p> 10 </p>
+                                <p> {{ App\User::where('role', 3)->count() }} </p>
                             </div>
                         </div>
 
                         <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">
                             <div class="thumb">
                                 License Types
-                                <p> 10 </p>
+                                <p> <p> {{ App\LicenseType::count() }} </p> </p>
                             </div>
                         </div>
 
                         <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">
                             <div class="thumb">
                                 Total Licenses
-                                <p> 10 </p>
+                                <p> {{ App\License::count() }} </p>
                             </div>
                         </div>
 
                         <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">
                             <div class="thumb">
                                 Active Licenses
-                                <p> 10 </p>
+                                <p> {{ App\License::where('trial_activated_at', '!=' , NULL)->count() }}</p>
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">
                             <div class="thumb">
                                 Inactive Licenses
-                                <p> 10 </p>
+                                <p> {{ App\License::where('trial_activated_at', NULL)->count() }} </p>
                             </div>
                         </div>
 

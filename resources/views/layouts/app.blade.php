@@ -23,7 +23,21 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/home') }}">
+                @auth
+                    @php
+                        if(Auth::user()->role == 1)
+                            $route = 'admin.home';
+                        elseif (Auth::user()->role == 2)
+                            $route = 'user.home';
+                        else
+                            $route = 'salesperson.home';
+                    @endphp
+                @else
+                    @php 
+                        $route = 'welcome'; 
+                    @endphp  
+                @endauth    
+                <a class="navbar-brand" href="{{ route($route) }}">
                     {{ config('app.name', 'Laravel') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -59,8 +73,12 @@
                                     <a class="dropdown-item" href="{{ route('profile') }}">
                                         {{ __('Profile') }}
                                     </a>
-                                    @else
+                                    @elseif (Auth::user()->role == 2)
                                     <a class="dropdown-item" href="{{ route('user.profile') }}">
+                                        {{ __('Profile') }}
+                                    </a>
+                                    @else
+                                    <a class="dropdown-item" href="{{ route('salesperson.profile') }}">
                                         {{ __('Profile') }}
                                     </a>
                                     @endif
