@@ -61,17 +61,18 @@ Route::group(['middleware' => ['admin','verified']], function () {
 });
 // Users Routes
 Route::group(['middleware' => 'user'], function () {
-	Route::get('/home', 'ClientController@userHome')->name('user.home');
-	Route::get('/profile', 'ClientController@manageprofile')->name('user.profile');
-	Route::post('/profile', 'ClientController@updateprofile')->name('user.updateprofile');
+	Route::get('/user/home', 'ClientController@userHome')->name('user.home');
+	Route::get('/user/profile', 'ClientController@manageprofile')->name('user.profile');
+	Route::post('/user/profile', 'ClientController@updateprofile')->name('user.updateprofile');
+	Route::get('/user/license', 'ClientController@LicensesActivated')->name('user.activelicense');
 });
 // Sales Person Routes
 Route::group(['middleware' => 'salesperson'], function () {
-	Route::get('/home', 'SalesPersonController@userHome')->name('salesperson.home');
-	Route::get('/profile', 'SalesPersonController@manageprofile')->name('salesperson.profile');
-	Route::post('/profile', 'SalesPersonController@updateprofile')->name('salesperson.updateprofile');
-	Route::get('/license', 'SalesPersonController@LicensesAll')->name('salesperson.license');
-	Route::get('/license/activated', 'SalesPersonController@LicensesActivated')->name('salesperson.activelicense');
+	Route::get('/salesperson/home', 'SalesPersonController@userHome')->name('salesperson.home');
+	Route::get('/salesperson/profile', 'SalesPersonController@manageprofile')->name('salesperson.profile');
+	Route::post('/salesperson/profile', 'SalesPersonController@updateprofile')->name('salesperson.updateprofile');
+	Route::get('/salesperson/license', 'SalesPersonController@LicensesAll')->name('salesperson.license');
+	Route::get('/salesPersons/license/activated', 'SalesPersonController@LicensesActivated')->name('salesperson.activelicense');
 
 });
 

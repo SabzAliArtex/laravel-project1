@@ -65,12 +65,12 @@ class SalesPersonController extends Controller
         return back();
     }
     public function LicensesAll(){
-    	$licenses = License::with('sales_person')->where('sales_person_id',Auth::user()->id)->where('is_deleted',NULL)->orderByRaw('id DESC')->get();
+    	$licenses = License::with('sales_person','user')->where('sales_person_id',Auth::user()->id)->where('is_deleted',NULL)->orderByRaw('id DESC')->get();
 
     	return view('salesperson.licenselist',compact('licenses'));
     }
     public function LicensesActivated(){
-    	$licenses = License::with('sales_person')->where('sales_person_id',Auth::user()->id)->where('is_deleted',NULL)->where('license_activated_at', '!=' , NULL)->orderByRaw('id DESC')->get();
+    	$licenses = License::with('sales_person','user')->where('sales_person_id',Auth::user()->id)->where('license_activated_at', '!=' , NULL)->orderByRaw('id DESC')->get();
 
     	return view('salesperson.activelicenselist',compact('licenses'));
     }

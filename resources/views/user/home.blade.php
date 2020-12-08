@@ -8,7 +8,7 @@
                 <div class="card-header">{{ __('Side Bar') }}</div>
                 <div class="card-body">
                     <li> 
-                        <a href=""> {{ __('') }} </a>
+                        <a href="{{ route('user.activelicense') }}"> {{ __('Licenses') }} </a>
                     </li>
                 </div> 
             </div>       
