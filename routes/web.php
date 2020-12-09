@@ -65,7 +65,7 @@ Route::group(['middleware' => 'user'], function () {
 });
 //License Activation Routes
 
-Route::get('activate/license/{user_id}/{sales_person_id}','LicenseController@licenseActivation');
+Route::get('activate/license/{user_id}/{sales_person_id}/{license_key}/{license_id}','LicenseController@licenseActivation');
 
 
 Route::get('mail', function () {

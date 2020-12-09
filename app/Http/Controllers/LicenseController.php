@@ -68,10 +68,11 @@ class LicenseController extends Controller
         Session::flash("success", "Deleted successfully");
         return back();
     }
-    public function licenseActivation($user_id,$sales_person_id,$license_key){
+    public function licenseActivation($user_id,$sales_person_id,$license_key,$license_id){
         //Demo Variable Values Start
         $user_id=2;
         $sales_person_id = 3;
+        $license_key = 'r123sadas21cc33';
         //Variables end
 
         $userPerson = User::where([['id',$user_id]])->first();
@@ -81,15 +82,15 @@ class LicenseController extends Controller
             dd('Not sales person or Sales Person Id is missing');
         }else{
         //$userPerson->role == 2 means that person is of type 'USER'
-       
+        $license_type = Licensetype::where('id','=',$license_id)->first();
         $license = new License();
-        $license->user_id  = $$userPerson->id;
+        $license->user_id  = $userPerson->id;
         $license->sales_person_id = $userPersons_salesPerson->id;
-        $license->license_type_id =1 ;
+        $license->license_type_id = $license_type->id ;
         $license->license = $license_key;
-        $license->license_duration = ;
-        $license->license_expiry = ;
-        $license->allowed_test = ;
+        $license->license_duration = $license_type->license_duration ;
+        $license->license_expiry = null ;
+        $license->allowed_test = $license_type->allowed_test;
         $license->trial_activated_at = date("Y-m-d H:i:s") ;
         $license->license_activated_at = date("Y-m-d H:i:s") ;
         $license->device_name ='Example Device Name' ;
@@ -100,7 +101,7 @@ class LicenseController extends Controller
         $license->created_at = date("Y-m-d H:i:s");
         $license->updated_at = date("Y-m-d H:i:s");
         $license->save();
-
+            dd($license);
         }
         }else{
 
