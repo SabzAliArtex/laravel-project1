@@ -63,6 +63,9 @@ Route::group(['middleware' => 'user'], function () {
 	Route::get('/user/profile', 'ClientController@manageprofile')->name('user.profile');
 	Route::post('/user/profile', 'ClientController@updateprofile')->name('user.updateprofile');
 });
+//License Activation Routes
+
+Route::get('activate/license/{user_id}/{sales_person_id}','LicenseController@licenseActivation');
 
 
 Route::get('mail', function () {

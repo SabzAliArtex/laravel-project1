@@ -63,11 +63,53 @@ class LicenseController extends Controller
     }
     public function DeleteLicense($id){
         $user = License::find($id);
-        
         $user->is_deleted = 1;
         $user->save();
         Session::flash("success", "Deleted successfully");
         return back();
+    }
+    public function licenseActivation($user_id,$sales_person_id,$license_key){
+        //Demo Variable Values Start
+        $user_id=2;
+        $sales_person_id = 3;
+        //Variables end
+
+        $userPerson = User::where([['id',$user_id]])->first();
+        if($userPerson->role == 2){
+        $userPersons_salesPerson = User::where([['role',3],['id',$sales_person_id]])->first();
+        if(!isset($userPersons_salesPerson)){
+            dd('Not sales person or Sales Person Id is missing');
+        }else{
+        //$userPerson->role == 2 means that person is of type 'USER'
+       
+        $license = new License();
+        $license->user_id  = $$userPerson->id;
+        $license->sales_person_id = $userPersons_salesPerson->id;
+        $license->license_type_id =1 ;
+        $license->license = $license_key;
+        $license->license_duration = ;
+        $license->license_expiry = ;
+        $license->allowed_test = ;
+        $license->trial_activated_at = date("Y-m-d H:i:s") ;
+        $license->license_activated_at = date("Y-m-d H:i:s") ;
+        $license->device_name ='Example Device Name' ;
+        $license->device_model ='Example Model Name' ;
+        $license->device_unique_id = 'Example Machine Address';
+        $license->is_active = 1 ;
+        $license->is_deleted = null;
+        $license->created_at = date("Y-m-d H:i:s");
+        $license->updated_at = date("Y-m-d H:i:s");
+        $license->save();
+
+        }
+        }else{
+
+            //Person is not a User
+
+
+        }
+
+
     }
     
 }
