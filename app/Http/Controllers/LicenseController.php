@@ -18,7 +18,7 @@ class LicenseController extends Controller
     public function index()
     {
         get();
-        // echo '<pre>'; print_r($licenses); exit;
+        // return '<pre>'; print_r($licenses); exit;
         return view('admin.license.licenselist',compact('licenses'));
     }
 
@@ -69,36 +69,35 @@ class LicenseController extends Controller
         return back();
     }
     public function licenseActivation($user_id,$license_key,$dev_name,$dev_model,$dev_id){
+     
+
       $response = array();
-      $response['message']="";
+      $response['message'] = "";
       
 
 
         $userPerson = User::where([['id',$user_id]])->first();
+
         if($userPerson->role == 2){
       
         
         //$userPerson->role == 2 means that person is of type 'USER'
         
         $license = new License();
-       /*Can be used later
-        $license->user_id  = $userPerson->id;
-        $license->license = $license_key;
-        $license->license_expiry = null ;
-        $license->trial_activated_at = date("Y-m-d H:i:s") ;
-        $license->license_activated_at = date("Y-m-d H:i:s") ;
-        $license->device_name ='Example Device Name' ;
-        $license->device_model ='Example Model Name' ;
-        $license->device_unique_id = 'Example Machine Address';*/
+        $license_checks=License::all()->first();
+        
+        
+       /*Can be used later$license->user_id  = $userPerson->id;$license->license = $license_key;$license->license_expiry = null ;$license->trial_activated_at = date("Y-m-d H:i:s") ;$license->license_activated_at = date("Y-m-d H:i:s") ;$license->device_name ='Example Device Name' ;$license->device_model ='Example Model Name' ;$license->device_unique_id = 'Example Machine Address';*/
 
+        
         if(!isset($license_key)){
             $response['message'] = "License Key Not Found";
             return json_encode($response);
         }
 
 
-        if($license->license != $license_key){
-
+        if($license_checks->license != $license_key){
+              
             $response['message'] = "License Key isn't Valid";
             return json_encode($response);
             
@@ -110,19 +109,30 @@ class LicenseController extends Controller
             if(!isset($dev_model) && !isset($dev_name) && !isset($dev_id))
             {
                 $response['message'] = "Device Credentials are Invalid";
-            return json_encode($response);
+        return  json_encode($response);
 
             }else{
-                if($license->device_name != $dev_name && $license->device_model != $dev_model && $license->device_unique_id !=$dev_id){
+                if($license_checks->device_name != $dev_name && $license_checks->device_model != $dev_model && $license_checks->device_unique_id !=$dev_id){
 
                     $license->device_name =$dev_name ;
                     $license->device_model =$dev_model ;
                     $license->device_unique_id = $dev_id;
-                    $license->is_active == 1;
+                    /*Adding for time being as license_type_id doesnt have default value*/
+                    $license->license_type_id = 1;
+                    $license->license = 1;
+                    /*----------------------===============----------------------------*/
+                    $license->is_active = 1;
+                     $license->save();
                 }
                
 
             }
         
-                $license->save();
+               
+  }else{
+
+    $response['message'] = "Not a Registered User";
+    return json_encode($response);
   }
+}
+}
