@@ -106,7 +106,8 @@ class LicenseController extends Controller
             $license->is_active == 1;
 
         }*/
-            if(!isset($dev_model) && !isset($dev_name) && !isset($dev_id))
+                $dev_model=null;
+            if(!isset($dev_model) || !isset($dev_name) || !isset($dev_id))
             {
                 $response['message'] = "Device Credentials are Invalid";
         return  json_encode($response);
