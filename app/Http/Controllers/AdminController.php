@@ -95,6 +95,7 @@ class AdminController extends Controller
     }
     public function addUserPost(Request $get){
     	// print_r($_POST); exit;
+
     	$this->validate($get, [
             "first_name" => "required",
             "last_name" => "required",
@@ -120,7 +121,7 @@ class AdminController extends Controller
             'verify_token' => $token,
             'commission' => $Comission,
             'phone' => $get['phone'],
-            'is_active' => 1,
+            'is_active' => $get['is_active'],
             'password' => Hash::make($get['password']),
         ]);
         try{
@@ -155,6 +156,7 @@ class AdminController extends Controller
         $user->email = $get['email'];
         $user->commission = $Comission;
         $user->phone = $get['phone'];
+        $user->is_active = $get['is_active'];
         $user->save();
 
         Session::flash("success", "User updated successfully");

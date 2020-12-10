@@ -6,11 +6,11 @@
         <div class="col-md-12">
             @if(session('verified'))
                 <div class="alert alert-success" role="alert">
-                    <p> Your account verified! </p>
+                    <p> Your account is verified! </p>
                 </div>
             @endif
         </div>
-       @include('partials/sidebar')
+       @include('partials_admin/sidebar')
 
         <div class="col-md-8">
             <div class="card">

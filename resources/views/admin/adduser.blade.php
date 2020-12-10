@@ -16,7 +16,7 @@
             @endif
         </div> </div>   
         <div class="row">
-        @include('partials/sidebar')
+        @include('partials_admin/sidebar')
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('Add User') }}</div>
@@ -124,6 +124,23 @@
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
+                            </div>
+                        </div>
+                           <div class="form-group row">
+                            <div class="col-md-6 offset-md-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="is_active" id="active" value="1" checked="checked">
+
+                                    <label class="form-check-label" for="active">
+                                        {{ __('Active') }}
+                                    </label>
+                                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                    <input class="form-check-input" type="radio" name="is_active" id="inactive" value="0">
+
+                                    <label class="form-check-label" for="inactive">
+                                        {{ __('Inactive') }}
+                                    </label>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group row mb-0">

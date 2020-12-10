@@ -16,7 +16,7 @@
                 </div>
             @endif
         </div>  
-        @include('partials/sidebar') 
+        @include('partials_admin/sidebar')
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('Users List') }}</div>

@@ -5,7 +5,7 @@
   <!--   <div class="row justify-content-center">
         </div> -->
         <div class="row">
-        @include('partials/sidebar')
+        @include('partials_user/sidebar')
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('Dashboard') }}</div>
