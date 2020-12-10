@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-12">
             @if (session('success'))
                 <div class="alert alert-success" role="alert">
                     {{ session('success') }}
@@ -14,7 +14,9 @@
                     {{ session('error') }}
                 </div>
             @endif
-        </div>    
+        </div> </div>   
+        <div class="row">
+        @include('partials/sidebar')
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('Add User') }}</div>
@@ -135,7 +137,8 @@
                 </div>
             </div>
         </div>
-    </div>
+        </div>
+    
 </div>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
 <script type="text/javascript">

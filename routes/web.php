@@ -64,11 +64,17 @@ Route::group(['middleware' => 'user'], function () {
 	Route::get('/user/profile', 'ClientController@manageprofile')->name('user.profile');
 	Route::post('/user/profile', 'ClientController@updateprofile')->name('user.updateprofile');
 });
-//License Activation Routes
+//License and trial Activation Routes
 
 Route::get('activate/license/{user_id}/{license_key}/{dev_id}/{dev_model}/{dev_name}','LicenseController@licenseActivation');
+Route::get('activate/trial/{user_id}/{license_key}','LicenseController@trialActivation');
 
-
+/*License Activation Routes End*/
+/* Mobile Detect Route*/
+Route::get('detect/device',function(){
+	return view('deviceCheckViews.index');
+});
+/* Mobile Detect Route End*/
 Route::get('mail', function () {
     $user = App\User::find(1);
     $token = '321456987';

@@ -50,10 +50,14 @@ class ClientController extends Controller
             if(File::exists($user->thumb)){
                 File::delete($user->thumb);
             }
+            $path  = 'files/upload/user/';
             $thumb = $get->file('thumb');
             $image = Str::slug($user->name).rand(12345678,98765432).'.'.$thumb->getClientOriginalExtension();
-            Image::make($thumb)->resize(300,300)->save('files/upload/user/'.$user->first_name.'_'.$image);
-            $user->thumb = 'files/upload/user/'.$user->first_name.'_'.$image;
+            if (!file_exists($path)) {
+                mkdir($path, 666, true);
+            }
+            Image::make($thumb)->resize(300,300)->save($path.$user->first_name.'_'.$image);
+            $user->thumb = $path.$user->first_name.'_'.$image;
             $user->save();
         }
         Session::flash("success", "User information has been updated");
