@@ -14,13 +14,19 @@
                     {{ session('error') }}
                 </div>
             @endif
-        </div>    
+        </div>  
+        </div>  
+        <div class="row" style="margin-left: 3px">
+        <div class="col-md-4"><h4>Commission Earned</h4></div>
+        <div class="col-md-4"><h4>{{$total_commission}} USD</h4></div>
+        </div>
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">{{ __('License List') }}</div>
+                <div class="card-header">{{ __('License List') }} </div>
+                
                 <div class="card-body">
                     @if(count($licenses) >0)
-                    <table border="1" style="width:100%" class="table table-striped">
+                    <table border="1"  class="table table-striped">
                         <thead class="thead-dark">
                             <tr>
                                 <th> {{ __('Sr no') }} </th> 
@@ -60,6 +66,6 @@
                 </div>
             </div>
         </div>
-    </div>
+    
 </div>
 @endsection

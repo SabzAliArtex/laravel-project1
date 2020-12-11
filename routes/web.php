@@ -76,8 +76,9 @@ Route::group(['middleware' => 'salesperson'], function () {
 	Route::get('/salesperson/license', 'SalesPersonController@LicensesAll')->name('salesperson.license');
 	Route::get('/salesPersons/license/activated', 'SalesPersonController@LicensesActivated')->name('salesperson.activelicense');
 
-});
 
+});
+	
 	
 
 //License and trial Activation Routes

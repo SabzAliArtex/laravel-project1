@@ -222,13 +222,5 @@ public function trialActivation($user_id,$license_key){
     return json_encode($response);
            }
        }
-       public function salesPersonCommision(){
-        $actual_price = 1000;
-        $sale_price = 70;
-         $commision_percentage = 14;
-
-        $total_commision = ($sale_price)*($commision_percentage)/100;
-        dd($total_commision);
-        
-       }
+    
 }    

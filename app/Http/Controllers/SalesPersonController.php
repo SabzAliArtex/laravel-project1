@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\User;
 use App\License;
+use App\LicenseType;
 use Hash;
 use File;
 use Str;
@@ -65,13 +66,34 @@ class SalesPersonController extends Controller
         return back();
     }
     public function LicensesAll(){
-    	$licenses = License::with('sales_person','user')->where('sales_person_id',Auth::user()->id)->where('is_deleted',NULL)->orderByRaw('id DESC')->get();
+        $licenses = License::with('sales_person','user','license_type')->where('sales_person_id',Auth::user()->id)->where('is_deleted',NULL)->orderByRaw('id DESC')->get();
 
-    	return view('salesperson.licenselist',compact('licenses'));
+
+            if(Auth::user()->role == 3 && User::where('id','=',Auth::user()->id)){
+            
+            $userCommision = User::where('id',Auth::user()->id)->first();
+            $commission = $userCommision->commission;
+           $total_commission = $this->salesPersonCommision($commission);
+            }
+    	return view('salesperson.licenselist',[
+            'licenses' => $licenses,
+            'total_commission' => $total_commission]);
     }
     public function LicensesActivated(){
     	$licenses = License::with('sales_person','user')->where('sales_person_id',Auth::user()->id)->where('license_activated_at', '!=' , NULL)->orderByRaw('id DESC')->get();
 
     	return view('salesperson.activelicenselist',compact('licenses'));
-    }
+    }  
+     public function salesPersonCommision($commission){
+        $sales = License::where('sales_person_id','=',Auth::user()->id)->get();
+        $sales_count = $sales->count();
+        $lt = License::where('sales_person_id','=',Auth::user()->id)->first();
+        $license_price = LicenseType::where('id','=',$lt->license_type_id)->value('price');
+        $actual_price = 1000;
+        $commision_percentage = $commission;
+         $commision_of_one = ($license_price)*($commision_percentage)/100;
+        /*$total_commision = $sales_count * $commision_of_one;*/
+        return $commision_of_one;
+        
+       }
 }

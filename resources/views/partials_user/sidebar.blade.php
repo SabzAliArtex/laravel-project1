@@ -8,7 +8,7 @@
                    
 
                     <li> 
-                        <a href="{{ route('user.licenselist') }}"> {{ __('License List') }} </a>
+                        <a href="{{ route('user.activelicense') }}"> {{ __('License List') }} </a>
                     </li>
                     
                 </div> 
