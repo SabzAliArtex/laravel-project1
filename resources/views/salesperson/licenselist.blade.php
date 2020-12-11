@@ -16,15 +16,18 @@
             @endif
         </div>  
         </div>  
-        <div class="row" style="margin-left: 3px">
-        <div class="col-md-4"><h4>Commission Earned</h4></div>
-        <div class="col-md-4"><h4>{{$total_commission}} USD</h4></div>
-        </div>
+        
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">{{ __('License List') }} </div>
-                
+              
                 <div class="card-body">
+                      <table><tr class="row" style="margin-left: 3px">
+        <td ><h6 style="font-weight: bold;">Commission Earned: </h6></td>
+        <td></td>
+        <td><h6 style="font-weight: bold;">{{$total_commission}} USD</h6></td>
+        </tr>
+        </table>
                     @if(count($licenses) >0)
                     <table border="1"  class="table table-striped">
                         <thead class="thead-dark">
