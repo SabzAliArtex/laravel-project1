@@ -8,6 +8,7 @@ use App\User;
 use App\Licensetype;
 use Session;
 use Carbon\Carbon;
+use Auth;
 class LicenseController extends Controller
 {
     /**
@@ -19,8 +20,25 @@ class LicenseController extends Controller
     {
         $licenses = License::with('sales_person','user','license_type')->where('is_deleted',NULL)->orderByRaw('id DESC')->get();
         // echo '<pre>'; print_r($licenses); exit;
-        return view('admin.license.licenselist',compact('licenses'));
+        if(Auth::user()->userrole->role == 'User'){
+
+        return view('user.license.licenselist',compact('licenses'));  
+
+        }
+       
+       if(Auth::user()->userrole->role == 'Admin'){
+
+        return view('admin.license.licenselist',compact('licenses'));  
+
+        }
+
+       if(Auth::user()->userrole->role == 'Sales Person'){
+
+        return view('salesPerson.license.licenselist',compact('licenses'));  
+
+        }
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -171,5 +189,14 @@ public function trialActivation($user_id,$license_key){
     $response['message'] = "Invalid Person";
     return json_encode($response);
            }
+       }
+       public function salesPersonCommision(){
+        $actual_price = 1000;
+        $sale_price = 70;
+         $commision_percentage = 14;
+
+        $total_commision = ($sale_price)*($commision_percentage)/100;
+        dd($total_commision);
+        
        }
 }    

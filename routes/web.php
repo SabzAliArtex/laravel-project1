@@ -63,6 +63,7 @@ Route::group(['middleware' => 'user'], function () {
 	Route::get('/user/home', 'ClientController@userHome')->name('user.home');
 	Route::get('/user/profile', 'ClientController@manageprofile')->name('user.profile');
 	Route::post('/user/profile', 'ClientController@updateprofile')->name('user.updateprofile');
+	Route::get('/user/licenselist', 'LicenseController@index')->name('user.licenselist');
 });
 //License and trial Activation Routes
 
@@ -75,6 +76,10 @@ Route::get('detect/device',function(){
 	return view('deviceCheckViews.index');
 });
 /* Mobile Detect Route End*/
+/*Commision Sales Person Routes*/
+Route::get('commision','LicenseController@salesPersonCommision');
+/*Commision Sales Person Routes End*/
+
 Route::get('mail', function () {
     $user = App\User::find(1);
     $token = '321456987';
