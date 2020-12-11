@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
@@ -14,8 +15,9 @@
                     {{ session('error') }}
                 </div>
             @endif
-        </div>    
-        <div class="col-md-12">
+        </div>  
+        @include('partials_admin/sidebar')
+        <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('Users List') }}</div>
                 <div class="card-body">

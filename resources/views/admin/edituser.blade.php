@@ -14,7 +14,10 @@
                     {{ session('error') }}
                 </div>
             @endif
-        </div>    
+        </div>  </div>
+
+        <div class="row">
+        @include('partials_admin/sidebar') 
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('Edit User') }}</div>
@@ -113,6 +116,24 @@
                                 @enderror
                             </div>
                         </div>
+                        
+                         <div class="form-group row">
+                            <div class="col-md-6 offset-md-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" {{ ($user->is_active=="1")? "checked" : "" }} name="is_active" id="active" value="1" >
+
+                                    <label class="form-check-label" for="active">
+                                        {{ __('Active') }}
+                                    </label>
+                                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                    <input class="form-check-input" type="radio" name="is_active" id="inactive" value="0"  {{ ($user->is_active=="0")? "checked" : "" }} >
+
+                                    <label class="form-check-label" for="inactive">
+                                        {{ __('Inactive') }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
@@ -124,7 +145,8 @@
                 </div>
             </div>
         </div>
-    </div>
+        </div>
+    
 </div>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
 <script type="text/javascript">

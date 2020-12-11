@@ -15,7 +15,8 @@
                 </div>
             @endif
         </div>    
-        <div class="col-md-12">
+        @include('partials_admin/sidebar')
+        <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('License Types') }}</div>
                 <div class="card-body">

@@ -52,11 +52,13 @@ class ClientController extends Controller
             if(File::exists($user->thumb)){
                 File::delete($user->thumb);
             }
+
             if (!file_exists($path)) {
                 mkdir($path, 666, true);
             }
             $thumb = $get->file('thumb');
             $image = Str::slug($user->name).rand(12345678,98765432).'.'.$thumb->getClientOriginalExtension();
+
             Image::make($thumb)->resize(300,300)->save($path.$user->first_name.'_'.$image);
             $user->thumb = $path.$user->first_name.'_'.$image;
             $user->save();
@@ -67,5 +69,8 @@ class ClientController extends Controller
     public function LicensesActivated(){
         $licenses = License::with('sales_person','user')->where('user_id', Auth::user()->id)->where('license_activated_at', '!=' , NULL)->orderByRaw('id DESC')->get();
         return view('user.activelicenselist',compact('licenses'));
+    }
+    public function userLicenseList(){
+        dd('here');
     }
 }

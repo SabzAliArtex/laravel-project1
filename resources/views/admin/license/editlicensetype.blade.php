@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-12">
             @if (session('success'))
                 <div class="alert alert-success" role="alert">
                     {{ session('success') }}
@@ -14,7 +14,10 @@
                     {{ session('error') }}
                 </div>
             @endif
-        </div>    
+        </div>   
+</div>
+        <div class="row">
+            @include('partials_admin/sidebar')
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('Edit License type') }}</div>
@@ -136,6 +139,7 @@
                 </div>
             </div>
         </div>
-    </div>
+        </div>
+    
 </div>
 @endsection
