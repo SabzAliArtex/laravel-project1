@@ -65,7 +65,7 @@ Route::group(['middleware' => 'user'], function () {
 	Route::get('/user/home', 'ClientController@userHome')->name('user.home');
 	Route::get('/user/profile', 'ClientController@manageprofile')->name('user.profile');
 	Route::post('/user/profile', 'ClientController@updateprofile')->name('user.updateprofile');
-<<<<<<< HEAD
+
 	Route::get('/user/license', 'ClientController@LicensesActivated')->name('user.activelicense');
 });
 // Sales Person Routes
@@ -77,24 +77,15 @@ Route::group(['middleware' => 'salesperson'], function () {
 	Route::get('/salesPersons/license/activated', 'SalesPersonController@LicensesActivated')->name('salesperson.activelicense');
 
 });
-=======
+
 	
-});
+
 //License and trial Activation Routes
 
 Route::get('activate/license/{user_id}/{license_key}/{dev_id}/{dev_model}/{dev_name}','LicenseController@licenseActivation');
 Route::get('activate/trial/{user_id}/{license_key}','LicenseController@trialActivation');
 
 /*License Activation Routes End*/
-/* Mobile Detect Route*/
-Route::get('detect/device',function(){
-	return view('deviceCheckViews.index');
-});
-/* Mobile Detect Route End*/
-/*Commision Sales Person Routes*/
-Route::get('commision','LicenseController@salesPersonCommision');
-/*Commision Sales Person Routes End*/
->>>>>>> ccvt_licensing_work
 
 Route::get('mail', function () {
     $user = App\User::find(1);
