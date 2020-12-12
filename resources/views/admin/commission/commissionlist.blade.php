@@ -1,0 +1,181 @@
+@extends('layouts.app')
+
+@section('content')
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<div class="container" id="paymentStatus">
+    <div class="row">
+        <div class="col-md-12">
+            @if (session('success'))
+                <div class="alert alert-success" role="alert">
+                    {{ session('success') }}
+                </div>
+            @endif
+            @if (session('error'))
+                <div class="alert alert-danger" role="alert">
+                    {{ session('error') }}
+                </div>
+            @endif
+        </div>    
+        @include('partials_admin/sidebar')
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">{{ __('License List') }}</div>
+                <div class="card-body">
+                    @if(count($payments) >0)
+                    <table border="1" style="width:100%;table-layout: fixed;"  class="table table-striped ">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th class="ellipsis"> {{ __('Sr no') }} </th> 
+                                <th class="ellipsis"> {{ __('License Id') }} </th> 
+                                <th class="ellipsis"> {{ __('Sales Person Id') }} </th>
+                                <th class="ellipsis"> {{ __('Commission') }} </th> 
+                                <th class="ellipsis"> {{ __('Status') }} </th> 
+                                <th class="ellipsis"> {{ __('Sales Person Name') }} </th> 
+                                
+                                <th colspan="2"> {{ __('Actions') }} </th> 
+                            </tr>
+                        </thead>
+                        <tbody>
+                                @foreach($payments as $key=> $payment)
+                                    <tr>
+                                        
+                                        <td  class="ellipsis"> {{ $key+1 }} </td>
+                                        <td class="ellipsis"> {{ $payment->license_id }} </td>
+                                        <td class="ellipsis">{{$payment->sales_person_id}}</td><td class="ellipsis">{{$payment->commission}}</td>
+                                        @if($payment->is_approved == 0)
+                                        <td class="ellipsis">Approved</td>
+                                        @else
+                                        <td class="ellipsis">DisApproved</td>
+                                        @endif
+                                        <td class="ellipsis">{{$payment->sales_person->first_name}}</td>
+                                    {{--    <td> 
+                                            @if($license->license_type && $license->license_type->type == '1' )
+                                                Monthly {{ '('. $license->license_type->price . ')' }}
+                                            @elseif ($license->license_type &&  $license->license_type->type == '2' )
+                                                Yearly {{ '('. $license->license_type->price . ')' }}
+                                            @elseif ($license->license_type &&  $license->license_type->type == '3' )
+                                                Life time {{ '('. $license->license_type->price . ')' }}
+                                            @endif      
+                                        </td>
+                                        --}}
+                                    {{--     <td> {{ $license->user ? $license->user->first_name : '' }} </td>
+                                        <td> {{ $license->user ? $license->user->email : '' }} </td>
+                                        <td> {{ $license->sales_person ? $license->sales_person->first_name.' '.$license->sales_person->last_name : '' }} </td>
+                                        <td> {{ $license->trial_activated_at }} </td>
+                                        <td> {{ $license->license_activated_at }} </td> --}}
+
+                                        <td colspan="2"> 
+                                            {{-- route('paymentstatus',['id'=>$payment->id])
+                                            {{ route('deletelicense',['id'=>$payment->id]) }}  
+                                           
+v-on:click=changeStatus({{$payment->id}},{{$payment->is_approved}})
+v-on:click=changeStatus({{$payment->id}},{{$payment->is_approved}})
+                                         
+                                            --}}
+                                           
+                                            <a class="response"  v-on:click="changeActiveStatus({{$payment->id}})" href="#" id="Approved"  > {{ __('Approve') }}  </a>
+
+                                            |
+                                          
+                                        
+
+                                            <a class="response" v-on:click="changeActiveStatus({{$payment->id}})" href="#" id="Disapprove"  > {{ __('Disapprove') }}  </a>
+                                           
+                                        </td>
+                                    </tr>
+
+                                @endforeach
+                                
+                        </tbody>
+                    </table>
+                    <div>@{{is_result}}</div>
+                    @else
+                    <p> *nothing found</p>
+                    @endif
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+@endsection
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+    var t = $('#Approved').text();
+     var s = $('#Disapprove').text();
+     
+     if(t.equals("Approve")){
+   console.log(t);
+   }    
+    });
+    
+</script>
+<script type="text/javascript">
+ window.onload=function(){
+    var v = new Vue({
+el:'#paymentStatus',
+data:{
+
+    message:'',
+    payment_id:'',
+    approve:'',
+    disapprove:'',
+    current_value:'',
+    is_approve:'',
+    is_deapprove:'',
+    is_clicked:'',
+    is_clicked_a:'',
+    is_clicked_b:'',
+    is_result:'',
+},
+methods:{
+    changeActiveStatus:function(para){
+     var t = $('#Approved').text();
+     var s = $('#Disapprove').text();
+     
+     if(t.equals("Approve")){
+   console.log(t);
+   
+     }
+     if(s.equals("Disapprove"))
+     {
+console.log(s);
+     }
+     
+       /* this.payment_id = para;
+   axios.get('/paymentstatus/'+this.payment_id).then((res)=>{
+    this.is_result = res.data;
+            }).catch((error)=>{
+
+        })*/
+
+
+        
+
+    },
+    changeDeactiveStatus:function(para){
+        this.payment_id = para;
+   axios.get('/paymentstatus/'+this.payment_id).then((res)=>{
+    this.is_result = res.data;
+            }).catch((error)=>{
+
+        })
+
+
+        
+
+    },
+},
+
+
+    });
+}
+
+</script>

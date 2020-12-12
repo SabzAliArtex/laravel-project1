@@ -17,7 +17,7 @@ class CreatePaymentsTable extends Migration
             $table->id();
             $table->integer('license_id');
             $table->integer('sales_person_id');
-            $table->decimal('commission',2);
+            $table->bigInteger('commission');
             $table->boolean('is_approved');
             $table->timestamps();
         });

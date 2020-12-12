@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\License;
 use App\User;
 use App\Licensetype;
+use App\Payment;
 use Session;
 use Carbon\Carbon;
 use Auth;
@@ -19,10 +20,16 @@ class LicenseController extends Controller
     public function index()
     {
         $licenses = License::with('sales_person','user','license_type')->where('is_deleted',NULL)->orderByRaw('id DESC')->get();
+        
+
+        
         // echo '<pre>'; print_r($licenses); exit;
         if(Auth::user()->userrole->role == 'User'){
 
-        return view('user.license.licenselist',compact('licenses'));  
+        return view('user.license.licenselist',[
+          'licenses' => $licenses,
+          
+        ]);
 
         }
        
@@ -38,6 +45,7 @@ class LicenseController extends Controller
 
         }
     }
+   
 
 
     /**

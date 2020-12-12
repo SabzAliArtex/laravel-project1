@@ -10912,4 +10912,9 @@ a.text-dark:focus {
 .card-body {
   background: aliceblue !important;
 }
+.ellipsis {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
 

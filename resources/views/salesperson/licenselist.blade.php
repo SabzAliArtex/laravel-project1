@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container" >
+   
     <div class="row">
         <div class="col-md-12">
             @if (session('success'))
@@ -17,7 +18,7 @@
         </div>  
         </div>  
         
-        <div class="col-md-12">
+        <div class="col-md-12" id="p">
             <div class="card">
                 <div class="card-header">{{ __('License List') }} </div>
               
@@ -25,7 +26,15 @@
                       <table><tr class="row" style="margin-left: 3px">
         <td ><h6 style="font-weight: bold;">Commission Earned: </h6></td>
         <td></td>
-        <td><h6 style="font-weight: bold;">{{$total_commission}} USD</h6></td>
+        <td><h6 style="font-weight: bold;">@{{total_commission}} USD</h6></td>
+             @for($i=1;$i<=100;$i++)
+             <td></td>     <td></td>     <td></td>
+             @endfor
+
+          <td ><h6 style="font-weight: bold;">Pending Clearanace: </h6></td>
+      <td></td>
+          
+        <td><h6 style="font-weight: bold;">@{{pending_commision}} USD</h6></td>   
         </tr>
         </table>
                     @if(count($licenses) >0)
@@ -71,4 +80,51 @@
         </div>
     
 </div>
+
 @endsection
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script >
+    window.onload = function(){    
+    var vm = new Vue({
+        el:'#p',
+        data:{
+        pending_commision:'0',
+        total_commission:0,
+        },
+        methods:{
+            get_pending_commision:function(){
+
+                axios.get('/salesperson/pending_commision').then((res)=>{
+                    
+                    this.pending_commision = res.data.commission;
+
+                }).catch((error)=>{
+
+                })
+            },
+            getTotalCommission:function(){
+                axios.get('/salesperson/total_commision').then((res)=>{
+
+                        
+                        
+                        if(res.data.commission == null){
+                            this.total_commission = 0;
+                        }else{
+                            this.total_commission = res.data.commission;
+                        }
+                }).catch((error)=>{
+
+                })
+            }
+        },
+
+          mounted(){
+            this.get_pending_commision();
+            this.getTotalCommission();
+          }
+
+
+    });
+}
+</script>

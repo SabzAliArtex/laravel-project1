@@ -32,6 +32,7 @@ Route::group(['middleware' => ['admin','verified']], function () {
 	Route::get('/home', 'HomeController@index')->name('admin.home');
 	Route::get('/profile', 'AdminController@manageprofile')->name('profile');
 	Route::post('/profile', 'AdminController@updateprofile')->name('updateprofile');
+
 	// users
 	Route::get('/users', 'AdminController@Users')->name('userslist');
 	Route::get('/addUser', 'AdminController@AddUser')->name('AddUser');
@@ -58,6 +59,9 @@ Route::group(['middleware' => ['admin','verified']], function () {
 
 	Route::get('/deletelicense/{id}', 'LicenseController@DeleteLicense')->name('deletelicense');
 	Route::get('/license/activated', 'LicenseController@ActivatedLicense')->name('license.activated');
+	//payments routes
+	Route::get('/payment/list', 'PaymentController@index')->name('paymentlist');
+	Route::get('/paymentstatus/{id}', 'PaymentController@edit')->name('paymentstatus');
 
 });
 // Users Routes
@@ -75,6 +79,8 @@ Route::group(['middleware' => 'salesperson'], function () {
 	Route::post('/salesperson/profile', 'SalesPersonController@updateprofile')->name('salesperson.updateprofile');
 	Route::get('/salesperson/license', 'SalesPersonController@LicensesAll')->name('salesperson.license');
 	Route::get('/salesPersons/license/activated', 'SalesPersonController@LicensesActivated')->name('salesperson.activelicense');
+	Route::get('/salesperson/pending_commision','SalesPersonController@commision_pending')->name('salesperson.pendingcommission');
+	Route::get('/salesperson/total_commision','SalesPersonController@total_commision')->name('salesperson.totalcommision');
 
 
 });

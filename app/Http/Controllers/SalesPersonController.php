@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\License;
 use App\LicenseType;
+use App\Payment;
 use Hash;
 use File;
 use Str;
@@ -69,15 +70,10 @@ class SalesPersonController extends Controller
         $licenses = License::with('sales_person','user','license_type')->where('sales_person_id',Auth::user()->id)->where('is_deleted',NULL)->orderByRaw('id DESC')->get();
 
 
-            if(Auth::user()->role == 3 && User::where('id','=',Auth::user()->id)){
             
-            $userCommision = User::where('id',Auth::user()->id)->first();
-            $commission = $userCommision->commission;
-           $total_commission = $this->salesPersonCommision($commission);
-            }
     	return view('salesperson.licenselist',[
             'licenses' => $licenses,
-            'total_commission' => $total_commission]);
+            ]);
     }
     public function LicensesActivated(){
     	$licenses = License::with('sales_person','user')->where('sales_person_id',Auth::user()->id)->where('license_activated_at', '!=' , NULL)->orderByRaw('id DESC')->get();
@@ -92,8 +88,46 @@ class SalesPersonController extends Controller
         $actual_price = 1000;
         $commision_percentage = $commission;
          $commision_of_one = ($license_price)*($commision_percentage)/100;
-        /*$total_commision = $sales_count * $commision_of_one;*/
-        return $commision_of_one;
+        $total_commision = $sales_count * $commision_of_one;
+        return $total_commision;
         
+       }
+       public function commision_pending(){
+        $pending = Payment::where('sales_person_id','=',Auth::user()->id)->first();
+            
+            if($pending->is_approved ==0){
+                return json_encode($pending);        
+            }
+        
+       }
+       public function total_commision(){
+             $licenses = License::with('sales_person','user','license_type')->where('sales_person_id',Auth::user()->id)->where('is_deleted',NULL)->orderByRaw('id DESC')->get();
+        if(Auth::user()->role == 3 && User::where('id','=',Auth::user()->id)){
+            
+            $userCommision = User::where('id',Auth::user()->id)->first();
+            $commission = $userCommision->commission;
+           $total_commission = $this->salesPersonCommision($commission);
+            $lic_id = $licenses[0]->id;
+            $if_payment_exists = Payment::where('license_id','=',$lic_id)->first();
+            if($if_payment_exists->count() > 0){
+                 $response['message'] = 'Payment is to approved by Admin';
+
+            }else{
+
+
+          $payment_add = Payment::create(['license_id'=>$lic_id,
+            'sales_person_id' => Auth::user()->id,
+            'commission' => $total_commission,
+            'created_at' =>  date("Y-m-d H:i:s"),
+            'updated_at' =>  date("Y-m-d H:i:s")
+             ]);
+          }
+           $total = Payment::where('sales_person_id','=',Auth::user()->id)->first();
+            
+            if($total->is_approved == 1){
+                return json_encode($total);        
+            }
+
+            }
        }
 }
