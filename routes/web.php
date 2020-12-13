@@ -61,7 +61,7 @@ Route::group(['middleware' => ['admin','verified']], function () {
 	Route::get('/license/activated', 'LicenseController@ActivatedLicense')->name('license.activated');
 	//payments routes
 	Route::get('/payment/list', 'PaymentController@index')->name('paymentlist');
-	Route::get('/paymentstatus/{id}', 'PaymentController@edit')->name('paymentstatus');
+	Route::get('/paymentstatus/{id}/{status}', 'PaymentController@edit')->name('paymentstatus');
 
 });
 // Users Routes

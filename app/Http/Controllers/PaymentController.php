@@ -61,43 +61,27 @@ class PaymentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {   
+    public function edit($id,$status)
+    {   $payments = Payment::find($id);
+        $word = "Approve";
+        $word2 = "Disapprove";
         
-        $payment_status = Payment::find($id);
-        return $payment_status->is_approved;
+        if(strpos($status, $word) !== false){
+            $payments->is_approved = 1;
+            $payments->save();
+            return $payments;
+
+        }
+        if(strpos($status,$word2) !== false){
+            $payments->is_approved = 0;
+            $payments->save();
+            return $payments;
+        }
+        
+        
             # code...
         
-        /*
-        
-        if($is_clicked == 1 ){
-            if($payment_status->is_approved == 1){
-                $payment_status->is_approved = 0;
-            $payment_status->save();
-                
-            }else{
 
-            $payment_status->is_approved = 0;
-            $payment_status->save();
-            return $payment_status;   
-            }
-        }elseif ($is_clicked == 0) {
-            if($payment_status->is_approved == 0){
-
-            $payment_status->is_approved = 0;
-            $payment_status->save();
-            return $payment_status;   
-            }else{
-
-            return false;
-            }
-            
-        }
-        else{
-            $response['message'] = "Incorrect Operations";
-            return json_encode($reponse);
-        }
-*/
     }
 
     /**

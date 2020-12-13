@@ -28,29 +28,31 @@
                     <table border="1" style="width:100%;table-layout: fixed;"  class="table table-striped ">
                         <thead class="thead-dark">
                             <tr>
-                                <th class="ellipsis"> {{ __('Sr no') }} </th> 
-                                <th class="ellipsis"> {{ __('License Id') }} </th> 
-                                <th class="ellipsis"> {{ __('Sales Person Id') }} </th>
-                                <th class="ellipsis"> {{ __('Commission') }} </th> 
-                                <th class="ellipsis"> {{ __('Status') }} </th> 
-                                <th class="ellipsis"> {{ __('Sales Person Name') }} </th> 
+                                <th class=""> {{ __('Sr no') }} </th> 
+                                <th class=""> {{ __('License Id') }} </th> 
+                                <th class=""> {{ __('Sales Person Id') }} </th>
+                                <th class=""> {{ __('Commission') }} </th> 
+                                <th class=""> {{ __('Status') }} </th> 
+                                <th class=""> {{ __('Sales Person Name') }} </th> 
                                 
                                 <th colspan="2"> {{ __('Actions') }} </th> 
                             </tr>
                         </thead>
                         <tbody>
+                            
                                 @foreach($payments as $key=> $payment)
                                     <tr>
                                         
-                                        <td  class="ellipsis"> {{ $key+1 }} </td>
-                                        <td class="ellipsis"> {{ $payment->license_id }} </td>
-                                        <td class="ellipsis">{{$payment->sales_person_id}}</td><td class="ellipsis">{{$payment->commission}}</td>
-                                        @if($payment->is_approved == 0)
-                                        <td class="ellipsis">Approved</td>
+                                        <td  class=""> {{ $key+1 }} </td>
+                                        <td class=""> {{ $payment->license_id }} </td>
+                                        <td class="">{{$payment->sales_person_id}}</td><td class="">{{$payment->commission}}</td>
+                                        <td class="" v-if="response_check">@{{this.is_approve_status}}</td>
+                                        @if($payment->is_approved == 1)
+                                        <td v-if="is_current_result" class="">Approved</td>
                                         @else
-                                        <td class="ellipsis">DisApproved</td>
+                                        <td v-if="is_current_result" class="">DisApproved</td>
                                         @endif
-                                        <td class="ellipsis">{{$payment->sales_person->first_name}}</td>
+                                        <td class="">{{$payment->sales_person->first_name}}</td>
                                     {{--    <td> 
                                             @if($license->license_type && $license->license_type->type == '1' )
                                                 Monthly {{ '('. $license->license_type->price . ')' }}
@@ -76,14 +78,18 @@ v-on:click=changeStatus({{$payment->id}},{{$payment->is_approved}})
                                          
                                             --}}
                                            
-                                            <a class="response"  v-on:click="changeActiveStatus({{$payment->id}})" href="#" id="Approved"  > {{ __('Approve') }}  </a>
+                                           
+                                            <a class="response"  v-on:click="changeActiveStatus({{$payment->id}})" href="javascript:void(0)" id="Approved"  > {{ __('Approve') }}  </a>
 
                                             |
                                           
                                         
 
-                                            <a class="response" v-on:click="changeActiveStatus({{$payment->id}})" href="#" id="Disapprove"  > {{ __('Disapprove') }}  </a>
                                            
+                                        
+
+                                            <a class="response" v-on:click="changeDeactiveStatus({{$payment->id}})" href="javascript:void(0)" id="Disapprove"  > {{ __('Disapprove') }}  </a>
+                                            
                                         </td>
                                     </tr>
 
@@ -91,7 +97,7 @@ v-on:click=changeStatus({{$payment->id}},{{$payment->is_approved}})
                                 
                         </tbody>
                     </table>
-                    <div>@{{is_result}}</div>
+                    <div></div>
                     @else
                     <p> *nothing found</p>
                     @endif
@@ -106,17 +112,7 @@ v-on:click=changeStatus({{$payment->id}},{{$payment->is_approved}})
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
-<script type="text/javascript">
-    $(document).ready(function(){
-    var t = $('#Approved').text();
-     var s = $('#Disapprove').text();
-     
-     if(t.equals("Approve")){
-   console.log(t);
-   }    
-    });
-    
-</script>
+
 <script type="text/javascript">
  window.onload=function(){
     var v = new Vue({
@@ -133,40 +129,62 @@ data:{
     is_clicked:'',
     is_clicked_a:'',
     is_clicked_b:'',
-    is_result:'',
+    is_approve_status:'Hello VUE',
+    response_check:false,
+    is_current_result:true,
+    is_button_check:'',
+    
 },
 methods:{
     changeActiveStatus:function(para){
      var t = $('#Approved').text();
-     var s = $('#Disapprove').text();
      
-     if(t.equals("Approve")){
-   console.log(t);
+     
+     if(t.match("Approve")){
    
-     }
-     if(s.equals("Disapprove"))
-     {
-console.log(s);
-     }
-     
-       /* this.payment_id = para;
-   axios.get('/paymentstatus/'+this.payment_id).then((res)=>{
-    this.is_result = res.data;
+    this.payment_id = para;
+   axios.get('/paymentstatus/'+this.payment_id+'/'+t).then((res)=>{
+    this.is_approve_status = res.data.is_approved;
+    if ( res.data.is_approved == 1) {
+        this.response_check = true;
+        this.is_current_result=false;
+
+        this.is_approve_status = "Approved";
+    }
             }).catch((error)=>{
 
-        })*/
+        })
+   
+     }else{
+        return false;
+     }
+     
+     
+       
 
 
         
 
     },
     changeDeactiveStatus:function(para){
-        this.payment_id = para;
-   axios.get('/paymentstatus/'+this.payment_id).then((res)=>{
-    this.is_result = res.data;
+        var s = $('#Disapprove').text();
+        if(s.match("Disapprove"))
+     {
+this.payment_id = para;
+   axios.get('/paymentstatus/'+this.payment_id+'/'+s).then((res)=>{
+    this.is_approve_status = res.data.is_approved;
+    if ( res.data.is_approved == 0) {
+        this.is_approve_status = "Disapprove";
+        this.response_check = true;
+        this.is_current_result=false;
+    }
             }).catch((error)=>{
 
         })
+     }else{
+        return false;
+     }
+        
 
 
         
