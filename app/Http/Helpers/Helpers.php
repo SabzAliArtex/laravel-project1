@@ -3,6 +3,7 @@ use App\Http\Middleware\Authenticate;
 use App\License;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Jenssegers\Agent\Agent;
 /**
  * Premium Checker
  * Returns true or false regarding current
@@ -31,5 +32,28 @@ function random_str($length = 8)
     
     return strtoupper($result);
 }
+  function deviceCheck(){
+         $agent = new Agent();
+         //if desktop
+      if($agent->isDesktop()){
+       $platform = $agent->platform();
+       $device = $agent->device();
+       echo $platform;
+       echo $device;
+      }//if mobile 
+      else if($agent->isPhone()){
+        $platform = $agent->platform();
+       $device = $agent->device();
+       echo $platform;
+       echo $device;
+      }
+      //if tablet
+      else if($agent->isTablet()){
+             $platform = $agent->platform();
+       $device = $agent->device();
+       echo $platform;
+       echo $device;
+      }
+    }
 
 

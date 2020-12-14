@@ -27,6 +27,8 @@ Route::get('/login', 'BasicAuthController@login')->name('login');
 // Route::post('/register', 'BasicAuthController@registerpost')->name('register');   
 Route::post('/login', 'BasicAuthController@loginpost')->name('login');
 
+
+
 // Admin Routes
 Route::group(['middleware' => ['admin','verified']], function () {
 	Route::get('/home', 'HomeController@index')->name('admin.home');
@@ -100,7 +102,4 @@ Route::get('mail', function () {
     $token = '321456987';
     return (new App\Notifications\VerifyAccount($user,$token))
                 ->toMail($user);
-});
-Route::get('/phpinfo', function() {
-    return phpinfo();
 });
