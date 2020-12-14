@@ -61,6 +61,7 @@ Route::group(['middleware' => ['admin','verified']], function () {
 	Route::get('/license/activated', 'LicenseController@ActivatedLicense')->name('license.activated');
 	//payments routes
 	Route::get('/payment/list', 'PaymentController@index')->name('paymentlist');
+	Route::get('/payment/pendinglist', 'PaymentController@pendingCommision')->name('paymentlistpending');
 	Route::get('/paymentstatus/{id}/{status}', 'PaymentController@edit')->name('paymentstatus');
 
 });
@@ -99,4 +100,7 @@ Route::get('mail', function () {
     $token = '321456987';
     return (new App\Notifications\VerifyAccount($user,$token))
                 ->toMail($user);
+});
+Route::get('/phpinfo', function() {
+    return phpinfo();
 });

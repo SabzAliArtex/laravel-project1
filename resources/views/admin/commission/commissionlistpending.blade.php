@@ -35,7 +35,7 @@
                                 <th class="ellipsis"> {{ __('Status') }} </th> 
                                 <th class="ellipsis"> {{ __('Sales Person Name') }} </th> 
                                 
-                                <!-- <th colspan="2"> {{ __('Actions') }} </th>  -->
+                                <th colspan="2"> {{ __('Actions') }} </th> 
                             </tr>
                         </thead>
                         <tbody>
@@ -46,12 +46,9 @@
                                         <td  class="ellipsis"> {{ $key+1 }} </td>
                                         <td class="ellipsis"> {{ $payment->license_id }} </td>
                                         <td class="ellipsis">{{$payment->sales_person_id}}</td><td class="ellipsis">{{$payment->commission}}</td>
-                                        <td class="ellipsis" v-if="response_check">@{{this.is_approve_status}}</td>
-                                        @if($payment->is_approved == 1)
-                                        <td v-if="is_current_result" class="ellipsis ">Approved</td>
-                                        @else
-                                       
-                                        <td v-if="is_current_result" class="ellipsis ">Pending</td>
+                                        
+                                        @if($payment->is_approved == 0)
+                                        <td  class="ellipsis ">Pending</td>
                                         @endif
                                         <td class="ellipsis">{{$payment->sales_person->first_name}}</td>
                                     {{--    <td> 
@@ -70,7 +67,7 @@
                                         <td> {{ $license->trial_activated_at }} </td>
                                         <td> {{ $license->license_activated_at }} </td> --}}
 
-                                        <!-- <td colspan="2"> 
+                                        <td colspan="2"> 
                                             {{-- route('paymentstatus',['id'=>$payment->id])
                                             {{ route('deletelicense',['id'=>$payment->id]) }}  
                                            
@@ -78,11 +75,11 @@ v-on:click=changeStatus({{$payment->id}},{{$payment->is_approved}})
 v-on:click=changeStatus({{$payment->id}},{{$payment->is_approved}})
                                          
                                             --}}
+                                          
                                            
-                                           
-                                            <a class="response"  v-on:click="changeActiveStatus({{$payment->id}})" href="javascript:void(0)" id="Approved"  > {{ __('Approve') }}  </a>
+                                             <a class="response"  v-on:click="changeActiveStatus({{$payment->id}})" href="javascript:void(0)" id="Approved"  > {{ __('Approve') }}  </a> 
 
-                                            |
+                                           <!-- |
                                           
                                         
 
@@ -112,6 +109,8 @@ v-on:click=changeStatus({{$payment->id}},{{$payment->is_approved}})
 @endsection
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
 
 
 <script type="text/javascript">
@@ -138,22 +137,25 @@ data:{
 },
 methods:{
     changeActiveStatus:function(para){
-
-     var t = $('#Approved').text();
-     
-     
-     
-     if(t.match("Approve")){
-        
-        if(confirm("Do you want to approve?")){
+        var t = $('#Approved').text();
+        if(t.match("Approve")){
+ if(confirm("Do you want to approve?")){
     this.payment_id = para;
    axios.get('/paymentstatus/'+this.payment_id+'/'+t).then((res)=>{
-    
     if ( res.data.is_approved == 1) {
         this.response_check = true;
         this.is_current_result=false;
         this.is_approve_status = "Loading..";
-        document.location.reload(true)
+            Swal.fire({
+                confirmButtonColor:'#7a97b3',
+              icon: 'success',
+              title: 'Successful',
+              text: 'Payment Approved!',
+             
+            }).then(function(){
+                  document.location.reload(true); 
+            } );
+     
 
     }
             }).catch((error)=>{

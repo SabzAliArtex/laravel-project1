@@ -23,6 +23,7 @@ class PaymentController extends Controller
     }
 
 
+
     /**
      * Show the form for creating a new resource.
      *
@@ -64,7 +65,7 @@ class PaymentController extends Controller
     public function edit($id,$status)
     {   $payments = Payment::find($id);
         $word = "Approve";
-        $word2 = "Disapprove";
+        $word2 = "Pending";
         
         if(strpos($status, $word) !== false){
             $payments->is_approved = 1;
@@ -105,5 +106,12 @@ class PaymentController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function pendingCommision(){
+     $payments = Payment::with('sales_person','license')->where('is_approved','=',0)->orderByRaw('id DESC')->get();
+       $results = $payments;
+       return view('admin.commission.commissionlistpending',[
+            'payments' => $payments
+       ]);
     }
 }

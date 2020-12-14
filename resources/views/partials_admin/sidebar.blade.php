@@ -26,7 +26,9 @@
                         <a href="{{ route('createlicense') }}"> {{ __('Add license') }} </a>
                     </li>
                      <li> 
-                        <a href="{{ route('paymentlist') }}"> {{ __('Commission List') }} </a>
+                        <a href="{{ route('paymentlist') }}"> {{ __('All Commission List') }} </a>
+                    </li><li> 
+                        <a href="{{ route('paymentlistpending') }}"> {{ __('Commission Pending List') }} </a>
                     </li>
                 </div> 
             </div>       

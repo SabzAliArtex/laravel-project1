@@ -12,12 +12,12 @@ class PaymentSeeder extends Seeder
     public function run()
     {
         //
-        DB::table('user_roles')->insert([
+        DB::table('payments')->insert([
                  
-            'license_id'=>1
-            'sales_person_id'=>1
-            'commission'=>120
-            'is_approved'=>1
+            'license_id'=>1,
+            'sales_person_id'=>1,
+            'commission'=>120,
+            'is_approved'=>1,
            
             
         ]);
