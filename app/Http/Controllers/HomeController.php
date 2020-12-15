@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
- use Illuminate\Http\Request;
+use Jenssegers\Agent\Agent;
+use Illuminate\Http\Request;
 use App\User;
 use Hash;
 use File;
