@@ -1,6 +1,7 @@
 <?php
 use App\Http\Middleware\Authenticate;
 use App\License;
+use App\License_devices;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Jenssegers\Agent\Agent;
@@ -54,6 +55,23 @@ function random_str($length = 8)
        echo $platform;
        echo $device;
       }
+    }
+    function getLicenseLimit($license_dev_count, $license_device_limit,$user_id,$license_id,$dev_name,$dev_os,$dev_id){
+         if($license_dev_count < $license_device_limit){
+          $license_devices = new License_devices();
+      $license_devices->user_id = $user_id;
+      $license_devices->license_id = $license_id;
+      $license_devices->device_id = $dev_id;
+      $license_devices->device_name = $dev_name;
+      $license_devices->device_os = $dev_os;
+      $license_devices->activation_date = date("Y-m-d H:i:s");
+      $license_devices->save();
+      
+    }else{
+      $response['message'] = "License is Valid for ". $license_device_limit." devices only" ;
+      return $response;
+
+    }
     }
 
 

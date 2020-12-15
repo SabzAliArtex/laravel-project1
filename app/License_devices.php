@@ -12,5 +12,12 @@ class License_devices extends Model
 
     	return $this->hasMany('App\License','id','license_id');
     }
+    public function users(){
+    	return $this->hasMany('App\User','id','user_id');
+    }
+    public function license_type()
+	{
+   		return $this->hasOne('App\LicenseType','id','license_id');
+	}
 }
  

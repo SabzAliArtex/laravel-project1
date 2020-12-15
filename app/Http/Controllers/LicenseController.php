@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\License;
 use App\User;
 use App\Licensetype;
+use App\License_devices;
 use App\Payment;
 use Session;
 use Carbon\Carbon;
@@ -25,6 +26,7 @@ class LicenseController extends Controller
         
         // echo '<pre>'; print_r($licenses); exit;
         if(Auth::user()->userrole->role == 'User'){
+          
 
         return view('user.license.licenselist',[
           'licenses' => $licenses,
@@ -126,20 +128,51 @@ class LicenseController extends Controller
 
         return back();
     }
-    public function licenseActivation($user_id,$license_key,$dev_name,$dev_model,$dev_id){
+    public function licenseActivation($user_id,$license_id,$dev_name,$dev_os,$dev_id){
+      /*user 3 licen 1 */
+      $response = array();
+      $response['message'] = "";
+     if(!isset($license_id)){
+          $response['message'] = "License Key Not Found";
+          return json_encode($response);
+      }
+    if(!isset($dev_os) || !isset($dev_name) || !isset($dev_id))
+        {
+            $response['message'] = "Device Credentials are Invalid";
+         return  json_encode($response);
+
+        }
+      $userPerson = User::where([['id',$user_id]])->first();
+      $license_dev_count_rows = License_devices::with('deviceLicense')->where('license_id','=',$license_id);
+      $license_data = License::where('id','=',$license_id)->first();
+      $license_device_limit = $license_data->no_of_devices_allowed;
+      $license_dev_count = $license_dev_count_rows->count();
+
+      if($userPerson->role == 2){
+        //$userPerson->role == 2 means that person is of type 'USER'
+     return getLicenseLimit($license_dev_count,$license_device_limit,$user_id,$license_id,$dev_name,$dev_os,$dev_id);
+
+    
+ }else{
+
+    $response['message'] = "Not a Registered User";
+    return json_encode($response);
+  }
+}
+    public function licenseActivation_old($user_id,$license_id,$dev_name,$dev_os,$dev_id){
       $response = array();
       $response['message'] = "";
       $userPerson = User::where([['id',$user_id]])->first();
       if($userPerson->role == 2){
         //$userPerson->role == 2 means that person is of type 'USER'
       $license = new License();
-      $license_checks=License::all()->first();
+      $license_checks=License_devices::all()->first();
        /*Can be used later$license->user_id  = $userPerson->id;$license->license = $license_key;$license->license_expiry = null ;$license->trial_activated_at = date("Y-m-d H:i:s") ;$license->license_activated_at = date("Y-m-d H:i:s") ;$license->device_name ='Example Device Name' ;$license->device_model ='Example Model Name' ;$license->device_unique_id = 'Example Machine Address';*/  
-        if(!isset($license_key)){
+        if(!isset($license_id)){
             $response['message'] = "License Key Not Found";
             return json_encode($response);
         }
-        if($license_checks->license != $license_key){      
+        if($license_checks->license != $license_id){      
             $response['message'] = "License Key isn't Valid";
             return json_encode($response);
             

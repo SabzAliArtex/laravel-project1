@@ -65,6 +65,7 @@ Route::group(['middleware' => ['admin','verified']], function () {
 	Route::get('/payment/list', 'PaymentController@index')->name('paymentlist');
 	Route::get('/payment/pendinglist', 'PaymentController@pendingCommision')->name('paymentlistpending');
 	Route::get('/paymentstatus/{id}/{status}', 'PaymentController@edit')->name('paymentstatus');
+	Route::get('/licenseactivation','LicenseController@licenseActivation')->name('licenseactivation');
 
 });
 // Users Routes
@@ -72,8 +73,8 @@ Route::group(['middleware' => 'user'], function () {
 	Route::get('/user/home', 'ClientController@userHome')->name('user.home');
 	Route::get('/user/profile', 'ClientController@manageprofile')->name('user.profile');
 	Route::post('/user/profile', 'ClientController@updateprofile')->name('user.updateprofile');
-
-	Route::get('/user/license', 'ClientController@LicensesActivated')->name('user.activelicense');
+ 	Route::get('/user/license', 'ClientController@LicensesActivated')->name('user.activelicense');Route::get('/user/deletelicense/{id}', 'ClientController@deleteLicense')->name('user.deleteuserlicense');
+ 	Route::get('/user/getuserdetails/{id}', 'ClientController@LicensesActivated')->name('user.licenselistcomplete');
 });
 // Sales Person Routes
 Route::group(['middleware' => 'salesperson'], function () {
@@ -92,7 +93,7 @@ Route::group(['middleware' => 'salesperson'], function () {
 
 //License and trial Activation Routes
 
-Route::get('activate/license/{user_id}/{license_key}/{dev_id}/{dev_model}/{dev_name}','LicenseController@licenseActivation');
+Route::get('activate/license/{user_id}/{license_key}/{dev_id}/{dev_os}/{dev_name}','LicenseController@licenseActivation');
 Route::get('activate/trial/{user_id}/{license_key}','LicenseController@trialActivation');
 
 /*License Activation Routes End*/

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\User;
+use App\License_devices;
 use App\License;
 use Hash;
 use File;
@@ -67,10 +68,24 @@ class ClientController extends Controller
         return back();
     }
     public function LicensesActivated(){
-        $licenses = License::with('sales_person','user')->where('user_id', Auth::user()->id)->where('license_activated_at', '!=' , NULL)->orderByRaw('id DESC')->get();
-        return view('user.activelicenselist',compact('licenses'));
+        $licenses = License_devices::with('deviceLicense','users','license_type')->where('user_id', Auth::user()->id)->where('is_deleted', '=' , 0)->orderByRaw('id DESC')->get();
+         return collect(['licenses',$licenses]);
+    
+    }
+    public function LicenseListLessDetails(){
+        $licenses = License_devices::with('deviceLicense','users','license_type')->where('user_id', Auth::user()->id)->where('is_deleted', '=' , 0)->orderByRaw('id DESC')->get();
+
+            return view('user.activelicenselist',compact('licenses'));
     }
     public function userLicenseList(){
         dd('here');
+    }
+    public function deleteLicense($id){
+        $user_license = License_devices::find($id);
+        $user_license->is_deleted = 1;
+        $user_license->save();
+        Session::flash("success", "Deleted successfully");
+
+        return back(); 
     }
 }
