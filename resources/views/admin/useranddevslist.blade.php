@@ -19,11 +19,12 @@
         </div>  
         </div>  
         <div class="row" id="details">
-         @include('partials_user/sidebar')
+         @include('partials_admin/sidebar')
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('License List') }}</div>
                 <div class="card-body">
+
                     @if(isset($licenses))
                     <table border="1"  class="table table-striped table-responsive">
                         <thead class="thead-dark">
@@ -32,7 +33,10 @@
                                 <th> {{ __('License Key') }} </th> 
                                 <th> {{ __('License Type') }} </th>
                                 <th> {{ __('User Name') }} </th> 
-                                <th> {{ __('User Email') }} </th> 
+                                <th> {{ __('User Email') }} </th>
+                                <th> {{ __('Device Name') }} </th>
+                                <th> {{ __('Device OS') }} </th>
+                                <th> {{ __('Status') }} </th>
                                 <th colspan="2" > {{ __('Action') }} </th>
                                 
                             </tr>
@@ -44,7 +48,7 @@
 
                                         <td> {{ $key + 1 }} </td>
 
-                                      <td> {{ $license->license}} </td>
+                                      <td> {{ $license->deviceLicense[0]['license']}} </td>
                                      <td> 
                                             @if($license->license_type && $license->license_type->type == '1' )
                                                 Monthly {{ '('. $license->license_type->price . ')' }}
@@ -54,9 +58,17 @@
                                                 Life time {{ '('. $license->license_type->price . ')' }}
                                             @endif      
                                         </td>
-                                       <td> {{ $license->user ? $license->user->first_name : '' }} </td>
-                                         <td> {{ $license->user ? $license->user->email : '' }} </td>
-                                           
+                                       <td> {{ $license->users ? $license->users[0]['first_name'] : '' }} </td>
+                                         <td> {{ $license->users ? $license->users[0]['email'] : '' }} </td>
+                                           <td>{{$license->device_name}}</td>
+                                         <td>{{$license->device_os}}</td>
+                                           <td> @if($license->is_deleted == 1) Deleted
+                                           @else
+                                           Not Deleted
+                                           @endif
+                                         </td>
+                                       
+                                         
                                              <td><a href="{{ route('user.deleteuserlicense',['id'=>$license->id]) }}" onclick="return confirm('Are you sure.')"> {{ __('Delete') }}  </a></td>
                                              <td><a @click="openDetailModal({{$license->id}})" href="#"> {{ __('Details') }}  </a></td>
                                        

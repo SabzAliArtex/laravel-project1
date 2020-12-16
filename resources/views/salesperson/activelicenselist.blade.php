@@ -14,8 +14,9 @@
                     {{ session('error') }}
                 </div>
             @endif
-        </div>    
-        <div class="col-md-12">
+        </div>  
+           @include('partials_user/sidebar') 
+        <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('License List') }}</div>
                 <div class="card-body">

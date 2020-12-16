@@ -30,6 +30,9 @@
                     </li><li> 
                         <a href="{{ route('paymentlistpending') }}"> {{ __('Commission Pending List') }} </a>
                     </li>
+                    <li> 
+                        <a href="{{ route('a') }}"> {{ __('Users Devices Listing') }} </a>
+                    </li>
                 </div> 
             </div>       
         </div>

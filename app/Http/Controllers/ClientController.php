@@ -67,6 +67,13 @@ class ClientController extends Controller
         Session::flash("success", "User information has been updated");
         return back();
     }
+        public function alluseranddevs(){
+
+        $licenses = License_devices::with('deviceLicense','users','license_type')
+        ->orderByRaw('id DESC')->get();
+         return view('admin.useranddevslist',compact('licenses'));
+    
+    }
     public function LicensesActivated($licenseid){
         $licenses = License_devices::with('deviceLicense','users','license_type')
         ->where([['license_id','=',$licenseid],['user_id','=', Auth::user()->id],['is_deleted','=', 0]])->orderByRaw('id DESC')->get();
