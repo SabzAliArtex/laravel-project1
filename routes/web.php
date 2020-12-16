@@ -73,7 +73,8 @@ Route::group(['middleware' => 'user'], function () {
 	Route::get('/user/home', 'ClientController@userHome')->name('user.home');
 	Route::get('/user/profile', 'ClientController@manageprofile')->name('user.profile');
 	Route::post('/user/profile', 'ClientController@updateprofile')->name('user.updateprofile');
- 	Route::get('/user/license', 'ClientController@LicensesActivated')->name('user.activelicense');Route::get('/user/deletelicense/{id}', 'ClientController@deleteLicense')->name('user.deleteuserlicense');
+ 	Route::get('/user/license', 'ClientController@LicenseListLessDetails')->name('user.activelicense');
+ 	Route::get('/user/deletelicense/{id}', 'ClientController@deleteLicense')->name('user.deleteuserlicense');
  	Route::get('/user/getuserdetails/{id}', 'ClientController@LicensesActivated')->name('user.licenselistcomplete');
 });
 // Sales Person Routes

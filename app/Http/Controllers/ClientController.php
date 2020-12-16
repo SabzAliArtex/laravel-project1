@@ -67,15 +67,23 @@ class ClientController extends Controller
         Session::flash("success", "User information has been updated");
         return back();
     }
-    public function LicensesActivated(){
-        $licenses = License_devices::with('deviceLicense','users','license_type')->where('user_id', Auth::user()->id)->where('is_deleted', '=' , 0)->orderByRaw('id DESC')->get();
-         return collect(['licenses',$licenses]);
+    public function LicensesActivated($licenseid){
+        $licenses = License_devices::with('deviceLicense','users','license_type')
+        ->where([['license_id','=',$licenseid],['user_id','=', Auth::user()->id],['is_deleted','=', 0]])->orderByRaw('id DESC')->get();
+         return $licenses;
     
     }
     public function LicenseListLessDetails(){
-        $licenses = License_devices::with('deviceLicense','users','license_type')->where('user_id', Auth::user()->id)->where('is_deleted', '=' , 0)->orderByRaw('id DESC')->get();
+          $l = License::select('id')->where('user_id','=',Auth::user()->id)->get();
 
-            return view('user.activelicenselist',compact('licenses'));
+        $licenses = License::with('sales_person','user','license_type')->
+        where([['user_id', Auth::user()->id],['is_deleted', '=' , 0]])
+        ->orderByRaw('id DESC')
+        ->get();
+         return view('user.activelicenselist',compact('licenses'));
+         //
+ /*$licenses = License_devices::with('deviceLicense','users','license_type')-> where([['user_id', Auth::user()->id],['is_deleted', '=' , 0]])-> whereIn('license_id',$l) ->orderByRaw('id DESC') ->get(); */
+
     }
     public function userLicenseList(){
         dd('here');
@@ -85,7 +93,9 @@ class ClientController extends Controller
         $user_license->is_deleted = 1;
         $user_license->save();
         Session::flash("success", "Deleted successfully");
+        return back();
 
-        return back(); 
-    }
+
+        
+    } 
 }

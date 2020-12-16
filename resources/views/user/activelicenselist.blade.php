@@ -22,7 +22,7 @@
                 <div class="card-header">{{ __('License List') }}</div>
                 <div class="card-body">
                     @if(isset($licenses))
-                    <table border="1" style="width:100%" class="table table-striped">
+                    <table border="1"  class="table table-striped">
                         <thead class="thead-dark">
                             <tr >
                                 <th> {{ __('Sr no') }} </th> 
@@ -30,9 +30,7 @@
                                 <th> {{ __('License Type') }} </th>
                                 <th> {{ __('User Name') }} </th> 
                                 <th> {{ __('User Email') }} </th> 
-                                <th> {{ __('Device Name') }} </th> 
-                                <th> {{ __('Device Os') }} </th> 
-                                <th> {{ __('Action') }} </th> 
+                                <th colspan="2" > {{ __('Action') }} </th>
                                 
                             </tr>
                         </thead>
@@ -42,8 +40,9 @@
                                     <tr>
 
                                         <td> {{ $key + 1 }} </td>
-                                        <td> {{ $license->deviceLicense[0]['license'] }} </td>
-                                        <td> 
+
+                                      <td> {{ $license->license}} </td>
+                                     <td> 
                                             @if($license->license_type && $license->license_type->type == '1' )
                                                 Monthly {{ '('. $license->license_type->price . ')' }}
                                             @elseif ($license->license_type &&  $license->license_type->type == '2' )
@@ -52,13 +51,12 @@
                                                 Life time {{ '('. $license->license_type->price . ')' }}
                                             @endif      
                                         </td>
-                                       <td> {{ $license->users ? $license->users[0]['first_name'] : '' }} </td>
-                                         <td> {{ $license->users ? $license->users[0]['email'] : '' }} </td>
-                                           <td> {{ $license->device_name ? $license->device_name : '' }} </td>
-                                             <td> {{ $license->device_os ? $license->device_os : '' }} </td>
-                                             <td><a href="{{ route('user.deleteuserlicense',['id'=>$license->user_id]) }}" onclick="return confirm('Are you sure.')"> {{ __('Delete') }}  </a></td>
-                                             <td><a @click="openDetailModal({{$license->user_id}})" href="#"> {{ __('Details') }}  </a></td>
-                                     
+                                       <td> {{ $license->user ? $license->user->first_name : '' }} </td>
+                                         <td> {{ $license->user ? $license->user->email : '' }} </td>
+                                           
+                                             <td><a href="{{ route('user.deleteuserlicense',['id'=>$license->id]) }}" onclick="return confirm('Are you sure.')"> {{ __('Delete') }}  </a></td>
+                                             <td><a @click="openDetailModal({{$license->id}})" href="#"> {{ __('Details') }}  </a></td>
+                                       
                                     </tr>
                                 @endforeach
                         </tbody>
@@ -66,49 +64,53 @@
                     @else
                     <p> *nothing found</p>
                     @endif
-
-                    <button type="button" class="btn btn-primary btn-block btn-lg" data-toggle="modal" data-target="#myModal">
-  Open modal
-</button>
+                      
+            
 
   
   <!-- The Modal -->
-<div class="modal w-100" id="myModal">
+<div class="modal" id="myModal">
   <div class="modal-dialog">
     <div class="modal-content">
 
       <!-- Modal Header -->
       <div class="modal-header">
-        <h4 class="modal-title">Modal Heading</h4>
+        <h4 class="modal-title">All Licenses</h4>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
 
       <!-- Modal body -->
       <div class="modal-body">
-          <table class="table table-striped">
+          <table class="table table-striped table-responsive">
     <thead>
-      <tr>
-        <th>Firstname</th>
-        <th>Lastname</th>
-        <th>Email</th>
-      </tr>
+      <tr >
+                                <th> {{ __('Sr no') }} </th> 
+                                <th> {{ __('License Key') }} </th> 
+                                <th> {{ __('License Type') }} </th>
+                                <th> {{ __('User Name') }} </th> 
+                                <th> {{ __('User Email') }} </th> 
+                                <th> {{ __('Device Name') }} </th> 
+                                <th> {{ __('Device Os') }} </th> 
+                                <th colspan="2" > {{ __('Action') }} </th> 
+                                
+                            </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>John</td>
-        <td>Doe</td>
-        <td>john@example.com</td>
+      <tr  v-for="(row,key,index) in alldata" :key="row.id">
+        <td>@{{key+1}}</td>
+        <td>@{{row.device_license[0].license}}</td>
+        <td><div v-if="row.license_type && row.license_type.type==1">Monthly(@{{row.license_type.price}})</div>
+          <div v-if="row.license_type && row.license_type.type==2">Yearly(@{{row.license_type.price}})</div>
+          <div v-if="row.license_type && row.license_type.type==3">Lifetime(@{{row.license_type.price}})</div></td>
+         <td>@{{row.users[0].first_name}}</td>
+        <td>@{{row.users[0].email}}</td>
+        <td>@{{row.device_name}}</td>
+        <td>@{{row.device_os}}</td>
+      
+        <td><a href="javascript:void(0)" @click="deleterecordandfetchagain(row.id)"> {{ __('Delete') }}  </a></td>
+
       </tr>
-      <tr>
-        <td>Mary</td>
-        <td>Moe</td>
-        <td>mary@example.com</td>
-      </tr>
-      <tr>
-        <td>July</td>
-        <td>Dooley</td>
-        <td>july@example.com</td>
-      </tr>
+     
     </tbody>
   </table>
   </div>
@@ -131,19 +133,26 @@
 
 
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
-<script type="text/javascript">
+ <script type="text/javascript">
   window.onload = function () {
     var vm = new Vue({
 
         el:'#details',
         data:{
+            alldata:{},
+            licid:'',
             message:'Hello vue',
         },
         methods:{
-            openDetailModal:function(userid){
-                axios.get('/user/getuserdetails/'+userid).then((res)=>{
-                    console.log(res.data);
+            openDetailModal:function(licenseid){
+                axios.get('/user/getuserdetails/'+licenseid).then((res)=>{
+                this.licid = licenseid;
+                console.log(this.licid);
+                this.alldata = res.data;
+
                     $('#myModal').modal('show');
                 }).catch((error)=>{
 
@@ -151,8 +160,29 @@
            
 
             },
+            deleterecordandfetchagain:function(id){
+              if(confirm("Are you sure? Your data will be deleted")){
+                console.log(this.licid);
+                   axios.get('/user/deletelicense/'+id)
+                    .then((res)=> {
+                        this.openDetailModal(this.licid);
+
+              
+                      
+                            
+
+                    })
+              }else{
+                return false;
+              }
+            },
+           
 
         },
+        mounted(){
+          
+
+        }
 
     })
 }
