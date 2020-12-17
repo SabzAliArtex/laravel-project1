@@ -21,7 +21,7 @@
             <div class="card">
                 <div class="card-header">{{ __('Users List') }}</div>
                 <div class="card-body">
-                   <table border="1" style="width:100%" class="table table-striped">
+                   <table border="1"  class="table table-striped table-responsive-lg ">
                         <thead class="thead-dark">
                             <tr>
                                 <th> {{ __('Sr no') }} </th> 
@@ -41,7 +41,8 @@
                                         <td> {{ $user->email }} </td>
                                         <td> {{ $user->userrole->role }} </td>
                                         <td> {{ $user->is_active == 1 ? 'Active' : 'Inactive' }} </td>
-                                        <td> 
+                                        <td >
+                                        
                                             @if($user->role == 3)
                                             <a href="{{ route('editsalesperson',['id'=>$user->id]) }}"> {{ __('Edit') }}  </a >  
                                              @else 
@@ -50,7 +51,9 @@
                                             @endif
                                             |
                                             <a href="{{ route('deleteuser',['id'=>$user->id]) }}" onclick="return confirm('Are you sure.')"> {{ __('Delete') }}  </a>
+                                            
                                         </td>
+
                                     </tr>
                                 @endforeach
                             @endif

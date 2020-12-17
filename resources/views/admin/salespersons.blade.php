@@ -20,7 +20,7 @@
             <div class="card">
                 <div class="card-header">{{ __('Sales Persons') }}</div>
                 <div class="card-body">
-                    <table border="1" style="width:100%" class="table table-striped">
+                    <table border="1" style="width:100%" class="table table-striped table-responsive-xl">
                         <thead class="thead-dark">
                             <tr>
                                 <th> {{ __('Sr no') }} </th> 

@@ -16,12 +16,13 @@
             @endif
         </div>    
         @include('partials_admin/sidebar')
+
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('License Types') }}</div>
                 <div class="card-body">
                     @if(count($license_types) >0)
-                    <table border="1" style="width:100%" class="table table-striped">
+                    <table border="1" style="width:100%" class="table table-striped table-responsive-xl  ">
                         <thead class="thead-dark">
                             <tr>
                                 <th> {{ __('Sr no') }} </th> 

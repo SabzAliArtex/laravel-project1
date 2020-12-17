@@ -17,28 +17,39 @@
             @endif
         </div>  
         </div>  
-        
-        <div class="col-md-12" id="p">
+        <div class="row">
+        @include('partials_salesman/sidebar')
+        <div class="col-md-8" id="p">
             <div class="card">
                 <div class="card-header">{{ __('License List') }} </div>
               
                 <div class="card-body">
-                      <table><tr class="row" style="margin-left: 3px">
-        <td ><h6 style="font-weight: bold;">Commission Earned: </h6></td>
-        <td></td>
-        <td><h6 style="font-weight: bold;">@{{total_commission}} USD</h6></td>
-             @for($i=1;$i<=100;$i++)
-             <td></td>     <td></td>     <td></td>
-             @endfor
+             <div class="row" style="margin-left: 3px">
+                <div class="col-lg-4">
+                    <div class="row">
+                    <h6 style="font-weight: bold;">Commission Earned: </h6>
+                    <h6 style="font-weight: bold;">@{{total_commission}} USD</h6></div>
+                
+                </div>
+                <div class="col-lg-4">
+                    <div class="row">
+                   </div>
+                
+                </div>
+               
+                <div class="col-lg-4">
+                    <div class="row"><h6 style="font-weight: bold;">Pending Clearanace: </h6>
+                    <h6 style="font-weight: bold;">@{{pending_commision}} USD</h6></div>
+                    
+                </div>
 
-          <td ><h6 style="font-weight: bold;">Pending Clearanace: </h6></td>
-      <td></td>
+           
+
           
-        <td><h6 style="font-weight: bold;">@{{pending_commision}} USD</h6></td>   
-        </tr>
-        </table>
+        
+        </div>         
                     @if(count($licenses) >0)
-                    <table border="1"  class="table table-striped">
+                    <table border="1"  class="table table-striped table-responsive-xl">
                         <thead class="thead-dark">
                             <tr>
                                 <th> {{ __('Sr no') }} </th> 
@@ -77,6 +88,7 @@
                     @endif
                 </div>
             </div>
+        </div>
         </div>
     
 </div>

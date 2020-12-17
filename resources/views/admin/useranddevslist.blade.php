@@ -26,7 +26,7 @@
                 <div class="card-body">
 
                     @if(isset($licenses))
-                    <table border="1"  class="table table-striped table-responsive">
+                    <table border="1"  class="table table-striped table-responsive" >
                         <thead class="thead-dark">
                             <tr >
                                 <th> {{ __('Sr no') }} </th> 
@@ -37,11 +37,11 @@
                                 <th> {{ __('Device Name') }} </th>
                                 <th> {{ __('Device OS') }} </th>
                                 <th> {{ __('Status') }} </th>
-                                <th colspan="2" > {{ __('Action') }} </th>
+                                <!-- <th colspan="2" > {{ __('Action') }} </th> -->
                                 
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody >
                           
                                 @foreach($licenses as $key=> $license)
                                     <tr>
@@ -66,12 +66,12 @@
                                            @else
                                            Not Deleted
                                            @endif
-                                         </td>
+                               {{--          </td>
                                        
                                          
                                              <td><a href="{{ route('user.deleteuserlicense',['id'=>$license->id]) }}" onclick="return confirm('Are you sure.')"> {{ __('Delete') }}  </a></td>
                                              <td><a @click="openDetailModal({{$license->id}})" href="#"> {{ __('Details') }}  </a></td>
-                                       
+                                       --}}
                                     </tr>
                                 @endforeach
                         </tbody>
@@ -96,7 +96,7 @@
 
       <!-- Modal body -->
       <div class="modal-body">
-          <table class="table table-striped table-responsive">
+          <table class="table table-striped table-responsive custom-scroll">
     <thead>
       <tr >
                                 <th> {{ __('Sr no') }} </th> 
