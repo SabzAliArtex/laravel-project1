@@ -21,7 +21,7 @@ class CreateLicenseDevicesTable extends Migration
             $table->string('device_name');
             $table->string('device_os');
             $table->dateTime('activation_date');
-            $table->boolean('is_deleted',0)->nullable();
+            $table->boolean('is_deleted')->default('0')->nullable();
             $table->timestamps();
         });
     }
