@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\License;
 use App\User;
-use App\Licensetype;
+use App\LicenseType;
 use App\License_devices;
 use App\Payment;
 use Session;
@@ -58,7 +58,7 @@ class LicenseController extends Controller
     public function create()
     {
         $sales_persons = User::where([['is_active','1'],['role','3']])->get();
-        $Licensetypes = Licensetype::where('is_active','1')->get();
+        $Licensetypes = LicenseType::where('is_active','1')->get();
         return view('admin.license.addlicense',compact('sales_persons','Licensetypes'));
     }
 
@@ -130,7 +130,7 @@ class LicenseController extends Controller
     }
     public function licenseActivation($user_id,$license_id,$dev_id,$dev_os,$dev_name){
       /*user 3 licen 1 */
-      
+
       $response = array();
       $response['message'] = "";
      if(!isset($license_id)){
