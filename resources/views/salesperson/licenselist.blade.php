@@ -49,7 +49,7 @@
         
         </div>         
                     @if(count($licenses) >0)
-                    <table border="1"  class="table table-striped table-responsive-xl">
+                    <table border="1"  class="table table-striped table-responsive">
                         <thead class="thead-dark">
                             <tr>
                                 <th> {{ __('Sr no') }} </th> 
