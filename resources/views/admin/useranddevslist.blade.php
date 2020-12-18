@@ -25,7 +25,7 @@
                 <div class="card-header">{{ __('License List') }}</div>
                 <div class="card-body">
 
-                    @if(isset($licenses))
+                    @if(count($licenses)>0)
                     <table border="1"  class="table table-striped table-responsive" >
                         <thead class="thead-dark">
                             <tr >
