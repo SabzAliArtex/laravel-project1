@@ -81,7 +81,7 @@ class ClientController extends Controller
     
     }
     public function LicenseListLessDetails(){
-          $l = License::select('id')->where('user_id','=',Auth::user()->id)->get();
+          /*$l = License::select('id')->where('user_id','=',Auth::user()->id)->get();*/
 
         $licenses = License::with('sales_person','user','license_type')->
         where([['user_id', Auth::user()->id],['is_deleted', '=' , 0]])

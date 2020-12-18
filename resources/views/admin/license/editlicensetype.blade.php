@@ -22,11 +22,12 @@
             <div class="card">
                 <div class="card-header">{{ __('Edit License type') }}</div>
                 <div class="card-body">
-                    <form method="POST" action="{{ route('editlicensetypepost') }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('updateLicenseTypePost')}}" enctype="multipart/form-data">
                         @csrf
+
                         <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Title') }}</label>
-                            <input type="hidden" name="id" value="{{ $licensetype->id }}">
+                        <input type="hidden" name="id" value="{{ $licensetype->id }}"> 
                             <div class="col-md-6">
                                 <input id="title" type="text" class="form-control @error('title') is-invalid @enderror" name="title" value="{{ $licensetype->title }}" required autocomplete="off" autofocus>
 

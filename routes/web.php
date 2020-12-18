@@ -50,16 +50,14 @@ Route::group(['middleware' => ['admin','verified']], function () {
 	Route::get('/licensetypes/add', 'LicenseTypeController@AddLicenseType')->name('addLicenseType');
 	Route::post('/licensetypes/add', 'LicenseTypeController@AddLicenseTypePost')->name('addLicenseType');
 	Route::get('/editlicensetypes/{id}', 'LicenseTypeController@EditLicenseType')->name('editlicensetype');
-	Route::post('/editlicensetypes', 'LicenseTypeController@EditLicenseTypePost')->name('editlicensetypepost');
+	Route::post('/editlicensetypes', 'LicenseTypeController@EditLicenseTypePost')->name('updateLicenseTypePost');
 	Route::get('/deletelicensetype/{id}', 'LicenseTypeController@deleteLicenseType')->name('deletelicensetype');
-
-	Route::get('/license', 'LicenseController@index')->name('licenselist');
+ 	Route::get('/license', 'LicenseController@index')->name('licenselist');
 	Route::get('/license/create', 'LicenseController@create')->name('createlicense');
 	Route::post('/license/create', 'LicenseController@store')->name('createlicensePost');
 	Route::get('/editlicense/{license}', 'LicenseController@EditLicense')->name('editlicense');
-	Route::post('/editlicensetypes', 'LicenseController@EditLicensePost')->name('editlicensepost');
-
-	Route::get('/deletelicense/{id}', 'LicenseController@DeleteLicense')->name('deletelicense');
+	Route::post('/editlicensetypesLicense', 'LicenseController@EditLicensePost')->name('editlicensepost');
+ 	Route::get('/deletelicense/{id}', 'LicenseController@DeleteLicense')->name('deletelicense');
 	Route::get('/license/activated', 'LicenseController@ActivatedLicense')->name('license.activated');
 	//payments routes
 	Route::get('/payment/list', 'PaymentController@index')->name('paymentlist');

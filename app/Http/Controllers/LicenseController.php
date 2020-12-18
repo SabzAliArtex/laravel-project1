@@ -128,8 +128,9 @@ class LicenseController extends Controller
 
         return back();
     }
-    public function licenseActivation($user_id,$license_id,$dev_name,$dev_os,$dev_id){
+    public function licenseActivation($user_id,$license_id,$dev_id,$dev_os,$dev_name){
       /*user 3 licen 1 */
+      
       $response = array();
       $response['message'] = "";
      if(!isset($license_id)){
@@ -145,6 +146,8 @@ class LicenseController extends Controller
       $userPerson = User::where([['id',$user_id]])->first();
       $license_dev_count_rows = License_devices::with('deviceLicense')->where('license_id','=',$license_id);
       $license_data = License::where('id','=',$license_id)->first();
+      $license_data->user_id = $userPerson->id;
+      $license_data->save();
       $license_device_limit = $license_data->no_of_devices_allowed;
       $license_dev_count = $license_dev_count_rows->count();
 

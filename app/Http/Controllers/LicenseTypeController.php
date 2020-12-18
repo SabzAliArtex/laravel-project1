@@ -59,6 +59,7 @@ class LicenseTypeController extends Controller
     }
     public function EditLicenseTypePost(Request $get)
     {
+        
         $this->validate($get, [
             "title" => "required",
             "price" => "required|numeric|min:2|max:9999",
@@ -70,7 +71,7 @@ class LicenseTypeController extends Controller
             "price.max" => 'Price should be less then 1000 ',
         ]);
 
-        $LicenseType = LicenseType::find($get->id);
+        $LicenseType = LicenseType::find($get->get('id'));
         $LicenseType->title = $get['title'];
         $LicenseType->price = $get['price'];
         $LicenseType->type = $get['type'];

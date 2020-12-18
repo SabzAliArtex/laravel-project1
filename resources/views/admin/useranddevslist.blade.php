@@ -37,7 +37,7 @@
                                 <th> {{ __('Device Name') }} </th>
                                 <th> {{ __('Device OS') }} </th>
                                 <th> {{ __('Status') }} </th>
-                                 <th colspan="2" > {{ __('Action') }} </th>
+                                 <!-- <th colspan="2" > {{ __('Action') }} </th> -->
                                 
                             </tr>
                         </thead>
@@ -69,8 +69,8 @@
                                {{--          </td>
                                        
                                          
-                                             <td><a href="{{ route('user.deleteuserlicense',['id'=>$license->id]) }}" onclick="return confirm('Are you sure.')"> {{ __('Delete') }}  </a></td>--}}
-                                             <td><a @click="openDetailModal({{$license->id}})" href="#"> {{ __('Details') }}  </a></td>
+                                             <td><a href="{{ route('user.deleteuserlicense',['id'=>$license->id]) }}" onclick="return confirm('Are you sure.')"> {{ __('Delete') }}  </a></td>
+                                             <td><a @click="openDetailModal({{$license->id}})" href="#"> {{ __('Details') }}  </a></td>--}}
                                        
                                     </tr>
                                 @endforeach
