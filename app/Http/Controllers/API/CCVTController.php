@@ -41,16 +41,14 @@ public $successStatus = 200;
 if ($validator->fails()) { 
             return response()->json(['error'=>$validator->errors()], 401);            
         }
-        try {
+        
             $input = $request->all(); 
         $input['password'] = bcrypt($input['password']); 
         $user = CCVTPassport::create($input); 
         $success['token'] =  $user->createToken('MyApp')-> accessToken; 
         $success['name'] =  $user->name;
 return response()->json(['success'=>$success], $this-> successStatus); 
-        } catch (Exception $e) {
-            return response()->json(['error'=>$e]); 
-        }
+      
 
     }
 /** 

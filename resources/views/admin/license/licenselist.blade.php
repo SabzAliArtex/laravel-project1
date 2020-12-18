@@ -21,7 +21,7 @@
                 <div class="card-header">{{ __('License List') }}</div>
                 <div class="card-body">
                     @if(count($licenses) >0)
-                    <table border="1" style="width:100%;table-layout: fixed;"  class="table table-striped table-responsive-xl">
+                    <table border="1" style="overflow: scroll;"  class="table table-striped table-responsive">
                         <thead class="thead-dark">
                             <tr>
                                 <th> {{ __('Sr no') }} </th> 
