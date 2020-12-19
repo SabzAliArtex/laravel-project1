@@ -15,6 +15,7 @@ public $successStatus = 200;
      * @return \Illuminate\Http\Response 
      */ 
     public function login(){ 
+
         if(Auth::attempt(['email' => request('email'), 'password' => request('password')])){ 
             $user = Auth::CCVTPassport(); 
             $success['token'] =  $user->createToken('MyApp')-> accessToken; 
@@ -31,6 +32,7 @@ public $successStatus = 200;
      */ 
     public function register(Request $request) 
     { 
+
      
         $validator = Validator::make($request->all(), [ 
             'name' => 'required', 
@@ -42,13 +44,18 @@ if ($validator->fails()) {
             return response()->json(['error'=>$validator->errors()], 401);            
         }
         
-            $input = $request->all(); 
+           try {
+                $input = $request->all(); 
         $input['password'] = bcrypt($input['password']); 
         $user = CCVTPassport::create($input); 
         $success['token'] =  $user->createToken('MyApp')-> accessToken; 
         $success['name'] =  $user->name;
 return response()->json(['success'=>$success], $this-> successStatus); 
       
+            } catch (\Exception $e) {
+                return response()->json(['error'=>$e],); 
+                
+            } 
 
     }
 /** 
@@ -58,7 +65,12 @@ return response()->json(['success'=>$success], $this-> successStatus);
      */ 
     public function details() 
     { 
-        $user = Auth::CCVTPassport(); 
+        try {
+             $user = Auth::CCVTPassport(); 
         return response()->json(['success' => $user], $this-> successStatus); 
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e]); 
+        }
+        
     } 
 }

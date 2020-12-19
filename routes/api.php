@@ -17,9 +17,16 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::get('login', function(){
+	return view('ccvtpassport.login');
+});
+Route::get('register', function(){
+	return view('ccvtpassport.register');
+});
 
-Route::post('login', 'API\CCVTController@login');
-Route::post('register', 'API\CCVTController@register');
+Route::post('login', 'API\CCVTController@login')->name('loginuser');
+
+Route::post('register', 'API\CCVTController@register')->name('registeruser');
 Route::group(['middleware' => 'auth:api'], function(){
 Route::post('detailsofregisteredperson', 'API\CCVTController@details');
 });
