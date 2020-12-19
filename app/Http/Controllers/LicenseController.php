@@ -57,7 +57,7 @@ class LicenseController extends Controller
      */
     public function create()
     {
-        $sales_persons = User::where([['is_active','1'],['role','3']])->get();
+        $sales_persons = User::where([['is_active','1'],['role','3'],['is_deleted','0']])->get();
         $Licensetypes = LicenseType::where('is_active','1')->get();
         return view('admin.license.addlicense',compact('sales_persons','Licensetypes'));
     }
