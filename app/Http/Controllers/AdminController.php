@@ -63,14 +63,14 @@ class AdminController extends Controller
     	return view('admin.adduser',$data);
     }
     public function Users(){
-        $data['users'] = User::with('userrole')->whereNull('is_deleted')->where('id','<>', Auth::user()->id)->Paginate('10');
+        $data['users'] = User::with('userrole')->where('is_deleted' ,'0')->where('id','<>', Auth::user()->id)->Paginate('10');
         
         
     	// echo '<pre>'; print_r($data); exit;
     	return view('admin.userslist',$data);
     }
     public function SalesPersons(){
-    	$data['users'] = User::with('userrole')->whereNull('is_deleted')->where('role','=', 3)->get();
+    	$data['users'] = User::with('userrole')->where('is_deleted' ,'0')->where('role','=', 3)->get();
     	// echo '<pre>'; print_r($data); exit;
     	return view('admin.salespersons',$data);
     }

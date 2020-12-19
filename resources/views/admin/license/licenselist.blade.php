@@ -56,7 +56,7 @@
                                         <td> {{ $license->license_activated_at }} </td>
 
                                         <td colspan="2"> 
-                                            <a href="{{ route('editlicensetype',['id'=>$license->id]) }}"> {{ __('Edit') }}  </a>
+                                            <a href="{{ route('editlicense',['license'=>$license->license]) }}"> {{ __('Edit') }}  </a>
 
                                             |
                                             <a href="{{ route('deletelicense',['id'=>$license->id]) }}" onclick="return confirm('Are you sure.')"> {{ __('Delete') }}  </a>

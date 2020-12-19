@@ -92,10 +92,10 @@ class LicenseController extends Controller
     public function EditLicense($license)
     {
         $licenses = License::where('license', $license)->firstOrFail();
-        $sales_persons = User::where([['is_active','1'],['role','3']])->get();
+        $sales_persons = User::where([['is_active','1'],['role','3'],['is_deleted','0']])->get();
         $Licensetypes = Licensetype::where('is_active','1')->get();
 
-        return view('admin.license.editLicense',compact("licenses","sales_persons","Licensetypes"));
+        return view('admin.license.editlicense',compact("licenses","sales_persons","Licensetypes"));
     }
     public function EditLicensePost(Request $request)
     {
