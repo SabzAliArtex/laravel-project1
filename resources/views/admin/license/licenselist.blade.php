@@ -18,7 +18,9 @@
         @include('partials_admin/sidebar')
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('License List') }}</div>
+                <div class="card-header"><span class="custom-card-header-span">{{ __('License List') }}</span> <a href="{{ route('createlicense') }}" class="btn btn-info btn-md button-add border border-light " >
+          <i class="fas fa-plus"></i>Add License
+        </a></div>
                 <div class="card-body">
                     @if(count($licenses) >0)
                     <table border="1" style="overflow: scroll;"  class="table table-striped table-responsive">

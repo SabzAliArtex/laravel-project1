@@ -72,37 +72,25 @@
                         </div>
                         <div class="form-group row">
                             <label for="Role" class="col-md-4 col-form-label text-md-right">{{ __('Select Allowed Test') }}</label>
+                            
+                           
+                            
                             <div class="col-md-6">
+                             @foreach($tests as $row)
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="allowed_test[]" id="allowed_test" value="WCCVT">
+                                    <input class="form-check-input" type="checkbox" name="allowed_test[]" id="allowed_test" value="{{$row->name}}">
 
                                     <label class="form-check-label" for="allowed_test">
-                                        {{ __('WCCVT') }}
+                                   {{$row->name}}
+                            
                                     </label>
                                 </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="allowed_test[]" id="made easy" value="Testing color vision made easy">
+                              
+                                
 
-                                    <label class="form-check-label" for="made easy">
-                                        {{ __('Testing color vision made easy') }}
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="allowed_test[]" id="Older" value="Older testing color vision">
-
-                                    <label class="form-check-label" for="Older">
-                                        {{ __('Older testing color vision') }}
-                                    </label>
-                                </div>
-
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="allowed_test[]" id="D-15" value="D-15">
-
-                                    <label class="form-check-label" for="D-15">
-                                        {{ __('D-15') }}
-                                    </label>
-                                </div>
+                               @endforeach  
                             </div>
+                           
                         </div>
                         <div class="form-group row">
                             <div class="col-md-6 offset-md-4">

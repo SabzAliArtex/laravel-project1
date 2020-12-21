@@ -18,7 +18,9 @@
          @include('partials_admin/sidebar')
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Sales Persons') }}</div>
+                <div class="card-header"><span class="custom-card-header-span">{{ __('Sales Person') }}</span> <a href="{{ route('AddUser') }}" class="btn btn-info btn-md button-add border border-light " >
+          <i class="fas fa-plus"></i>Add Sales Person
+        </a></div>
                 <div class="card-body">
                     <table border="1" style="width:100%" class="table table-striped table-responsive-xl">
                         <thead class="thead-dark">

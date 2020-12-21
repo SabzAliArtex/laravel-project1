@@ -5,16 +5,16 @@
                     <li> 
                         <a href="{{ route('userslist') }}"> {{ __('All Users') }} </a>
                     </li>
-                    <li> 
+                   <!--  <li> 
                         <a href="{{ route('AddUser') }}"> {{ __('Add User') }} </a>
-                    </li>
+                    </li> -->
 
                     <li> 
                         <a href="{{ route('SalesPersons') }}"> {{ __('Sales Person List') }} </a>
                     </li>
-                    <li> 
+                   <!--  <li> 
                         <a href="{{ route('addLicenseType') }}"> {{ __('Add License Types') }} </a>
-                    </li>
+                    </li> -->
                     <li> 
                         <a href="{{ route('licensetypes') }}"> {{ __('License Types') }} </a>
                     </li>
@@ -22,9 +22,9 @@
                     <li> 
                         <a href="{{ route('licenselist') }}"> {{ __('License List') }} </a>
                     </li>
-                    <li> 
+                   <!--  <li> 
                         <a href="{{ route('createlicense') }}"> {{ __('Add license') }} </a>
-                    </li>
+                    </li> -->
                      <li> 
                         <a href="{{ route('paymentlist') }}"> {{ __('All Commission List') }} </a>
                     </li><li> 

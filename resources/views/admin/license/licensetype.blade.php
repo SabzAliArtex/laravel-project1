@@ -19,7 +19,9 @@
 
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('License Types') }}</div>
+               <div class="card-header"><span class="custom-card-header-span">{{ __('License Types') }}</span> <a href="{{ route('addLicenseType') }}" class="btn btn-info btn-md button-add border border-light " >
+          <i class="fas fa-plus"></i>Add License Types
+        </a></div>
                 <div class="card-body">
                     @if(count($license_types) >0)
                     <table border="1" style="width:100%" class="table table-striped table-responsive-xl  ">

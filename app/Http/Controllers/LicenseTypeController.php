@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\LicenseType;
+use App\Test;
 use Illuminate\Http\Request;
 use Session;
 
@@ -21,8 +22,11 @@ class LicenseTypeController extends Controller
 
     public function AddLicenseType()
     {
-        
-        return view('admin.license.addlicensetype');
+        $tests = Test::where('is_active','=',1)->get();
+
+        return view('admin.license.addlicensetype',[
+            'tests'=>$tests,
+        ]);
     }
     public function AddLicenseTypePost(Request $get)
     {
