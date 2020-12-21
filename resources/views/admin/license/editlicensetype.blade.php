@@ -77,15 +77,20 @@
                             @php 
                                 $allowed_test = json_decode($licensetype->allowed_test); 
                             @endphp
+                           
+
+                            
                             <div class="col-md-6">
+                             @foreach($tests as $row)
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="allowed_test[]" id="allowed_test" value="WCCVT" {{ in_array("WCCVT", $allowed_test) ? 'Checked' : '' }}>
+                                    <input class="form-check-input" type="checkbox" name="allowed_test[]" id="allowed_test" value="{{$row->name}}" {{ in_array($row->name, $allowed_test) ? 'Checked' : '' }}>
 
                                     <label class="form-check-label" for="allowed_test">
-                                        {{ __('WCCVT') }}
+                                        {{ $row->name }}
                                     </label>
                                 </div>
-                                <div class="form-check">
+                                @endforeach
+                               {{-- <div class="form-check">
                                     <input class="form-check-input" type="checkbox" name="allowed_test[]" id="made easy" value="Testing color vision made easy" {{ in_array("Testing color vision made easy", $allowed_test) ? 'Checked' : '' }}>
 
                                     <label class="form-check-label" for="made easy">
@@ -106,7 +111,7 @@
                                     <label class="form-check-label" for="D-15">
                                         {{ __('D-15') }}
                                     </label>
-                                </div>
+                                </div>--}}
                             </div>
                         </div>
 

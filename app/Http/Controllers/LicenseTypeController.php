@@ -58,6 +58,8 @@ class LicenseTypeController extends Controller
     public function EditLicenseType($id)
     {
         $data['licensetype'] = LicenseType::find($id);
+        $data['tests'] = Test::latest()->get();
+        
         
         return view('admin.license.editlicensetype',$data);
     }

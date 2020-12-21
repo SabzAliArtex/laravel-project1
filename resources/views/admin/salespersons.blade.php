@@ -22,7 +22,7 @@
           <i class="fas fa-plus"></i>Add Sales Person
         </a></div>
                 <div class="card-body">
-                    <table border="1" style="width:100%" class="table table-striped table-responsive-xl">
+                    <table border="1" style="width:100%" class="table table-striped table-responsive">
                         <thead class="thead-dark">
                             <tr>
                                 <th> {{ __('Sr no') }} </th> 
