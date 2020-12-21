@@ -16,15 +16,13 @@ public $successStatus = 200;
      */ 
     public function login(){ 
 
-        if(Auth::attempt(['email' => request('email'), 'password' => request('password')])){ 
+        Auth::attempt(['email' => request('email'), 'password' => request('password')]); 
             $user = Auth::CCVTPassport(); 
             $success['token'] =  $user->createToken('MyApp')-> accessToken; 
             return response()->json(['success' => $success], $this-> successStatus); 
         } 
-        else{ 
-            return response()->json(['error'=>'Unauthorised'], 401); 
-        } 
-    }
+        
+    
 /** 
      * Register api 
      * 
