@@ -66,16 +66,15 @@ function random_str($length = 8)
       $license_devices->device_os = $dev_os;
       $license_devices->activation_date = date("Y-m-d H:i:s");
       $license_devices->save();
-      
+      return success_code(300);
     }else{
-      $response['message'] = "License is Valid for ". $license_device_limit." devices only" ;
-      return $response;
+      return limit_error_code(600,$license_device_limit);
 
     }
     }
 function success_code($num){
 if($num == 300){
- $response["message"] = "License Already Activated"; 
+ $response["message"] = "License Activated"; 
  return json_encode($response);
 }
  
@@ -83,13 +82,19 @@ if($num == 300){
 function error_code($code){
   if(isset($code)){
     if($code == 500){
-    $response['message'] = "Device Already registered";
+    $response['message'] = "License Activated For Device Already";
     return json_encode($response);  
   }else if($code == 400){
         $response['message'] = "Not a Registered User";
     return json_encode($response);  
   }
     
+  }
+  }
+  function limit_error_code($code,$limit){
+     if($code == 600){
+    $response['message'] = "License is Valid for ". $limit." devices only" ;
+      return $response;
   }
   }
 

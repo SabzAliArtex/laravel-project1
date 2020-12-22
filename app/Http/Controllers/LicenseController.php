@@ -154,8 +154,7 @@ class LicenseController extends Controller
       $license_data->save();
       $license_device_limit = $license_data->no_of_devices_allowed;
       if (is_null($license_dev_count_rows)) {
-        $license_dev_count = 0;
-          
+
         //$userPerson->role == 2 means that person is of type 'USER'
      return getLicenseLimit($license_count_user,$license_device_limit,$user_id,$license_id,$dev_name,$dev_os,$dev_id);
 
