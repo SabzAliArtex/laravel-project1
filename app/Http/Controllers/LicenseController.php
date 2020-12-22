@@ -147,6 +147,7 @@ class LicenseController extends Controller
       $license_dev_count_rows = License_devices::with('deviceLicense')->where('license_id','=',$license_id);
       $license_data = License::where('id','=',$license_id)->first();
       $license_data->user_id = $userPerson->id;
+      $license_data->license_activated_at = date("Y-m-d H:i:s");
       $license_data->save();
       $license_device_limit = $license_data->no_of_devices_allowed;
       $license_dev_count = $license_dev_count_rows->count();
