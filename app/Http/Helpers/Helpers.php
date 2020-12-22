@@ -56,8 +56,8 @@ function random_str($length = 8)
        echo $device;
       }
     }
-    function getLicenseLimit($license_dev_count, $license_device_limit,$user_id,$license_id,$dev_name,$dev_os,$dev_id){
-         if($license_dev_count < $license_device_limit){
+    function getLicenseLimit($license_count_rows, $license_device_limit,$user_id,$license_id,$dev_name,$dev_os,$dev_id){
+         if($license_count_rows < $license_device_limit){
           $license_devices = new License_devices();
       $license_devices->user_id = $user_id;
       $license_devices->license_id = $license_id;
@@ -73,5 +73,28 @@ function random_str($length = 8)
 
     }
     }
+function success_code($num){
+if($num == 300){
+ $response["message"] = "License Already Activated"; 
+ return json_encode($response);
+}
+ 
+}
+function error_code($code){
+  if(isset($code)){
+    if($code == 500){
+    $response['message'] = "Device Already registered";
+    return json_encode($response);  
+  }else if($code == 400){
+        $response['message'] = "Not a Registered User";
+    return json_encode($response);  
+  }
+    
+  }
+  }
+
+
+  
+
 
 

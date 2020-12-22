@@ -24,7 +24,7 @@
         </a></div>
                 <div class="card-body">
 
-                   <table border="1"  class="table table-striped table-responsive-lg ">
+                   <table border="1"  class="table table-striped table-responsive ">
                         <thead class="thead-dark">
                             <tr>
                                 <th> {{ __('Sr no') }} </th> 

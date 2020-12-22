@@ -105,4 +105,27 @@ class ClientController extends Controller
 
         
     } 
+     public function deactivateDevice($id){
+        
+        $user_license = License_devices::where('device_id','=',$id)->first();
+        
+        $user_license->is_deactive = 1;
+        $user_license->save();
+        Session::flash("success", "Device Deactivated");
+        return back();
+
+
+        
+    } public function activateDevice($id){
+        
+        $user_license = License_devices::where('device_id','=',$id)->first();
+        
+        $user_license->is_deactive = 0;
+        $user_license->save();
+        Session::flash("success", "Device Activated");
+        return back();
+
+
+        
+    } 
 }

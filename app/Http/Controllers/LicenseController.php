@@ -143,25 +143,30 @@ class LicenseController extends Controller
          return  json_encode($response);
 
         }
+
       $userPerson = User::where([['id',$user_id]])->first();
-      $license_dev_count_rows = License_devices::with('deviceLicense')->where('license_id','=',$license_id);
+      $license_dev_count_rows = License_devices::with('deviceLicense')->where('device_id','=',$dev_id)->first();
+       $license_count_rows = License_devices::with('deviceLicense')->where('license_id','=',$license_id)->get();
+       $license_count_user = $license_count_rows->count();
+      
       $license_data = License::where('id','=',$license_id)->first();
       $license_data->user_id = $userPerson->id;
-      $license_data->license_activated_at = date("Y-m-d H:i:s");
       $license_data->save();
       $license_device_limit = $license_data->no_of_devices_allowed;
-      $license_dev_count = $license_dev_count_rows->count();
-
-      if($userPerson->role == 2){
+      if (is_null($license_dev_count_rows)) {
+        $license_dev_count = 0;
+          
         //$userPerson->role == 2 means that person is of type 'USER'
-     return getLicenseLimit($license_dev_count,$license_device_limit,$user_id,$license_id,$dev_name,$dev_os,$dev_id);
+     return getLicenseLimit($license_count_user,$license_device_limit,$user_id,$license_id,$dev_name,$dev_os,$dev_id);
 
     
- }else{
+ 
+      }else if($license_dev_count_rows->device_id == $dev_id){
+      return error_code(500);
+      }
+      
 
-    $response['message'] = "Not a Registered User";
-    return json_encode($response);
-  }
+    
 }
     public function licenseActivation_old($user_id,$license_id,$dev_name,$dev_os,$dev_id){
       $response = array();

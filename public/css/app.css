@@ -10947,3 +10947,17 @@ a.text-dark:focus {
     position: relative;
 
 }
+.action_header{
+  position: relative;
+  text-align: center;
+}
+.deactivated{
+  background: #ccc;
+}
+body.swal2-shown > [aria-hidden="true"] {
+  filter: blur(10px);
+}
+
+body > * {
+  transition: 0.1s filter linear;
+}

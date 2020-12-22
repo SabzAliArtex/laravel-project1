@@ -33,7 +33,7 @@
                                 <th> {{ __('License Type') }} </th>
                                 <th> {{ __('User Name') }} </th> 
                                 <th> {{ __('User Email') }} </th> 
-                                <th colspan="2" > {{ __('Action') }} </th>
+                                <th colspan="2" class="action_header" > {{ __('Action') }} </th>
                                 
                             </tr>
                         </thead>
@@ -94,7 +94,7 @@
                                 <th> {{ __('User Email') }} </th> 
                                 <th> {{ __('Device Name') }} </th> 
                                 <th> {{ __('Device Os') }} </th> 
-                                <th colspan="2" > {{ __('Action') }} </th> 
+                                <th colspan="2" ><div class="action_header">{{ __('Action') }}</div>  </th> 
                                 
                             </tr>
     </thead>
@@ -109,8 +109,12 @@
         <td>@{{row.users[0].email}}</td>
         <td>@{{row.device_name}}</td>
         <td>@{{row.device_os}}</td>
-      
-        <td><a href="javascript:void(0)" @click="deleterecordandfetchagain(row.id)"> {{ __('Delete') }}  </a></td>
+        
+       <td v-if="row.is_deactive == 0" ><a href="javascript:void(0)" @click="deactivedeviceandfetchagain(row.device_id)" class="btn btn-primary"> {{ __('Deactive') }}  </a></td>
+        <td v-if="row.is_deactive == 1" ><a href="javascript:void(0)" @click="activatedeviceandfetchagain(row.device_id)" class="btn btn-success"> {{ __('Active') }}  </a></td>
+        <td><a href="javascript:void(0)" @click="deleterecordandfetchagain(row.id)" class="btn btn-danger"> {{ __('Delete') }}  </a></td>
+       
+          
 
       </tr>
      
@@ -148,6 +152,7 @@
             alldata:{},
             licid:'',
             message:'Hello vue',
+            
         },
         methods:{
             openDetailModal:function(licenseid){
@@ -178,6 +183,43 @@
               }else{
                 return false;
               }
+            },
+             deactivedeviceandfetchagain:function(id){
+              if(confirm("Do you want to deactivate this device?")){
+                console.log(this.licid);
+                   axios.get('/user/deactivatedevice/'+id)
+                    .then((res)=> {
+                      
+                      
+                        this.openDetailModal(this.licid);
+
+              
+                      
+                            
+
+                    })
+              }else{
+                return false;
+              }
+            },
+            activatedeviceandfetchagain:function(id){
+               if(confirm("Do you want to Activate this device?")){
+                console.log(this.licid);
+                   axios.get('/user/activatedevice/'+id)
+                    .then((res)=> {
+                      
+                      
+                        this.openDetailModal(this.licid);
+
+              
+                      
+                            
+
+                    })
+              }else{
+                return false;
+              }
+
             },
            
 
