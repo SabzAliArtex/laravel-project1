@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -10,7 +11,11 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
+
+
+
     <script src="{{ asset('js/app.js') }}" defer></script>
+
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -137,7 +142,7 @@ function myFunction() {
   tr = table.getElementsByTagName("tr");
   for (i = 0; i < tr.length; i++) {
     td = tr[i].getElementsByTagName("td")[1];
-    if (td) {
+ if (td) {
       txtValue = td.textContent || td.innerText;
     if (txtValue.toUpperCase().indexOf(filter) > -1) {
         check = true;
@@ -156,4 +161,25 @@ function myFunction() {
       }*/
 
 }
+
+</script>
+<script type="text/javascript">
+     jQuery.noConflict();
+    jQuery(document).ready(function(){
+ jQuery('#myInput').on('keyup',function(){
+$value=jQuery(this).val();
+jQuery.ajax({
+type : 'get',
+url : '{{URL::to('user')}}',
+data:{'search':$value},
+success:function(data){
+$('tbody').html(data);
+}
+});
+});
+});
+
+</script>
+<script type="text/javascript">
+jQuery.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
 </script>

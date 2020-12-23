@@ -20,8 +20,9 @@
             <div class="card">
                 <div class="card-header">{{ __('License List') }}</div>
                 <div class="card-body">
+                    @include('partials_general/searchbar')
                     @if(count($licenses) >0)
-                    <table border="1" style="width:100%;table-layout: fixed;"  class="table table-striped">
+                    <table id="tableListing" border="1" style="width:100%;table-layout: fixed;"  class="table table-striped">
                         <thead class="thead-dark">
                             <tr>
                                 <th> {{ __('Sr no') }} </th> 
@@ -65,9 +66,12 @@
                                 
                         </tbody>
                     </table>
+
+                 
                     @else
                     <p> *nothing found</p>
                     @endif
+                       @include('partials_general/searchalert')
                 </div>
             </div>
         </div>

@@ -92,6 +92,30 @@ class ClientController extends Controller
  /*$licenses = License_devices::with('deviceLicense','users','license_type')-> where([['user_id', Auth::user()->id],['is_deleted', '=' , 0]])-> whereIn('license_id',$l) ->orderByRaw('id DESC') ->get(); */
 
     }
+    public function searchResults(Request $request){
+        $query = $request->get('search');
+        if ($query == "") {
+
+             $licenses = License::with('sales_person','user','license_type')->
+        where([['user_id', Auth::user()->id],['is_deleted', '=' , 0]])
+        ->orderByRaw('id DESC')
+        ->paginate(10);
+         
+        }else{
+             $licenses = License::with('sales_person','user','license_type')->
+        where('license','LIKE','%'.$query.'%')
+        ->orderByRaw('id DESC')
+        ->paginate(10); 
+        }
+
+
+  
+        
+        
+         return view('user.subviews.usersearchresulttable',compact('licenses'));
+
+
+    }
     public function userLicenseList(){
         dd('here');
     }

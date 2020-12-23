@@ -48,8 +48,9 @@
           
         
         </div>         
+        @include('partials_general/searchbar')
                     @if(count($licenses) >0)
-                    <table border="1"  class="table table-striped table-responsive">
+                    <table id="tableListing" border="1"  class="table table-striped table-responsive">
                         <thead class="thead-dark">
                             <tr>
                                 <th> {{ __('Sr no') }} </th> 
@@ -87,6 +88,7 @@
                     @else
                     <p> *nothing found</p>
                     @endif
+                    @include('partials_general/searchalert')
                 </div>
             </div>
         </div>

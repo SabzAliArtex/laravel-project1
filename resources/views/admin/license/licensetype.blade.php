@@ -22,9 +22,9 @@
                <div class="card-header"><span class="custom-card-header-span">{{ __('License Types') }}</span> <a href="{{ route('addLicenseType') }}" class="btn btn-info btn-md button-add border border-light " >
           <i class="fas fa-plus"></i>Add License Types
         </a></div>
-                <div class="card-body">
+                <div class="card-body">@include('partials_general/searchbar')
                     @if(count($license_types) >0)
-                    <table border="1" style="width:100%" class="table table-striped table-responsive-xl  ">
+                    <table id="tableListing" border="1" style="width:100%" class="table table-striped table-responsive-xl  ">
                         <thead class="thead-dark">
                             <tr>
                                 <th> {{ __('Sr no') }} </th> 
@@ -68,7 +68,7 @@
                                     </tr>
                                 @endforeach
                         </tbody>
-                    </table>
+                    </table>@include('partials_general/searchalert')
                     {{$license_types->render()}}
                     @else
                     <p> *nothing found</p>

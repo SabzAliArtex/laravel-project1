@@ -18,14 +18,19 @@
             @endif
         </div>  
         </div>  
+        
+      
+      
+        
         <div class="row" id="details">
          @include('partials_user/sidebar')
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('License List') }}</div>
-                <div class="card-body">
-                    @if(count($licenses)>0)
-                    <table border="1"  class="table table-striped table-responsive">
+                <div class="card-body">@include('partials_general.searchbar')
+                  
+                    
+                <table  id="tableListing" border="1"  class="table table-striped table-responsive">
                         <thead class="thead-dark">
                             <tr >
                                 <th> {{ __('Sr no') }} </th> 
@@ -33,7 +38,8 @@
                                 <th> {{ __('License Type') }} </th>
                                 <th> {{ __('User Name') }} </th> 
                                 <th> {{ __('User Email') }} </th> 
-                                <th colspan="2" class="action_header" > {{ __('Action') }} </th>
+                                <th colspan="2"> {{ __('Action') }} </th>
+
                                 
                             </tr>
                         </thead>
@@ -64,9 +70,7 @@
                                 @endforeach
                         </tbody>
                     </table>
-                    @else
-                    <p> *nothing found</p>
-                    @endif
+                    
                       
             
 
@@ -152,6 +156,7 @@
             alldata:{},
             licid:'',
             message:'Hello vue',
+            myInput:'',
             
         },
         methods:{
@@ -221,6 +226,24 @@
               }
 
             },
+            searchResults:function(){
+
+              
+              
+
+              axios.get('/user/search/'+this.myInput).then((res)=>{
+                
+                $('#tableListing').html(res);
+                
+
+                
+
+              }).catch((error)=>{
+
+
+              })
+              
+            },
            
 
         },
@@ -233,3 +256,5 @@
 }
 
 </script>
+
+

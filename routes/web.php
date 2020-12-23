@@ -72,6 +72,7 @@ Route::group(['middleware' => 'user'], function () {
 	Route::get('/user/profile', 'ClientController@manageprofile')->name('user.profile');
 	Route::post('/user/profile', 'ClientController@updateprofile')->name('user.updateprofile');
  	Route::get('/user/license', 'ClientController@LicenseListLessDetails')->name('user.activelicense');
+ 	Route::get('/user', 'ClientController@searchResults')->name('user.searchresults');
  	Route::get('/user/deletelicense/{id}', 'ClientController@deleteLicense')->name('user.deleteuserlicense');
  	Route::get('/user/deactivatedevice/{id}', 'ClientController@deactivateDevice')->name('user.deactivateuserdevice');
  		Route::get('/user/activatedevice/{id}', 'ClientController@activateDevice')->name('user.activateuserdevice');
