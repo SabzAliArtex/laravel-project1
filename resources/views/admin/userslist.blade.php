@@ -23,8 +23,8 @@
           <i class="fas fa-plus"></i>Add User
         </a></div>
                 <div class="card-body">
-
-                   <table border="1"  class="table table-striped table-responsive-xl">
+                @include('partials_general/searchbar')
+                   <table id="tableListing" border="1"  class="table table-striped table-responsive-xl">
                         <thead class="thead-dark">
                             <tr>
                                 <th> {{ __('Sr no') }} </th> 
@@ -59,9 +59,12 @@
 
                                     </tr>
                                 @endforeach
+
+
                             @endif
                         </tbody>
                     </table>
+                      <span class="alert alert-danger form-control custom_span_search_results" id="searchalert" ><p class="custom_p">No Records to show*</p></span>
                     <?php echo $users->render(); ?>
                 </div>
             </div>
@@ -69,3 +72,4 @@
     </div>
 </div>
 @endsection
+

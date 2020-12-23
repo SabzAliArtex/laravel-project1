@@ -10961,3 +10961,22 @@ body.swal2-shown > [aria-hidden="true"] {
 body > * {
   transition: 0.1s filter linear;
 }
+.custom_serachbar_position{
+  position: relative;
+  top:-10px;
+}
+.custom_row_position{
+float: right;
+}
+.custom_search_border:focus{
+    border-color:#7A97B3;
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset, 0px 0px 8px rgba(122, 151, 179, 0.5);
+}
+.custom_span_search_results{
+  padding-bottom:5%;
+  visibility: hidden;
+}
+.custom_p{
+  position: relative;
+  text-align: center;
+}
