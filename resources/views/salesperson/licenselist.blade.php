@@ -83,6 +83,7 @@
                                 @endforeach
                         </tbody>
                     </table>
+                    {{$licenses->render()}}
                     @else
                     <p> *nothing found</p>
                     @endif

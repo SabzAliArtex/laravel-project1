@@ -69,6 +69,7 @@
                                 @endforeach
                         </tbody>
                     </table>
+                    {{$license_types->render()}}
                     @else
                     <p> *nothing found</p>
                     @endif

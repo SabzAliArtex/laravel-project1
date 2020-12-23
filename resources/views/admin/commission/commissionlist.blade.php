@@ -98,6 +98,7 @@ v-on:click=changeStatus({{$payment->id}},{{$payment->is_approved}})
                                 
                         </tbody>
                     </table>
+                    {{$payments->render()}}
                     <div></div>
                     @else
                     <p> *nothing found</p>

@@ -55,6 +55,7 @@
                             <tr> </tr>
                         </tbody>
                     </table>
+                    <?php echo $users->render(); ?>
                 </div>
             </div>
         </div>

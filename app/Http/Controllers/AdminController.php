@@ -70,7 +70,7 @@ class AdminController extends Controller
     	return view('admin.userslist',$data);
     }
     public function SalesPersons(){
-    	$data['users'] = User::with('userrole')->where('is_deleted' ,'0')->where('role','=', 3)->get();
+    	$data['users'] = User::with('userrole')->where('is_deleted' ,'0')->where('role','=', 3)->paginate(10);
     	// echo '<pre>'; print_r($data); exit;
     	return view('admin.salespersons',$data);
     }

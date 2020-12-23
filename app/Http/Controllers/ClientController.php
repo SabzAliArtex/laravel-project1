@@ -70,7 +70,7 @@ class ClientController extends Controller
         public function alluseranddevs(){
 
         $licenses = License_devices::with('deviceLicense','users','license_type')
-        ->orderByRaw('id DESC')->get();
+        ->orderByRaw('id DESC')->paginate(10);
          return view('admin.useranddevslist',compact('licenses'));
     
     }
@@ -86,7 +86,7 @@ class ClientController extends Controller
         $licenses = License::with('sales_person','user','license_type')->
         where([['user_id', Auth::user()->id],['is_deleted', '=' , 0]])
         ->orderByRaw('id DESC')
-        ->get();
+        ->paginate(10);
          return view('user.activelicenselist',compact('licenses'));
          //
  /*$licenses = License_devices::with('deviceLicense','users','license_type')-> where([['user_id', Auth::user()->id],['is_deleted', '=' , 0]])-> whereIn('license_id',$l) ->orderByRaw('id DESC') ->get(); */

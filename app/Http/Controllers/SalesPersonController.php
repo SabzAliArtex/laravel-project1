@@ -67,7 +67,7 @@ class SalesPersonController extends Controller
         return back();
     }
     public function LicensesAll(){
-        $licenses = License::with('sales_person','user','license_type')->where('sales_person_id',Auth::user()->id)->where('is_deleted',0)->orderByRaw('id DESC')->get();
+        $licenses = License::with('sales_person','user','license_type')->where('sales_person_id',Auth::user()->id)->where('is_deleted',0)->orderByRaw('id DESC')->paginate(10);
 
 
             
@@ -76,7 +76,7 @@ class SalesPersonController extends Controller
             ]);
     }
     public function LicensesActivated(){
-    	$licenses = License::with('sales_person','user')->where('sales_person_id',Auth::user()->id)->where('license_activated_at', '!=' , NULL)->orderByRaw('id DESC')->get();
+    	$licenses = License::with('sales_person','user')->where('sales_person_id',Auth::user()->id)->where('license_activated_at', '!=' , NULL)->orderByRaw('id DESC')->paginate(10);
 
     	return view('salesperson.activelicenselist',compact('licenses'));
     }  

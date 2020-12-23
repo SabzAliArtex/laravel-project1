@@ -14,7 +14,7 @@ class PaymentController extends Controller
     public function index()
     {
         //
-           $payments = Payment::with('sales_person','license')->orderByRaw('id DESC')->get();
+           $payments = Payment::with('sales_person','license')->orderByRaw('id DESC')->paginate(10);
            $results = $payments;
            return view('admin.commission.commissionlist',[
                 'payments' => $payments
@@ -108,7 +108,8 @@ class PaymentController extends Controller
         //
     }
     public function pendingCommision(){
-     $payments = Payment::with('sales_person','license')->where('is_approved','=',0)->orderByRaw('id DESC')->get();
+
+     $payments = Payment::with('sales_person','license')->where('is_approved','=',0)->orderByRaw('id DESC')->paginate(10);
        $results = $payments;
        return view('admin.commission.commissionlistpending',[
             'payments' => $payments

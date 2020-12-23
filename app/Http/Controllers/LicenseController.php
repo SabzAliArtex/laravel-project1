@@ -20,7 +20,7 @@ class LicenseController extends Controller
      */
     public function index()
     {
-        $licenses = License::with('sales_person','user','license_type')->where('is_deleted',0)->orderByRaw('id DESC')->get();
+        $licenses = License::with('sales_person','user','license_type')->where('is_deleted',0)->orderByRaw('id DESC')->paginate(10);
         
 
         

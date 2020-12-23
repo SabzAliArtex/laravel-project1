@@ -16,7 +16,7 @@ class LicenseTypeController extends Controller
      */
     public function index()
     {
-        $data['license_types'] = LicenseType::where('is_deleted','=', NULL)->get();
+        $data['license_types'] = LicenseType::where('is_deleted','=', NULL)->orWhere('is_deleted','=',0)->paginate(10);
         return view('admin.license.licensetype',$data);
     }
 
