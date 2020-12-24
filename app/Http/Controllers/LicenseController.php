@@ -11,6 +11,7 @@ use App\Payment;
 use Session;
 use Carbon\Carbon;
 use Auth;
+use DB;
 class LicenseController extends Controller
 {
     /**
@@ -47,7 +48,41 @@ class LicenseController extends Controller
 
         }
     }
-   
+   public function licenseSearchResults(Request $request){
+    $query = $request['search'];
+    $formatCheck = 0;
+    if($query == ""){
+      $formatCheck = 1;
+
+        $licenses = License::with('sales_person','user','license_type')->where('is_deleted',0)->orderByRaw('id DESC')->paginate(10);
+         return view('admin.license.subviews.licensesearchresults',[
+          'licenses'=>$licenses,
+          'formatCheck'=>$formatCheck,
+        ]);  
+
+
+
+
+    }else{
+      $formatCheck = 0;
+       $licenses = DB::table('licenses')
+            ->join('users as u', 'u.id', '=', 'licenses.user_id')
+            ->join('users as sp', 'sp.id', '=', 'licenses.sales_person_id')
+            ->join('license_types', 'license_types.id', '=', 'licenses.license_type_id')
+            ->select('licenses.*','license_types.*','u.first_name','u.last_name','u.email','sp.first_name as fname','sp.last_name as lname')
+            ->where('u.first_name','LIKE','%'.$query.'%')
+            ->orWhere('u.last_name','LIKE','%'.$query.'%')
+            ->orWhere('u.email','LIKE','%'.$query.'%')
+            ->orWhere('sp.first_name','LIKE','%'.$query.'%')
+            ->orWhere('sp.last_name','LIKE','%'.$query.'%')
+            ->get();
+               
+            return view('admin.license.subviews.licensesearchresults',[
+          'licenses'=>$licenses,
+          'formatCheck'=>$formatCheck,
+        ]); 
+    }
+   }
 
 
     /**

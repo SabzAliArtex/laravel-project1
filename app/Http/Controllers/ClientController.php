@@ -12,6 +12,7 @@ use File;
 use Str;
 use Image;
 use Session;
+use DB;
 
 class ClientController extends Controller
 {
@@ -73,6 +74,42 @@ class ClientController extends Controller
         ->orderByRaw('id DESC')->paginate(10);
          return view('admin.useranddevslist',compact('licenses'));
     
+    }
+    public function alluseranddevssearch(Request $request){
+         $query = $request['search'];
+        $formatCheck = 0;
+        if($query == ""){
+            $formatCheck = 1;
+             $licenses = License_devices::with('deviceLicense','users','license_type')
+        ->orderByRaw('id DESC')->paginate(10);
+             return view('admin.subviews.userdevsanddevicessearchresults',[
+                'formatCheck'=>$formatCheck,
+                'licenses'=>$licenses,
+             ]);
+        }else{
+            $formatCheck = 0;
+
+            $licenses = DB::connection()
+                ->table('license_devices as ld')
+                ->join('licenses as li','li.id','ld.license_id')
+                ->join('license_types','license_types.id','ld.license_id')
+                ->Join('users', function($join) {
+                    $join->on('users.id', '=', 'ld.user_id');
+                    $join->where('ld.is_deleted', '=', '0');
+                })
+                ->where('email','LIKE','%'.$query.'%')
+                ->orWhere('li.license','LIKE','%'.$query.'%')
+                ->orWhere('ld.device_name','LIKE','%'.$query.'%')
+                ->orWhere('ld.device_os','LIKE','%'.$query.'%')
+                ->get();
+              
+
+                    
+                      return view('admin.subviews.userdevsanddevicessearchresults',[
+                'formatCheck'=>$formatCheck,
+                'licenses'=>$licenses,
+            ]);
+        }
     }
     public function LicensesActivated($licenseid){
         $licenses = License_devices::with('deviceLicense','users','license_type')

@@ -30,7 +30,9 @@
                                 @endforeach
                         </tbody>
                         @else
-<p> *nothing found</p>
+                     <div class="alert alert-danger custom_warning" role="alert"><p class="custom_para_results">No Results for your search*</p>
+  
+</div>
 @endif
                     </table>
 

@@ -132,6 +132,7 @@
     </div>
 </body>
 </html>
+<!-- use later if we want to filter records in a table
 <script>
 function myFunction() {
   var input, filter, table, tr, td, i, txtValue,check;
@@ -162,24 +163,4 @@ function myFunction() {
 
 }
 
-</script>
-<script type="text/javascript">
-     jQuery.noConflict();
-    jQuery(document).ready(function(){
- jQuery('#myInput').on('keyup',function(){
-$value=jQuery(this).val();
-jQuery.ajax({
-type : 'get',
-url : '{{URL::to('user')}}',
-data:{'search':$value},
-success:function(data){
-$('tbody').html(data);
-}
-});
-});
-});
-
-</script>
-<script type="text/javascript">
-jQuery.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
-</script>
+</script> -->

@@ -141,6 +141,28 @@
     </div>
 
 @endsection
+<script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', function () {
+    // Your jquery code
+     jQuery.noConflict();
+    jQuery(document).ready(function(){
+ jQuery('#myInput').on('keyup',function(){
+$value=jQuery(this).val();
+jQuery.ajax({
+type : 'get',
+url : '{{URL::to('user')}}',
+data:{'search':$value},
+success:function(data){
+$('tbody').html(data);
+}
+});
+});
+});
+ jQuery.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } }); 
+});
+  
+
+</script>
 
 
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
@@ -226,24 +248,7 @@
               }
 
             },
-            searchResults:function(){
-
-              
-              
-
-              axios.get('/user/search/'+this.myInput).then((res)=>{
-                
-                $('#tableListing').html(res);
-                
-
-                
-
-              }).catch((error)=>{
-
-
-              })
-              
-            },
+          
            
 
         },

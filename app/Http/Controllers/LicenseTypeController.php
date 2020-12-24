@@ -19,6 +19,44 @@ class LicenseTypeController extends Controller
         $data['license_types'] = LicenseType::where('is_deleted','=', NULL)->orWhere('is_deleted','=',0)->paginate(10);
         return view('admin.license.licensetype',$data);
     }
+    public function searchLicenseType(Request $request){
+        $formatCheck = 0;
+        $query = $request['search'];
+        if($query==""){
+            $formatCheck = 1;
+            $data['formatCheck'] = $formatCheck;
+            $data['license_types'] = LicenseType::where('is_deleted','=', NULL)->orWhere('is_deleted','=',0)->paginate(10);
+        return view('admin.license.subviews.licensetypesearch',$data);
+        }else{
+            $formatCheck = 0;
+            $data['formatCheck']=$formatCheck;
+
+             $data['license_types'] = LicenseType::where('title','LIKE','%'.$query.'%')->orWhere('price','LIKE','%'.$query.'%')
+             ->get();
+              return view('admin.license.subviews.licensetypesearch',$data);
+
+            /* $data['users'] = DB::connection()
+                ->table('users AS d1')
+                ->Join('user_roles AS t1', function($join) {
+                    $join->on('t1.id', '=', 'd1.role');
+                    $join->where('t1.id', '=', '3');
+                })->where('email','LIKE','%'.$query.'%')
+                ->orWhere('first_name','LIKE','%'.$query.'%')
+                ->orWhere('last_name','LIKE','%'.$query.'%')
+                ->get();*/
+   
+/*
+                 $data['users'] = DB::table('users')
+            ->join('user_roles', 'user_roles.id', '=', 3)
+            ->select('users.*','user_roles.role')
+            ->where('email','LIKE','%'.$query.'%')
+            ->orWhere('first_name','LIKE','%'.$query.'%')
+            ->orWhere('last_name','LIKE','%'.$query.'%')
+            ->orWhere('user_roles.role','LIKE','%'.$query.'%')
+             ->get();*/
+
+        }
+    }
 
     public function AddLicenseType()
     {

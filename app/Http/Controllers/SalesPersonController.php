@@ -13,6 +13,7 @@ use File;
 use Str;
 use Image;
 use Session;
+use DB;
 
 class SalesPersonController extends Controller
 {
@@ -75,10 +76,67 @@ class SalesPersonController extends Controller
             'licenses' => $licenses,
             ]);
     }
+    public function searchResultsLicensesAll(Request $request){
+        $query = $request->get('search');
+            
+
+            $licenses = DB::table('licenses')
+            ->join('users', 'users.id', '=', 'licenses.user_id')
+            ->join('license_types', 'license_types.id', '=', 'licenses.license_type_id')
+            
+            ->select('*')->where('email','LIKE','%'.$query.'%')
+            ->paginate(10);
+
+
+                 /*
+        $licenses = License::with('sales_person','user','license_type')
+        ->where('user_id','LIKE','%'.$query.'%')
+        ->orWhere('license','LIKE','%'.$query.'%')
+        ->orderByRaw('id DESC')->get();*/
+        
+            
+        return view('salesperson.subviews.licenselistsearchresults',[
+            'licenses' => $licenses,
+            ]);
+    }
     public function LicensesActivated(){
     	$licenses = License::with('sales_person','user')->where('sales_person_id',Auth::user()->id)->where('license_activated_at', '!=' , NULL)->orderByRaw('id DESC')->paginate(10);
 
     	return view('salesperson.activelicenselist',compact('licenses'));
+    } 
+     public function searchResultsLicensesActivated(Request $request){
+        $formatCheck = 0;
+       /* $licenses = License::with('sales_person','user')->where('sales_person_id',Auth::user()->id)->where('license_activated_at', '!=' , NULL)->orderByRaw('id DESC')->paginate(10);*/
+       $query = $request['search'];
+       if($query == ""){
+        $formatCheck =1;
+
+        $licenses = License::with('sales_person','user')->where('sales_person_id',Auth::user()->id)->where('license_activated_at', '!=' , NULL)->orderByRaw('id DESC')->paginate(10);
+         return view('salesperson.subviews.activelicensesearchresult',[
+            'licenses'=>$licenses,
+            'formatCheck'=>$formatCheck,
+        ]);
+       }else{
+        $formatCheck =0;
+         $licenses = DB::table('licenses')
+            ->join('users as u1', 'u1.id', '=', 'licenses.sales_person_id')
+            ->join('users as u2', 'u2.id', '=', 'licenses.user_id')
+            ->join('license_types', 'license_types.id', '=', 'licenses.license_type_id')
+            ->select('*')->where('license_activated_at', '!=' , NULL)
+            ->where('u1.email','LIKE','%'.$query.'%')
+            ->orWhere('u2.email','LIKE','%'.$query.'%')
+            ->orWhere('u1.first_name','LIKE','%'.$query.'%')
+            ->orWhere('u2.first_name','LIKE','%'.$query.'%')
+            ->orWhere('u1.last_name','LIKE','%'.$query.'%')
+            ->orWhere('u2.last_name','LIKE','%'.$query.'%')
+            ->paginate(10);    
+        return view('salesperson.subviews.activelicensesearchresult',[
+            'licenses'=>$licenses,
+            'formatCheck'=>$formatCheck,
+        ]);
+        }
+            
+        
     }  
      public function salesPersonCommision($commission){
         $sales = License::where('sales_person_id','=',Auth::user()->id)->get();

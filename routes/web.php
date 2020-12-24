@@ -37,6 +37,7 @@ Route::group(['middleware' => ['admin','verified']], function () {
 
 	// users
 	Route::get('/users', 'AdminController@Users')->name('userslist');
+	Route::get('/users-search-results', 'AdminController@searchUsers')->name('usersSearchedlist');
 	Route::get('/addUser', 'AdminController@AddUser')->name('AddUser');
 	Route::post('/addUser', 'AdminController@AddUserPost')->name('AddUser');
 	Route::get('/edituser/{id}', 'AdminController@EditUser')->name('edituser');
@@ -44,15 +45,18 @@ Route::group(['middleware' => ['admin','verified']], function () {
 	Route::get('/deleteuser/{id}', 'AdminController@DeleteUser')->name('deleteuser');
 	// sales persons
 	Route::get('/sales-persons', 'AdminController@SalesPersons')->name('SalesPersons');
+	Route::get('/sales-persons-search', 'AdminController@salesPersonsSearch')->name('SalesPersonsSearch');
 	Route::get('/edit-sales-person/{id}', 'AdminController@EditSalesPerson')->name('editsalesperson');
 	// License Routes
 	Route::get('/licensetypes', 'LicenseTypeController@index')->name('licensetypes');
+	Route::get('/license-types-search', 'LicenseTypeController@searchLicenseType')->name('licensetypessearch');
 	Route::get('/licensetypes/add', 'LicenseTypeController@AddLicenseType')->name('addLicenseType');
 	Route::post('/licensetypes/add', 'LicenseTypeController@AddLicenseTypePost')->name('addLicenseType');
 	Route::get('/editlicensetypes/{id}', 'LicenseTypeController@EditLicenseType')->name('editlicensetype');
 	Route::post('/editlicensetypes', 'LicenseTypeController@EditLicenseTypePost')->name('updateLicenseTypePost');
 	Route::get('/deletelicensetype/{id}', 'LicenseTypeController@deleteLicenseType')->name('deletelicensetype');
  	Route::get('/license', 'LicenseController@index')->name('licenselist');
+ 	Route::get('/license-search-results', 'LicenseController@licenseSearchResults')->name('searchedlicenselist');
 	Route::get('/license/create', 'LicenseController@create')->name('createlicense');
 	Route::post('/license/create', 'LicenseController@store')->name('createlicensePost');
 	Route::get('/editlicense/{license}', 'LicenseController@EditLicense')->name('editlicense');
@@ -61,7 +65,9 @@ Route::group(['middleware' => ['admin','verified']], function () {
 	Route::get('/license/activated', 'LicenseController@ActivatedLicense')->name('license.activated');
 	//payments routes
 	Route::get('/payment/list', 'PaymentController@index')->name('paymentlist');
+	Route::get('/payment-search', 'PaymentController@paymentSearch')->name('paymentlistsearch');
 	Route::get('/payment/pendinglist', 'PaymentController@pendingCommision')->name('paymentlistpending');
+	Route::get('/commission-pending-search', 'PaymentController@pendingCommisionSearchResults')->name('paymentlistpendingsearchresults');
 	Route::get('/paymentstatus/{id}/{status}', 'PaymentController@edit')->name('paymentstatus');
 	Route::get('/licenseactivation','LicenseController@licenseActivation')->name('licenseactivation');
 
@@ -80,13 +86,16 @@ Route::group(['middleware' => 'user'], function () {
  	
 });
 Route::get('/user/getuseranddevices', 'ClientController@alluseranddevs')->name('a');
+Route::get('/getuseranddevices-search-results', 'ClientController@alluseranddevssearch')->name('getusersearchedresults');
 // Sales Person Routes
 Route::group(['middleware' => 'salesperson'], function () {
 	Route::get('/salesperson/home', 'SalesPersonController@userHome')->name('salesperson.home');
 	Route::get('/salesperson/profile', 'SalesPersonController@manageprofile')->name('salesperson.profile');
 	Route::post('/salesperson/profile', 'SalesPersonController@updateprofile')->name('salesperson.updateprofile');
 	Route::get('/salesperson/license', 'SalesPersonController@LicensesAll')->name('salesperson.license');
+	Route::get('/salesperson', 'SalesPersonController@searchResultsLicensesAll')->name('salesperson.searchresultslicensesall');
 	Route::get('/salesPersons/license/activated', 'SalesPersonController@LicensesActivated')->name('salesperson.activelicense');
+	Route::get('/salesperson-active-license-search-result', 'SalesPersonController@searchResultsLicensesActivated')->name('salesperson.searchresultsactivelicense');
 	Route::get('/salesperson/pending_commision','SalesPersonController@commision_pending')->name('salesperson.pendingcommission');
 	Route::get('/salesperson/total_commision','SalesPersonController@total_commision')->name('salesperson.totalcommision');
 

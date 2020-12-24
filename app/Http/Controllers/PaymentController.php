@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Payment;
 use Illuminate\Http\Request;
+use DB; 
 
 class PaymentController extends Controller
 {
@@ -21,7 +22,42 @@ class PaymentController extends Controller
            ]);
 
     }
+    public function paymentSearch(Request $request){
 
+
+    $query = $request['search'];
+    $formatCheck = 0;
+    if($query == ""){
+      $formatCheck = 1;
+
+     $payments = Payment::with('sales_person','license')->orderByRaw('id DESC')->paginate(10);
+         return view('admin.commission.subviews.commissionlistsearchresults',[
+          'payments'=>$payments,
+          'formatCheck'=>$formatCheck,
+        ]);  
+
+
+
+
+    }else{
+      $formatCheck = 0;
+      
+             $payments= DB::table('payments AS p1')
+                ->join('licenses','licenses.id','p1.license_id')
+                ->Join('users as t1','t1.id','p1.sales_person_id')
+                ->where('p1.is_approved','LIKE','%'.$query.'%')
+                ->orWhere('t1.first_name','LIKE','%'.$query.'%')
+                ->orWhere('t1.last_name','LIKE','%'.$query.'%')
+                ->get();
+                
+               
+            return view('admin.commission.subviews.commissionlistsearchresults',[
+          'payments'=>$payments,
+          'formatCheck'=>$formatCheck,
+        ]); 
+    }
+   
+    }
 
 
     /**
@@ -114,5 +150,37 @@ class PaymentController extends Controller
        return view('admin.commission.commissionlistpending',[
             'payments' => $payments
        ]);
+    }
+    public function pendingCommisionSearchResults(Request $request){
+        $query = $request['search'];
+        $formatCheck = 0;
+        if($query == ""){
+            $formatCheck = 1;
+             $payments = Payment::with('sales_person','license')->where('is_approved','=',0)->orderByRaw('id DESC')->paginate(10);
+             return view('admin.commission.subviews.commissionlistpendingsearchresults',[
+                'formatCheck'=>$formatCheck,
+                'payments'=>$payments,
+             ]);
+        }else{
+            $formatCheck = 0;
+
+            $payments = DB::connection()
+                ->table('payments')
+                ->join('licenses','licenses.id','payments.license_id')
+                ->Join('users', function($join) {
+                    $join->on('users.id', '=', 'payments.sales_person_id');
+                    $join->where('is_approved', '=', '0');
+                })
+                ->where('is_approved','LIKE','%'.$query.'%')
+                ->orWhere('first_name','LIKE','%'.$query.'%')
+                ->orWhere('last_name','LIKE','%'.$query.'%')
+                ->get();
+                return view('admin.commission.subviews.commissionlistpendingsearchresults',[
+                'formatCheck'=>$formatCheck,
+                'payments'=>$payments,
+             ]);
+
+        }
+
     }
 }

@@ -13,6 +13,7 @@ use File;
 use Str;
 use Image;
 use Session;
+use DB;
 
 class AdminController extends Controller
 {
@@ -73,6 +74,43 @@ class AdminController extends Controller
     	$data['users'] = User::with('userrole')->where('is_deleted' ,'0')->where('role','=', 3)->paginate(10);
     	// echo '<pre>'; print_r($data); exit;
     	return view('admin.salespersons',$data);
+    }
+     public function salesPersonsSearch(Request $request){
+        $formatCheck = 0;
+        $query = $request->get('search');
+        if($query == ""){
+            $formatCheck=1;
+            $data['formatCheck'] = $formatCheck;
+       $data['users'] = User::with('userrole')->where('is_deleted' ,'0')->where('role','=', 3)->paginate(10);
+            // echo '<pre>'; print_r($data); exit;
+            return view('admin.subviews.salespersonsearch',$data);
+        }else{
+            $formatCheck=0;
+            $data['formatCheck'] = $formatCheck;
+            $data['users'] = DB::connection()
+                ->table('users AS d1')
+                ->Join('user_roles AS t1', function($join) {
+                    $join->on('t1.id', '=', 'd1.role');
+                    $join->where('t1.id', '=', '3');
+                })->where('email','LIKE','%'.$query.'%')
+                ->orWhere('first_name','LIKE','%'.$query.'%')
+                ->orWhere('last_name','LIKE','%'.$query.'%')
+                ->get();
+   
+/*
+                 $data['users'] = DB::table('users')
+            ->join('user_roles', 'user_roles.id', '=', 3)
+            ->select('users.*','user_roles.role')
+            ->where('email','LIKE','%'.$query.'%')
+            ->orWhere('first_name','LIKE','%'.$query.'%')
+            ->orWhere('last_name','LIKE','%'.$query.'%')
+            ->orWhere('user_roles.role','LIKE','%'.$query.'%')
+             ->get();*/
+             
+              return view('admin.subviews.salespersonsearch',$data);
+        }
+
+     
     }
     public function EditUser($user_id){
     	$data['roles'] = UserRole::all();
@@ -161,5 +199,36 @@ class AdminController extends Controller
 
         Session::flash("success", "User updated successfully");
         return back();
+    }
+    public function searchUsers(Request $request){
+        $formatCheck = 0;
+        $query  = $request['search'];
+        if($query == ""){
+            $formatCheck = 1;
+            $data['formatCheck'] = $formatCheck;
+      $data['users'] = User::with('userrole')
+      ->where('is_deleted' ,'0')
+      ->where('id','<>', Auth::user()->id)
+      ->Paginate(10);
+      // echo '<pre>'; print_r($data); exit;
+        return view('admin.subviews.usersearchresults',$data);
+        }
+        else{
+             $formatCheck = 0;
+             $data['formatCheck'] = $formatCheck;
+             $data['users'] = DB::table('users')
+            ->join('user_roles', 'user_roles.id', '=', 'users.role')
+            ->select('users.*','user_roles.role')
+            ->where('email','LIKE','%'.$query.'%')
+            ->orWhere('first_name','LIKE','%'.$query.'%')
+            ->orWhere('last_name','LIKE','%'.$query.'%')
+            ->orWhere('user_roles.role','LIKE','%'.$query.'%')
+             ->get();
+            
+      // echo '<pre>'; print_r($data); exit;
+        return view('admin.subviews.usersearchresults',$data);
+
+        }
+        
     }
 }

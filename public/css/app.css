@@ -10980,3 +10980,13 @@ float: right;
   position: relative;
   text-align: center;
 }
+.custom_warning{
+  position: relative;
+    left: 106%;
+    width: 128%;
+    top: 6px;
+}
+.custom_para_results{
+  position: relative;
+  text-align: center;
+}

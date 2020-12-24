@@ -211,3 +211,25 @@ this.payment_id = para;
 }
 
 </script>
+<script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', function () {
+    // Your jquery code
+     jQuery.noConflict();
+    jQuery(document).ready(function(){
+ jQuery('#myInput').on('keyup',function(){
+$value=jQuery(this).val();
+jQuery.ajax({
+type : 'get',
+url : '{{URL::to('commission-pending-search')}}',
+data:{'search':$value},
+success:function(data){
+$('tbody').html(data);
+}
+});
+});
+});
+ jQuery.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } }); 
+});
+  
+
+</script>
