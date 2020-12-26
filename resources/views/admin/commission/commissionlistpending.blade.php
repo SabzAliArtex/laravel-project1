@@ -80,6 +80,7 @@ v-on:click=changeStatus({{$payment->id}},{{$payment->is_approved}})
                                            
                                              <a class="response"  v-on:click="changeActiveStatus({{$payment->id}})" href="javascript:void(0)" id="Approved"  > {{ __('Approve') }}  </a> 
 
+
                                            <!-- |
                                           
                                         
@@ -140,6 +141,7 @@ data:{
 },
 methods:{
     changeActiveStatus:function(para){
+        console.log("Inside Change Active Status");
         var t = $('#Approved').text();
         if(t.match("Approve")){
  if(confirm("Do you want to approve?")){
@@ -204,32 +206,68 @@ this.payment_id = para;
         
 
     },
+   
 },
+
 
 
     });
 }
 
-</script>
-<script type="text/javascript">
+
+
   document.addEventListener('DOMContentLoaded', function () {
     // Your jquery code
-     jQuery.noConflict();
+    jQuery.noConflict();
     jQuery(document).ready(function(){
- jQuery('#myInput').on('keyup',function(){
-$value=jQuery(this).val();
-jQuery.ajax({
-type : 'get',
-url : '{{URL::to('commission-pending-search')}}',
-data:{'search':$value},
-success:function(data){
-$('tbody').html(data);
+    jQuery('#myInput').on('keyup',function(){
+    $value=jQuery(this).val();
+    console.log("VAlues: "+ $value);
+    jQuery.ajax({
+    type : 'get',
+    url : '{{URL::to('commission-pending-search')}}',
+    data:{'search':$value},
+    success:function(data){
+    
+    $('tbody').html(data);
+    $(document).ready(function(){
+    $(".Approvedr").click(function(){ 
+    var param = $(this).data('value');
+    console.log("Value: " + param);
+    var t = $('#Approved').text();
+    if(t.match("Approve")){
+    jQuery.ajax({
+    type : 'get',
+    url : '{{URL::to('paymentstatus')}}',
+    data:{'id':param, 'status':t},
+    success:function(data){
+     Swal.fire({
+                confirmButtonColor:'#7a97b3',
+              icon: 'success',
+              title: 'Successful',
+              text: 'Payment Approved!',
+             
+            }).then(function(){
+                  document.location.reload(true); 
+            } );
+}
+});
+    }
+    
+    
+
+
+  });
+});
+
 }
 });
 });
 });
  jQuery.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } }); 
 });
-  
+ 
+ 
+ 
 
 </script>

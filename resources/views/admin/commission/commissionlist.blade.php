@@ -47,12 +47,12 @@
                                         <td  class="ellipsis"> {{ $key+1 }} </td>
                                         <td class="ellipsis"> {{ $payment->license_id }} </td>
                                         <td class="ellipsis">{{$payment->sales_person_id}}</td><td class="ellipsis">{{$payment->commission}}</td>
-                                        <td class="ellipsis" v-if="response_check">@{{this.is_approve_status}}</td>
+                                        
                                         @if($payment->is_approved == 1)
-                                        <td v-if="is_current_result" class="ellipsis ">Approved</td>
+                                        <td  class="ellipsis ">Approved</td>
                                         @else
                                        
-                                        <td v-if="is_current_result" class="ellipsis ">Pending</td>
+                                        <td  class="ellipsis ">Pending</td>
                                         @endif
                                         <td class="ellipsis">{{$payment->sales_person->first_name}}</td>
                                     {{--    <td> 
@@ -113,7 +113,7 @@ v-on:click=changeStatus({{$payment->id}},{{$payment->is_approved}})
 
 </div>
 @endsection
-<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
 
@@ -208,7 +208,7 @@ this.payment_id = para;
     });
 }
 
-</script>
+</script> -->
 <script type="text/javascript">
   document.addEventListener('DOMContentLoaded', function () {
     // Your jquery code

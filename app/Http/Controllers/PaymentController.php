@@ -120,6 +120,32 @@ class PaymentController extends Controller
         
 
     }
+      public function editSearched(Request $request)
+
+    {
+        $id = $request->get('id');
+        $status = $request->get('status');
+      $payments = Payment::find($id);
+        $word = "Approve";
+        $word2 = "Pending";
+        
+        if(strpos($status, $word) !== false){
+            $payments->is_approved = 1;
+            $payments->save();
+            return $payments;
+
+        }
+        if(strpos($status,$word2) !== false){
+            $payments->is_approved = 0;
+            $payments->save();
+            return $payments;
+        }
+        
+        
+            # code...
+        
+
+    }
 
     /**
      * Update the specified resource in storage.
@@ -155,9 +181,10 @@ class PaymentController extends Controller
         $query = $request['search'];
         $formatCheck = 0;
         if($query == ""){
+           // return;
             $formatCheck = 1;
              $payments = Payment::with('sales_person','license')->where('is_approved','=',0)->orderByRaw('id DESC')->paginate(10);
-             return view('admin.commission.subviews.commissionlistpendingsearchresults',[
+            return view('admin.commission.subviews.commissionlistpendingsearchresults',[
                 'formatCheck'=>$formatCheck,
                 'payments'=>$payments,
              ]);
@@ -165,16 +192,18 @@ class PaymentController extends Controller
             $formatCheck = 0;
 
             $payments = DB::connection()
-                ->table('payments')
-                ->join('licenses','licenses.id','payments.license_id')
-                ->Join('users', function($join) {
-                    $join->on('users.id', '=', 'payments.sales_person_id');
+                ->table('payments as p')
+                ->join('licenses as l','l.id','p.license_id')
+                ->Join('users as u', function($join) {
+                    $join->on('u.id', '=', 'p.sales_person_id');
                     $join->where('is_approved', '=', '0');
                 })
-                ->where('is_approved','LIKE','%'.$query.'%')
-                ->orWhere('first_name','LIKE','%'.$query.'%')
-                ->orWhere('last_name','LIKE','%'.$query.'%')
+                ->select('p.*','u.first_name','u.last_name')
+                ->where('p.is_approved','LIKE','%'.$query.'%')
+                ->orWhere('u.first_name','LIKE','%'.$query.'%')
+                ->orWhere('u.last_name','LIKE','%'.$query.'%')
                 ->get();
+                
                 return view('admin.commission.subviews.commissionlistpendingsearchresults',[
                 'formatCheck'=>$formatCheck,
                 'payments'=>$payments,

@@ -64,7 +64,7 @@
                             @endif
                         </tbody>
                     </table>
-                      @include('partials_general/searchalert')
+                      
                     <?php echo $users->render(); ?>
                 </div>
             </div>

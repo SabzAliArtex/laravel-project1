@@ -1,4 +1,4 @@
-@if($formatCheck == 1)
+<div id="paymentStatus">@if($formatCheck == 1)
  @if(count($payments) >0)
                     <table id="tableListing" border="1" style="width:100%;table-layout: fixed;"  class="table table-striped table-responsive-xl ">
                        
@@ -7,17 +7,17 @@
                                 @foreach($payments as $key=> $payment)
                                     <tr>
                                         
-                                        <td  class="ellipsis"> {{ $key+1 }} </td>
-                                        <td class="ellipsis"> {{ $payment->license_id }} </td>
-                                        <td class="ellipsis">{{$payment->sales_person_id}}</td><td class="ellipsis">{{$payment->commission}}</td>
-                                        <td class="ellipsis" v-if="response_check">@{{this.is_approve_status}}</td>
+                                        <td  class=""> {{ $key+1 }} </td>
+                                        <td class=""> {{ $payment->license_id }} </td>
+                                        <td class="">{{$payment->sales_person_id}}</td><td class="">{{$payment->commission}}</td>
+                                        
                                         @if($payment->is_approved == 1)
-                                        <td v-if="is_current_result" class="ellipsis ">Approved</td>
+                                        <td  class=" ">Approved</td>
                                         @else
                                        
-                                        <td v-if="is_current_result" class="ellipsis ">Pending</td>
+                                        <td  class=" ">Pending</td>
                                         @endif
-                                        <td class="ellipsis">{{$payment->sales_person->first_name}}</td>
+                                        <td class="">{{$payment->sales_person->first_name}}</td>
                                     {{--    <td> 
                                             @if($license->license_type && $license->license_type->type == '1' )
                                                 Monthly {{ '('. $license->license_type->price . ')' }}
@@ -77,17 +77,17 @@ v-on:click=changeStatus({{$payment->id}},{{$payment->is_approved}})
                                 @foreach($payments as $key=> $payment)
                                     <tr>
                                         
-                                        <td  class="ellipsis"> {{ $key+1 }} </td>
-                                        <td class="ellipsis"> {{ $payment->license_id }} </td>
-                                        <td class="ellipsis">{{$payment->sales_person_id}}</td><td class="ellipsis">{{$payment->commission}}</td>
-                                        <td class="ellipsis" v-if="response_check">@{{this.is_approve_status}}</td>
+                                        <td  class=""> {{ $key+1 }} </td>
+                                        <td class=""> {{ $payment->license_id }} </td>
+                                        <td class="">{{$payment->sales_person_id}}</td><td class="">{{$payment->commission}}</td>
+                                        
                                         @if($payment->is_approved == 1)
-                                        <td v-if="is_current_result" class="ellipsis ">Approved</td>
+                                        <td  class=" ">Approved</td>
                                         @else
                                        
-                                        <td v-if="is_current_result" class="ellipsis ">Pending</td>
+                                        <td  class=" ">Pending</td>
                                         @endif
-                                        <td class="ellipsis">{{$payment->first_name}}</td>
+                                        <td class="">{{$payment->first_name}}</td>
                                     {{--    <td> 
                                             @if($license->license_type && $license->license_type->type == '1' )
                                                 Monthly {{ '('. $license->license_type->price . ')' }}
@@ -135,6 +135,7 @@ v-on:click=changeStatus({{$payment->id}},{{$payment->is_approved}})
                     
                     <div></div>
                     @else
-                    <p> *nothing found</p>
+                   <div class="alert alert-danger custom_warning_payment" role="alert"><p class="custom_para_results">No Results for your search*</p></div>
                     @endif
 @endif
+

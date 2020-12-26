@@ -69,6 +69,7 @@ Route::group(['middleware' => ['admin','verified']], function () {
 	Route::get('/payment/pendinglist', 'PaymentController@pendingCommision')->name('paymentlistpending');
 	Route::get('/commission-pending-search', 'PaymentController@pendingCommisionSearchResults')->name('paymentlistpendingsearchresults');
 	Route::get('/paymentstatus/{id}/{status}', 'PaymentController@edit')->name('paymentstatus');
+	Route::get('/paymentstatus', 'PaymentController@editSearched')->name('paymentstatussearched');
 	Route::get('/licenseactivation','LicenseController@licenseActivation')->name('licenseactivation');
 
 });

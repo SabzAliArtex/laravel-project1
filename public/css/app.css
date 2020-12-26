@@ -10990,3 +10990,44 @@ float: right;
   position: relative;
   text-align: center;
 }
+.custom_user_search{
+  left: 82%;
+    top: 10px;
+    position: relative;
+}
+.custom_warning_license{
+  position: relative;
+    left: 182%;
+    top: 10px;
+    width: 400%;
+}
+.custom_warning_payment{
+    position: relative;
+    left: 104%;
+    top: 10px;
+    width: 400%;
+}
+.custom_warning_pending_commission{
+      position: relative;
+    left: 115%;
+    width: 500%;
+    top: 6px;
+}
+.custom_warning_userdevs{
+    position: relative;
+    left: 100%;
+    width: 260%;
+    top: 6px;
+}
+.custom_warning_salesperson_activated{
+ position: relative;
+    left: 166%;
+    width: 246%;
+    top: 6px;
+}
+.custom_warning_license_sp{
+ position: relative;
+    left: 101%;
+    width: 193%;
+    top: 6px;
+}

@@ -81,7 +81,7 @@
                     
                     
                     @else
-                       <div class="alert alert-danger custom_warning" role="alert"><p class="custom_para_results">No Results for your search*</p></div>
+                       <div class="alert alert-danger custom_warning_license" role="alert"><p class="custom_para_results">No Results for your search*</p></div>
                     @endif
 
 

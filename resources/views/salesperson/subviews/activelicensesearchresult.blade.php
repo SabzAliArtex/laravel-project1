@@ -28,7 +28,7 @@
                     </table>
                     {{$licenses->render()}}
                     @else
-                    <div class="alert alert-danger custom_warning" role="alert"><p class="custom_para_results">No Results for your search*</p></div>
+                    <div class="alert alert-danger custom_warning_salesperson_activated" role="alert"><p class="custom_para_results">No Results for your search*</p></div>
                     @endif 
 
  @else
@@ -44,7 +44,7 @@
                                             @if($license->license_type && $license->license_type->type == '1' )
                                                 Monthly {{ '('. $license->license_type->price . ')' }}
                                             @elseif ($license->license_type &&  $license->license_type->type == '2' )
-                                                Yearly {{ '('. $license->license_type->price . ')' }}
+                                                Yearly {{ '('. $license->license_type->price . ')'  }}
                                             @elseif ($license->license_type &&  $license->license_type->type == '3' )
                                                 Life time {{ '('. $license->license_type->price . ')' }}
                                             @endif      

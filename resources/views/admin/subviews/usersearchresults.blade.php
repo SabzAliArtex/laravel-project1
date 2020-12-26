@@ -30,12 +30,11 @@
                             @endif
                         </tbody>
                     </table>
-                    <?php echo $users->render(); ?>
+                    
                     @else
-<table id="tableListing" border="1"  class="table table-striped table-responsive-xl">
-                       
-                        <tbody>
-                            @if($users)
+                    <table>
+                                <tbody>
+                         @if(count($users)>0)
                                 @foreach($users as $key=> $user)
 
                              <tr>
@@ -45,7 +44,7 @@
                                         <td> {{ $user->role }} </td>
                                         <td> {{ $user->is_active == 1 ? 'Active' : 'Inactive' }} </td>
                                         
-                                        <td >
+                                        <td>
                                         
                                             @if($user->role == "Sales Person")
                                             <a href="{{ route('editsalesperson',['id'=>$user->id]) }}"> {{ __('Edit') }}  </a >  
@@ -60,11 +59,14 @@
 
                                     </tr>
                                 @endforeach
-
-
-                            @endif
-
-                        </tbody>
-                    </table>
+                            @else
+                            
+                            <div class="alert alert-danger custom_user_search"  role="alert"><p class="custom_para_results">No Results for your search*</p></div>
+                              @endif
+                                
+                         </tbody>
+                         </table>
+                         
                     
-                    @endif
+                      @endif
+                  
