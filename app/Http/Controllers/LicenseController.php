@@ -14,6 +14,7 @@ use Auth;
 use DB;
 use Notification;
 use App\Notifications\TrialActivated;
+use App\Notifications\LicenseExpired;
 class LicenseController extends Controller
 {
     /**
@@ -287,17 +288,23 @@ class LicenseController extends Controller
   }
 }
 public function trialActivation($loggeduserid,$license_key){
-    $response = array();
+  
+      $response = array();
       $response['message'] = "";
       $token = rand();
       $userPerson = User::where([['id',$loggeduserid]])->first();
       if(isset($userPerson)){
-      if($userPerson->role == 3){
+      if($userPerson->role == 2){
       $licenseTrial = License::where('license','=',$license_key)->first();
       if(isset($licenseTrial)){
       $licenseTrial->trial_activated_at =  date("Y-m-d H:i:s");
       $licenseTrial->save();
-      Notification::send($userPerson,new TrialActivated($userPerson, $token));
+      
+      $sales_person = User::find($licenseTrial->sales_person_id);
+
+
+      /* sending email -- uncomment if email functionality needed
+      Notification::send($sales_person,new TrialActivated($sales_person, $token));*/
 
       $response['message']  = "Trial Period Activated";
       return json_encode($response);
@@ -307,14 +314,24 @@ public function trialActivation($loggeduserid,$license_key){
             }
                                 }
       }else{
-    $response['message'] = "Invalid Person";
-    return json_encode($response);
+      $response['message'] = "Invalid Person";
+      return json_encode($response);
            }
        }
-public function userTrialExpire(){
-  
 
+public function userTrialExpire($license_key){
+      $token = rand();
+      $license =License::where('license','=',$license_key)->first();
+      $trialDate = $license->trial_activated_at;
+      $expire = strtotime($trialDate. ' + 30 days');
+      $today = strtotime("today midnight");
+      $sales_person = User::find($license->sales_person_id);
+      
+      if($today>=$expire){
+          
+        Notification::send($sales_person,new LicenseExpired($sales_person,$token));
+          
 
        }
     
-}    
+}    }
