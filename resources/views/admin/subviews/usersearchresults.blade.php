@@ -31,8 +31,9 @@
                         </tbody>
                     </table>
                     
-                    @else
-                    <table>
+ @else
+                    <table id="tableListing"   class="table table-striped table-responsive" >
+                         
                                 <tbody>
                          @if(count($users)>0)
                                 @foreach($users as $key=> $user)
@@ -60,8 +61,9 @@
                                     </tr>
                                 @endforeach
                             @else
-                            
-                            <div class="alert alert-danger custom_user_search"  role="alert"><p class="custom_para_results">No Results for your search*</p></div>
+                            <tr><div class="alert alert-danger custom_user_search"  role="alert"><p class="custom_para_results">No Results for your search*</p></div></tr>
+                        
+                           
                               @endif
                                 
                          </tbody>

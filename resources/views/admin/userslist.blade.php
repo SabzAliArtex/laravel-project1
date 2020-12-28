@@ -22,9 +22,9 @@
                 <div class="card-header"><span class="custom-card-header-span">{{ __('Users List') }}</span> <a href="{{ route('AddUser') }}" class="btn btn-info btn-md button-add border border-light  " >
           <i class="fas fa-plus"></i>Add User
         </a></div>
-                <div class="card-body">
+                <div class="card-body" id="card-check">
                 @include('partials_general/searchbar')
-                   <table id="tableListing" border="1"  class="table table-striped table-responsive-xl">
+                   <table id="tableListing" rules="none" border="1" width="100%"  class="table table-striped table-responsive">
                         <thead class="thead-dark">
                             <tr>
                                 <th> {{ __('Sr no') }} </th> 
@@ -32,7 +32,7 @@
                                 <th> {{ __('Email') }} </th> 
                                 <th> {{ __('Role') }} </th> 
                                 <th> {{ __('Status') }} </th> 
-                                <th> {{ __('Actions') }} </th> 
+                                <th colspan="2">  {{ __('Actions') }} </th> 
                             </tr>
                         </thead>
                         <tbody>
@@ -59,7 +59,8 @@
 
                                     </tr>
                                 @endforeach
-
+                                @else
+                              <tr> No Records Found*</tr> 
 
                             @endif
                         </tbody>
@@ -74,24 +75,25 @@
 @endsection
 
 <script type="text/javascript">
-  document.addEventListener('DOMContentLoaded', function () {
-    // Your jquery code
-     jQuery.noConflict();
-    jQuery(document).ready(function(){
- jQuery('#myInput').on('keyup',function(){
-$value=jQuery(this).val();
-jQuery.ajax({
-type : 'get',
-url : '{{URL::to('users-search-results')}}',
-data:{'search':$value},
-success:function(data){
-$('tbody').html(data);
-}
-});
-});
-});
- jQuery.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } }); 
-});
-  
+        document.addEventListener('DOMContentLoaded', function () {
+        jQuery.noConflict();
+        jQuery(document).ready(function(){
+        jQuery('#myInput').on('keyup',function(){
+        $value=jQuery(this).val();
+        jQuery.ajax({
+        type : 'get',
+        url : '{{URL::to('users-search-results')}}',
+        data:{'search':$value},
+        success:function(data){
+        $('tbody').html(data);
+        
+        /*document.getElementById("tableListing").style.border = '0px solid black';*/
+        }
+        });
+        });
+        });
+         jQuery.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } }); 
+        });
+          
 
 </script>

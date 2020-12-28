@@ -108,7 +108,8 @@ Route::group(['middleware' => 'salesperson'], function () {
 //License and trial Activation Routes
 
 Route::get('activate/license/{user_id}/{license_key}/{dev_id}/{dev_os}/{dev_name}','LicenseController@licenseActivation');
-Route::get('activate/trial/{user_id}/{license_key}','LicenseController@trialActivation');
+Route::get('activate/trial/{loggeduserid}/{license_key}','LicenseController@trialActivation')->name('trialactivated');
+
 
 /*License Activation Routes End*/
 
@@ -118,3 +119,10 @@ Route::get('mail', function () {
     return (new App\Notifications\VerifyAccount($user,$token))
                 ->toMail($user);
 });
+/*Route::get('trialmail', function () {
+    $user = App\User::find(42);
+    
+    $token = '321456987';
+    return (new App\Notifications\TrialActivated($user,$token))
+                ->toMail($user);
+});*/

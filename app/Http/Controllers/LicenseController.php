@@ -12,6 +12,8 @@ use Session;
 use Carbon\Carbon;
 use Auth;
 use DB;
+use Notification;
+use App\Notifications\TrialActivated;
 class LicenseController extends Controller
 {
     /**
@@ -284,16 +286,19 @@ class LicenseController extends Controller
     return json_encode($response);
   }
 }
-public function trialActivation($user_id,$license_key){
+public function trialActivation($loggeduserid,$license_key){
     $response = array();
       $response['message'] = "";
-      $userPerson = User::where([['id',$user_id]])->first();
+      $token = rand();
+      $userPerson = User::where([['id',$loggeduserid]])->first();
       if(isset($userPerson)){
-      if($userPerson->role == 2){
+      if($userPerson->role == 3){
       $licenseTrial = License::where('license','=',$license_key)->first();
       if(isset($licenseTrial)){
       $licenseTrial->trial_activated_at =  date("Y-m-d H:i:s");
       $licenseTrial->save();
+      Notification::send($userPerson,new TrialActivated($userPerson, $token));
+
       $response['message']  = "Trial Period Activated";
       return json_encode($response);
       }else{
@@ -305,6 +310,11 @@ public function trialActivation($user_id,$license_key){
     $response['message'] = "Invalid Person";
     return json_encode($response);
            }
+       }
+public function userTrialExpire(){
+  
+
+
        }
     
 }    
