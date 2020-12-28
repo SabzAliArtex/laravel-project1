@@ -26,11 +26,11 @@
                 <div class="card-body">
                     @include('partials_general/searchbar')
                     @if(count($payments) >0)
-                    <table id="tableListing" border="1" style="width:100%;table-layout: fixed;"  class="table table-striped table-responsive-xl ">
+                    <table id="tableListing" border="1" style="width:100%;table-layout: fixed;"  class="table table-striped table-responsive">
                         <thead class="thead-dark">
                             <tr>
-                                <th class="ellipsis"> {{ __('Sr no') }} </th> 
-                                <th class="ellipsis"> {{ __('License Id') }} </th> 
+                                <th  class="ellipsis"> {{ __('Sr no') }} </th> 
+                                <th id="thn" class="ellipsis"> {{ __('License Id') }} </th> 
                                 <th class="ellipsis"> {{ __('Sales Person Id') }} </th>
                                 <th class="ellipsis"> {{ __('Commission') }} </th> 
                                 <th class="ellipsis"> {{ __('Status') }} </th> 

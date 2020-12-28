@@ -28,7 +28,7 @@
                         <thead class="thead-dark">
                             <tr>
                                 <th> {{ __('Sr no') }} </th> 
-                                <th> {{ __('Name') }} </th> 
+                                <th id="thname"> {{ __('Name') }} </th> 
                                 <th> {{ __('Email') }} </th> 
                                 <th> {{ __('Comission') }} </th> 
                                 <th> {{ __('Role') }} </th> 
@@ -78,6 +78,7 @@ url : '{{URL::to('sales-persons-search')}}',
 data:{'search':$value},
 success:function(data){
 $('tbody').html(data);
+document.getElementById("thname").style.width="1%";
 }
 });
 });

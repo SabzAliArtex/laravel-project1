@@ -26,13 +26,19 @@
                 @include('partials_general/searchbar')
                    <table id="tableListing" rules="none" border="1" width="100%"  class="table table-striped table-responsive">
                         <thead class="thead-dark">
-                            <tr>
+                            <tr id="pRow">
                                 <th> {{ __('Sr no') }} </th> 
-                                <th> {{ __('Name') }} </th> 
+                                <th id="thname"> {{ __('Name') }} </th> 
                                 <th> {{ __('Email') }} </th> 
                                 <th> {{ __('Role') }} </th> 
                                 <th> {{ __('Status') }} </th> 
                                 <th colspan="2">  {{ __('Actions') }} </th> 
+                             
+                                
+                                
+                                
+                                
+
                             </tr>
                         </thead>
                         <tbody>
@@ -86,8 +92,9 @@
         data:{'search':$value},
         success:function(data){
         $('tbody').html(data);
+        document.getElementById("thname").style.width="1%";
+
         
-        /*document.getElementById("tableListing").style.border = '0px solid black';*/
         }
         });
         });
