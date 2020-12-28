@@ -326,10 +326,12 @@ public function userTrialExpire($license_key){
       $expire = strtotime($trialDate. ' + 30 days');
       $today = strtotime("today midnight");
       $sales_person = User::find($license->sales_person_id);
+      $user_license = User::find($license->user_id);
       
-      if($today>=$expire){
-          
+      if($today<=$expire){
+          echo 1;
         Notification::send($sales_person,new LicenseExpired($sales_person,$token));
+        Notification::send($user_license,new LicenseExpired($user_license,$token));
           
 
        }
