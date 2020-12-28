@@ -24,21 +24,15 @@
         </a></div>
                 <div class="card-body" id="card-check">
                 @include('partials_general/searchbar')
-                   <table id="tableListing" rules="none" border="1" width="100%"  class="table table-striped table-responsive">
+                   <table id="tableListing"  border="1" width="100%"  class="table table-striped table-responsive">
                         <thead class="thead-dark">
                             <tr id="pRow">
                                 <th> {{ __('Sr no') }} </th> 
                                 <th id="thname"> {{ __('Name') }} </th> 
-                                <th> {{ __('Email') }} </th> 
+                                <th style="width: 1% !important;"> {{ __('Email') }} </th> 
                                 <th> {{ __('Role') }} </th> 
                                 <th> {{ __('Status') }} </th> 
                                 <th colspan="2">  {{ __('Actions') }} </th> 
-                             
-                                
-                                
-                                
-                                
-
                             </tr>
                         </thead>
                         <tbody>
@@ -71,8 +65,7 @@
                             @endif
                         </tbody>
                     </table>
-                      
-                    <?php echo $users->render(); ?>
+                            <?php echo $users->render(); ?>
                 </div>
             </div>
         </div>

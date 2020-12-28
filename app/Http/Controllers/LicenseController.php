@@ -15,6 +15,7 @@ use DB;
 use Notification;
 use App\Notifications\TrialActivated;
 use App\Notifications\LicenseExpired;
+use App\Notifications\CreateLicenseUser;
 class LicenseController extends Controller
 {
     /**
@@ -336,4 +337,16 @@ public function userTrialExpire($license_key){
 
        }
     
-}    }
+}
+
+
+public function createLicenseUser(Request $request)
+{     $token = rand();
+      $license_key = generate_license_key();
+      $user = User::find($request->get('user'));
+      Notification::send($user,new CreateLicenseUser($user,$license_key));
+      
+} 
+
+
+    }

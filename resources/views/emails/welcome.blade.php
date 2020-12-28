@@ -23,7 +23,7 @@
     </p>
 
     <p>
-        <a href="{{ $url }}"> Verify </a>
+        <a href="{{ $url }}" style="color: #0099CC;background-color: transparent;border: 2px solid #0099CC;border-radius: 5px;text-transform: uppercase;"> Verify </a>
     </p>
     <br>
     <br>    

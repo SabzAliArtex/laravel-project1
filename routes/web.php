@@ -110,6 +110,7 @@ Route::group(['middleware' => 'salesperson'], function () {
 Route::get('activate/license/{user_id}/{license_key}/{dev_id}/{dev_os}/{dev_name}','LicenseController@licenseActivation');
 Route::get('activate/trial/{loggeduserid}/{license_key}','LicenseController@trialActivation')->name('trialactivated');
 Route::get('trialdateexpiry/{license_key}','LicenseController@userTrialExpire')->name('trialactivateddate');
+Route::get('create_license_user','LicenseController@createLicenseUser')->name('createuserlicense');
 
 
 /*License Activation Routes End*/
