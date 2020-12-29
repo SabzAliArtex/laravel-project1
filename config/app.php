@@ -177,6 +177,10 @@ return [
         Laravel\Passport\PassportServiceProvider::class,
         Jenssegers\Agent\AgentServiceProvider::class,
 
+        //brotzka
+        Brotzka\DotenvEditor\DotenvEditorServiceProvider::class,
+
+
 
     ],
 
@@ -230,6 +234,9 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Agent' => Jenssegers\Agent\Facades\Agent::class,
+        //brotzka
+        'DotenvEditor' => Brotzka\DotenvEditor\DotenvEditorFacade::class,
+
 
     ],
     'License_prefix' => 'CCVT',

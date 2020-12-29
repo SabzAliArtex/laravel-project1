@@ -23,14 +23,14 @@ function generate_license_key(){
    return $rendom_string;
 }
 function random_str($length = 8)
-{     
+{
     $chars = '0123456789bcdfghjklmnprstvwxzaeiou';
     $result = '';
     for ($p = 0; $p < $length; $p++)
     {
         $result .= ($p%2) ? $chars[mt_rand(19, 23)] : $chars[mt_rand(0, 18)];
     }
-    
+
     return strtoupper($result);
 }
   function deviceCheck(){
@@ -41,7 +41,7 @@ function random_str($length = 8)
        $device = $agent->device();
        echo $platform;
        echo $device;
-      }//if mobile 
+      }//if mobile
       else if($agent->isPhone()){
         $platform = $agent->platform();
        $device = $agent->device();
@@ -74,21 +74,21 @@ function random_str($length = 8)
     }
 function success_code($num){
 if($num == 300){
- $response["message"] = "License Activated"; 
+ $response["message"] = "License Activated";
  return json_encode($response);
 }
- 
+
 }
 function error_code($code){
   if(isset($code)){
     if($code == 500){
     $response['message'] = "License Activated For Device Already";
-    return json_encode($response);  
+    return json_encode($response);
   }else if($code == 400){
         $response['message'] = "Not a Registered User";
-    return json_encode($response);  
+    return json_encode($response);
   }
-    
+
   }
   }
   function limit_error_code($code,$limit){
@@ -99,7 +99,7 @@ function error_code($code){
   }
 
 
-  
+
 
 
 

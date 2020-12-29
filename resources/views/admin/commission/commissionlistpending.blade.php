@@ -22,7 +22,7 @@
         @include('partials_admin/sidebar')
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('License List') }}</div>
+                <div class="card-header">{{ __('Commissions Pending') }}</div>
                 <div class="card-body">
                     <div class="row custom_row_position ">
                         <div class="col-md-12 input-group mb-3">

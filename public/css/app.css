@@ -10947,6 +10947,13 @@ a.text-dark:focus {
     position: relative;
 
 }
+.custom-card-header-span-settings{
+    background-color: #7a97b3;
+    color: white;
+    font-weight: bold;
+    position: relative;
+
+}
 .action_header{
   position: relative;
   text-align: center;

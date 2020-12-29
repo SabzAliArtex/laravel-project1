@@ -24,7 +24,7 @@ Auth::routes(['verify'=>true]);
 Route::get('/login', 'BasicAuthController@login')->name('login');
 // Route::get('/verify', 'BasicAuthController@verify')->name('verify');
 // Route::post('/verify', 'BasicAuthController@verifyPost')->name('verify');
-// Route::post('/register', 'BasicAuthController@registerpost')->name('register');   
+// Route::post('/register', 'BasicAuthController@registerpost')->name('register');
 Route::post('/login', 'BasicAuthController@loginpost')->name('login');
 
 
@@ -84,7 +84,7 @@ Route::group(['middleware' => 'user'], function () {
  	Route::get('/user/deactivatedevice/{id}', 'ClientController@deactivateDevice')->name('user.deactivateuserdevice');
  		Route::get('/user/activatedevice/{id}', 'ClientController@activateDevice')->name('user.activateuserdevice');
  	Route::get('/user/getuserdetails/{id}', 'ClientController@LicensesActivated')->name('user.licenselistcomplete');
- 	
+
 });
 Route::get('/user/getuseranddevices', 'ClientController@alluseranddevs')->name('a');
 Route::get('/getuseranddevices-search-results', 'ClientController@alluseranddevssearch')->name('getusersearchedresults');
@@ -102,8 +102,8 @@ Route::group(['middleware' => 'salesperson'], function () {
 
 
 });
-	
-	
+
+
 
 //License and trial Activation Routes
 
@@ -111,7 +111,10 @@ Route::get('activate/license/{user_id}/{license_key}/{dev_id}/{dev_os}/{dev_name
 Route::get('activate/trial/{loggeduserid}/{license_key}','LicenseController@trialActivation')->name('trialactivated');
 Route::get('trialdateexpiry/{license_key}','LicenseController@userTrialExpire')->name('trialactivateddate');
 Route::get('create_license_user','LicenseController@createLicenseUser')->name('createuserlicense');
-
+/*Settings Routes*/
+Route::get('setting','SettingController@index')->name('settings');
+Route::get('edit/setting/{id}','SettingController@edit')->name('editsettings');
+Route::post('editappsettings','SettingController@update')->name('editappsettings');
 
 /*License Activation Routes End*/
 
