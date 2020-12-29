@@ -15,24 +15,26 @@
                     {{ session('error') }}
                 </div>
             @endif
-        </div>  
+        </div>
         @include('partials_admin/sidebar')
+
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header"><span class="custom-card-header-span">{{ __('Users List') }}</span> <a href="{{ route('AddUser') }}" class="btn btn-info btn-md button-add border border-light  " >
           <i class="fas fa-plus"></i>Add User
         </a></div>
                 <div class="card-body" id="card-check">
-                @include('partials_general/searchbar')
+
+                    @include('partials_general/searchbar')
                    <table id="tableListing"  border="1" width="100%"  class="table table-striped table-responsive">
                         <thead class="thead-dark">
                             <tr id="pRow">
-                                <th> {{ __('Sr no') }} </th> 
-                                <th id="thname"> {{ __('Name') }} </th> 
-                                <th style="width: 1% !important;"> {{ __('Email') }} </th> 
-                                <th> {{ __('Role') }} </th> 
-                                <th> {{ __('Status') }} </th> 
-                                <th colspan="2">  {{ __('Actions') }} </th> 
+                                <th> {{ __('Sr no') }} </th>
+                                <th id="thname"> {{ __('Name') }} </th>
+                                <th style="width: 1% !important;"> {{ __('Email') }} </th>
+                                <th> {{ __('Role') }} </th>
+                                <th> {{ __('Status') }} </th>
+                                <th colspan="2">  {{ __('Actions') }} </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -45,22 +47,22 @@
                                         <td> {{ $user->userrole->role }} </td>
                                         <td> {{ $user->is_active == 1 ? 'Active' : 'Inactive' }} </td>
                                         <td >
-                                        
+
                                             @if($user->role == 3)
-                                            <a href="{{ route('editsalesperson',['id'=>$user->id]) }}"> {{ __('Edit') }}  </a >  
-                                             @else 
+                                            <a href="{{ route('editsalesperson',['id'=>$user->id]) }}"> {{ __('Edit') }}  </a >
+                                             @else
                                                 <a href="{{ route('edituser',['id'=>$user->id]) }}"> {{ __('Edit') }}  </a>
-                                            
+
                                             @endif
                                             |
                                             <a href="{{ route('deleteuser',['id'=>$user->id]) }}" onclick="return confirm('Are you sure.')"> {{ __('Delete') }}  </a>
-                                            
+
                                         </td>
 
                                     </tr>
                                 @endforeach
                                 @else
-                              <tr> No Records Found*</tr> 
+                              <tr> No Records Found*</tr>
 
                             @endif
                         </tbody>
@@ -87,13 +89,38 @@
         $('tbody').html(data);
         document.getElementById("thname").style.width="1%";
 
-        
+
         }
         });
         });
         });
-         jQuery.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } }); 
+         jQuery.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
         });
-          
+
+
+</script>
+<script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+        jQuery.noConflict();
+        jQuery(document).ready(function(){
+        jQuery('.search-filter').on('change',function(){
+        $value=jQuery(this).val();
+        console.log($value);
+        jQuery.ajax({
+        type : 'get',
+        url : '{{URL::to('users-search-results')}}',
+        data:{'search':$value},
+        success:function(data){
+        $('tbody').html(data);
+        document.getElementById("thname").style.width="1%";
+
+
+        }
+        });
+        });
+        });
+         jQuery.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
+        });
+
 
 </script>

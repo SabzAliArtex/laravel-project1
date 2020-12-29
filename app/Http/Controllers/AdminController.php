@@ -22,7 +22,7 @@ class AdminController extends Controller
         return view('admin.profile');
     }
     public function updateprofile(Request $get){
-        
+
         $user = User::find($get->id);
         $this->validate($get, [
             "first_name" => "required",
@@ -39,20 +39,20 @@ class AdminController extends Controller
             $this->validate($get, [
                 "thumb" => "mimes:png,jpg,jpeg"
             ],[
-                "thumb.mimes" => "Please upload png or jpg format" 
+                "thumb.mimes" => "Please upload png or jpg format"
             ]);
             if(File::exists($user->thumb)){
                 File::delete($user->thumb);
             }
             $path = 'files/upload/admin/';
-            
+
             $thumb = $get->file('thumb');
             $image = Str::slug($user->name).rand(12345678,98765432).'.'.$thumb->getClientOriginalExtension();
             if (!file_exists($path)) {
                 mkdir($path, 666, true);
             }
             Image::make($thumb)->resize(300,300)->save($path.$user->first_name.'_'.$image);
-            
+
             $user->thumb = $path.$user->first_name.'_'.$image;
             $user->save();
         }
@@ -65,8 +65,9 @@ class AdminController extends Controller
     }
     public function Users(){
         $data['users'] = User::with('userrole')->where('is_deleted' ,'0')->where('id','<>', Auth::user()->id)->Paginate('10');
-        
-        
+        $data['users_sales'] = User::where('role','=',3)->where('is_deleted' ,'0')->where('id','<>', Auth::user()->id)->Paginate('10');
+
+
     	// echo '<pre>'; print_r($data); exit;
     	return view('admin.userslist',$data);
     }
@@ -96,7 +97,7 @@ class AdminController extends Controller
                 ->orWhere('first_name','LIKE','%'.$query.'%')
                 ->orWhere('last_name','LIKE','%'.$query.'%')
                 ->get();
-   
+
 /*
                  $data['users'] = DB::table('users')
             ->join('user_roles', 'user_roles.id', '=', 3)
@@ -106,16 +107,16 @@ class AdminController extends Controller
             ->orWhere('last_name','LIKE','%'.$query.'%')
             ->orWhere('user_roles.role','LIKE','%'.$query.'%')
              ->get();*/
-             
+
               return view('admin.subviews.salespersonsearch',$data);
         }
 
-     
+
     }
     public function EditUser($user_id){
     	$data['roles'] = UserRole::all();
         $data['user'] = User::with('userrole')->find($user_id);
-        
+
     	return view('admin.edituser',$data);
     }
     public function EditSalesPerson($user_id){
@@ -125,7 +126,7 @@ class AdminController extends Controller
     }
     public function DeleteUser($user_id){
     	$user = User::find($user_id);
-    	
+
     	$user->is_deleted = 1;
     	$user->save();
     	Session::flash("success", "User has been deleted!");
@@ -224,11 +225,11 @@ class AdminController extends Controller
             ->orWhere('last_name','LIKE','%'.$query.'%')
             ->orWhere('user_roles.role','LIKE','%'.$query.'%')
              ->get();
-            
+
       // echo '<pre>'; print_r($data); exit;
         return view('admin.subviews.usersearchresults',$data);
 
         }
-        
+
     }
 }

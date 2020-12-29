@@ -25,7 +25,7 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <style type="text/css">
-        
+
 .example {
   background-color: #eee;
   width: 200px;
@@ -60,10 +60,10 @@
                             $route = 'salesperson.home';
                     @endphp
                 @else
-                    @php 
-                        $route = 'welcome'; 
-                    @endphp  
-                @endauth    
+                    @php
+                        $route = 'welcome';
+                    @endphp
+                @endauth
                 <a class="navbar-brand" href="{{ route($route) }}">
                     {{ config('app.name', 'Laravel') }}
                 </a>
@@ -132,6 +132,7 @@
     </div>
 </body>
 </html>
+
 <!-- use later if we want to filter records in a table
 <script>
 function myFunction() {
