@@ -12,20 +12,28 @@ class SettingsSeeder extends Seeder
      */
     public function run()
     {
-
-            $appenv = config('settings.APP_ENV');
-            $appkey = config('settings.APP_KEY');
             $appname = config('settings.APP_NAME');
-            $appurl = config('settings.APP_URL');
-            $appdebug = config('settings.APP_DEBUG');
+            $mailmailer = config('settings.MAIL_MAILER');
+            $mailhost = config('settings.MAIL_HOST');
+            $mailport = config('settings.MAIL_PORT');
+            $mailusername = config('settings.MAIL_USERNAME');
+            $mailpassword = config('settings.MAIL_PASSWORD');
+            $mailencryption = config('settings.MAIL_ENCRYPTION');
+            $mailfrom = config('settings.MAIL_FROM_ADDRESS');
+            $mailfromname = config('settings.MAIL_FROM_NAME');
 
         //
         DB::table('settings')->insert([
             'app_name' => $appname,
-            'app_key' => $appkey,
-            'app_env' => $appenv,
-            'app_url' => $appurl,
-            'app_debug' => $appdebug,
+
+        'mail_mailer'=>$mailmailer,
+        'mail_host'=>$mailhost,
+        'mail_port'=>$mailport,
+        'mail_username'=>$mailusername,
+        'mail_password'=>$mailpassword,
+        'mail_enc'=>$mailencryption,
+        'mail_fromAddress'=>$mailfrom,
+        'mail_fromName'=>$mailfromname,
             'created_at' => date("Y-m-d H:i:s"),
             'updated_at' => date("Y-m-d H:i:s"),
 

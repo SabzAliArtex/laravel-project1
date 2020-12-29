@@ -34,10 +34,13 @@
                             <tr id="pRow">
                                 <th> {{ __('Sr no') }} </th>
                                 <th id="thname"> {{ __('App Name') }} </th>
-                                <th style="width: 1% !important;"> {{ __('App Env') }} </th>
-                                <th> {{ __('App URL') }} </th>
-                                <th> {{ __('App Key') }} </th>
-                                <th> {{ __('App DEBUG') }} </th>
+                                <th style="width: 1% !important;"> {{ __('Mailer') }} </th>
+                                <th> {{ __('Host') }} </th>
+                                <th> {{ __('Port') }} </th>
+                                <th> {{ __('Username') }} </th>
+                                <th> {{ __('Encryption') }} </th>
+                                <th> {{ __('From ') }} </th>
+                                <th> {{ __('Username') }} </th>
                                 <th colspan="2">  {{ __('Actions') }} </th>
                             </tr>
                             </thead>
@@ -47,10 +50,14 @@
                                 @foreach($settings as $key=> $row)
                                 <td>{{$key + 1}}</td>
                                 <td>{{$row->app_name}}</td>
-                                <td>{{$row->app_env}}</td>
-                                <td>{{$row->app_url}}</td>
-                                <td>{{$row->app_key}}</td>
-                                <td>{{$row->app_debug}}</td>
+                                <td>{{$row->mail_mailer}}</td>
+                                <td>{{$row->mail_host}}</td>
+                                <td>{{$row->mail_port}}</td>
+                                <td>{{$row->mail_username}}</td>
+                                <td>{{$row->mail_enc}}</td>
+                                <td>{{$row->mail_fromAddress}}</td>
+                                <td>{{$row->mail_fromName}}</td>
+
                                 <td><a class="btn btn-default btn-dark btn-md" href="{{route('editsettings',['id'=>$row->id])}}"><i class="fa fa-pencil"> Edit</i></a></td>
                             </tr>
                             @endforeach

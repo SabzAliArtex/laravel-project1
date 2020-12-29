@@ -51,10 +51,10 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('App URL') }}</label>
+                                <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Mailer') }}</label>
 
                                 <div class="col-md-6">
-                                    <input type="text" name="app_url" class="form-control" autocomplete="0" required value="{{$settings->app_url}}" >
+                                    <input type="text" name="app_url" class="form-control" autocomplete="0" required value="{{$settings->mail_mailer}}" >
                                     @error('app_url')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -63,10 +63,10 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('App ENV') }}</label>
+                                <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Host') }}</label>
 
                                 <div class="col-md-6">
-                                    <input type="text" name="app_env" class="form-control" autocomplete="0" required value="{{$settings->app_env}}" >
+                                    <input type="text" name="app_env" class="form-control" autocomplete="0" required value="{{$settings->mail_host}}" >
                                     @error('app_env')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -75,10 +75,10 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('App KEY') }}</label>
+                                <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('PORT') }}</label>
 
                                 <div class="col-md-6">
-                                    <input type="text" name="app_key" class="form-control" autocomplete="0" required value="{{$settings->app_key}}" >
+                                    <input type="text" name="app_key" class="form-control" autocomplete="0" required value="{{$settings->mail_port}}" >
                                     @error('app_key')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -87,10 +87,46 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('App DEBUG') }}</label>
+                                <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Mail Username') }}</label>
 
                                 <div class="col-md-6">
-                                    <input type="text" name="app_debug" class="form-control" autocomplete="0" required value="{{$settings->app_debug}}" >
+                                    <input type="text" name="app_debug" class="form-control" autocomplete="0" required value="{{$settings->mail_username}}" >
+                                    @error('app_debug')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Mail Encryption') }}</label>
+
+                                <div class="col-md-6">
+                                    <input type="text" name="app_debug" class="form-control" autocomplete="0" required value="{{$settings->mail_enc}}" >
+                                    @error('app_debug')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Mail FRom Address') }}</label>
+
+                                <div class="col-md-6">
+                                    <input type="text" name="app_debug" class="form-control" autocomplete="0" required value="{{$settings->mail_fromAddress}}" >
+                                    @error('app_debug')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Mail From Username') }}</label>
+
+                                <div class="col-md-6">
+                                    <input type="text" name="app_debug" class="form-control" autocomplete="0" required value="{{$settings->mail_fromName}}" >
                                     @error('app_debug')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>

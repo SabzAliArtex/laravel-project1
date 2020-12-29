@@ -16,10 +16,14 @@ class CreateSettingsTable extends Migration
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
             $table->string('app_name');
-            $table->longText('app_key');
-            $table->string('app_env');
-            $table->string('app_url');
-            $table->string('app_debug');
+            $table->longText('mail_mailer');
+            $table->string('mail_host');
+            $table->string('mail_port');
+            $table->string('mail_username');
+            $table->string('mail_password');
+            $table->string('mail_enc');
+            $table->string('mail_fromAddress');
+            $table->string('mail_fromName');
             $table->timestamps();
         });
     }
