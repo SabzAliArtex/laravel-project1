@@ -2,9 +2,9 @@
 
 @section('content')
 <div class="container" >
-     
+
     <div class="row">
-        
+
         <div class="col-md-12">
             @if (session('success'))
                 <div class="alert alert-success" role="alert">
@@ -16,8 +16,8 @@
                     {{ session('error') }}
                 </div>
             @endif
-        </div>  
-        </div>  
+        </div>
+        </div>
         <div class="row" id="details">
          @include('partials_admin/sidebar')
         <div class="col-md-8">
@@ -25,39 +25,43 @@
                 <div class="card-header">{{ __('License List') }}</div>
                 <div class="card-body">
 
-@include('partials_general/searchbar')
+                    <div class="row custom_row_position ">
+                        <div class="col-md-12 input-group mb-3">
+                            @include('partials_general/searchbar')
+                        </div>
+                    </div>
                     @if(count($licenses)>0)
                     <table id="tableListing" border="1"  class="table table-striped table-responsive" >
                         <thead class="thead-dark">
                             <tr >
-                                <th> {{ __('Sr no') }} </th> 
-                                <th> {{ __('License Key') }} </th> 
+                                <th> {{ __('Sr no') }} </th>
+                                <th> {{ __('License Key') }} </th>
                                 <th> {{ __('License Type') }} </th>
-                                <th> {{ __('User Name') }} </th> 
+                                <th> {{ __('User Name') }} </th>
                                 <th> {{ __('User Email') }} </th>
                                 <th> {{ __('Device Name') }} </th>
                                 <th> {{ __('Device OS') }} </th>
                                 <th> {{ __('Status') }} </th>
                                  <!-- <th colspan="2" > {{ __('Action') }} </th> -->
-                                
+
                             </tr>
                         </thead>
                         <tbody >
-                          
+
                                 @foreach($licenses as $key=> $license)
                                     <tr>
 
                                         <td> {{ $key + 1 }} </td>
 
                                       <td> {{ $license->deviceLicense[0]['license']}} </td>
-                                     <td> 
+                                     <td>
                                             @if($license->license_type && $license->license_type->type == '1' )
                                                 Monthly {{ '('. $license->license_type->price . ')' }}
                                             @elseif ($license->license_type &&  $license->license_type->type == '2' )
                                                 Yearly {{ '('. $license->license_type->price . ')' }}
                                             @elseif ($license->license_type &&  $license->license_type->type == '3' )
                                                 Life time {{ '('. $license->license_type->price . ')' }}
-                                            @endif      
+                                            @endif
                                         </td>
                                        <td> {{ $license->users ? $license->users[0]['first_name'] : '' }} </td>
                                          <td> {{ $license->users ? $license->users[0]['email'] : '' }} </td>
@@ -68,11 +72,11 @@
                                            Not Deleted
                                            @endif
                                {{--          </td>
-                                       
-                                         
+
+
                                              <td><a href="{{ route('user.deleteuserlicense',['id'=>$license->id]) }}" onclick="return confirm('Are you sure.')"> {{ __('Delete') }}  </a></td>
                                              <td><a @click="openDetailModal({{$license->id}})" href="#"> {{ __('Details') }}  </a></td>--}}
-                                       
+
                                     </tr>
                                 @endforeach
                         </tbody>
@@ -82,10 +86,10 @@
                     @else
                     <p> *nothing found</p>
                     @endif
-                      
-            
 
-  
+
+
+
   <!-- The Modal -->
 <div class="modal" id="myModal">
   <div class="modal-dialog">
@@ -102,15 +106,15 @@
           <table class="table table-striped table-responsive custom-scroll">
     <thead>
       <tr >
-                                <th> {{ __('Sr no') }} </th> 
-                                <th> {{ __('License Key') }} </th> 
+                                <th> {{ __('Sr no') }} </th>
+                                <th> {{ __('License Key') }} </th>
                                 <th> {{ __('License Type') }} </th>
-                                <th> {{ __('User Name') }} </th> 
-                                <th> {{ __('User Email') }} </th> 
-                                <th> {{ __('Device Name') }} </th> 
-                                <th> {{ __('Device Os') }} </th> 
-                                <th colspan="2" > {{ __('Action') }} </th> 
-                                
+                                <th> {{ __('User Name') }} </th>
+                                <th> {{ __('User Email') }} </th>
+                                <th> {{ __('Device Name') }} </th>
+                                <th> {{ __('Device Os') }} </th>
+                                <th colspan="2" > {{ __('Action') }} </th>
+
                             </tr>
     </thead>
     <tbody>
@@ -124,11 +128,11 @@
         <td>@{{row.users[0].email}}</td>
         <td>@{{row.device_name}}</td>
         <td>@{{row.device_os}}</td>
-      
+
         <td><a href="javascript:void(0)" @click="deleterecordandfetchagain(row.id)"> {{ __('Delete') }}  </a></td>
 
       </tr>
-     
+
     </tbody>
   </table>
   </div>
@@ -175,7 +179,7 @@
                 }).catch((error)=>{
 
                 })
-           
+
 
             },
             deleterecordandfetchagain:function(id){
@@ -185,20 +189,20 @@
                     .then((res)=> {
                         this.openDetailModal(this.licid);
 
-              
-                      
-                            
+
+
+
 
                     })
               }else{
                 return false;
               }
             },
-           
+
 
         },
         mounted(){
-          
+
 
         }
 
@@ -223,8 +227,8 @@ $('tbody').html(data);
 });
 });
 });
- jQuery.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } }); 
+ jQuery.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
 });
-  
+
 
 </script>

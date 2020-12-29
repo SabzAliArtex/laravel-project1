@@ -11041,6 +11041,109 @@ float: right;
 
 }
 .sizecheck{
-    width:150px;
+    width: 150px;
+    position: relative;
+    top: -10px;
+    left: -56px;
+}
+.date-filter{
+    position: relative;
+    top: -10px;
+    left: -61px;
 }
 
+                                    /*Custom Media Queries starting*/
+
+
+@media (max-width: 280px) {
+    .sizecheck{
+        width: 60%;
+        position: relative;
+        left: 0px;
+        display: block;
+    }
+    .date-filter{
+        width: 57%;
+        position: relative;
+        top: -5px;
+        left: 0px;
+        display: block;
+    }
+}
+@media (min-width: 320px) {
+    .sizecheck{
+        width: 60%;
+        position: relative;
+
+        display: block;
+        left: 0px;
+    }
+    .date-filter{
+        width: 57%;
+        position: relative;
+        top: -5px;
+        display: block;
+        left: 0px;
+    }
+}
+
+@media (min-width: 414px) {
+    .sizecheck{
+        width: 60%;
+        position: relative;
+        margin: 0 auto !important;
+        display: block;
+    }
+    .date-filter{
+        width: 57%;
+        position: relative;
+        top: -5px;
+        margin: 0 auto !important;
+        display: block;
+    }
+}
+
+/*// Medium devices (tablets, 768px and up)*/
+@media (min-width: 768px) {
+    .sizecheck{
+        width: 100%;
+        position: relative;
+        margin: 0 auto !important;
+        display: block;
+        left: 1px;
+    }
+    .date-filter{
+        width: 100%;
+        position: relative;
+        top: -10px;
+        margin: 0 auto !important;
+        display: block;
+        left: 0px;
+    }
+}
+
+/*// Large devices (desktops, 992px and up)*/
+@media (min-width: 992px) {
+    .sizecheck{
+        width: 187%;
+        position: relative;
+        left: -269px !important;
+        /* margin: 0 auto !important; */
+        display: block;
+
+    }
+    .date-filter{
+
+        position: relative;
+        top: -10px;
+        margin: 0 auto !important;
+        display: block;
+    }
+    .date-filter-width{
+        max-width: 100% !important;
+        left: -219px;
+    }
+}
+
+/*// Extra large devices (large desktops, 1200px and up)*/
+@media (min-width: 1200px) {  }

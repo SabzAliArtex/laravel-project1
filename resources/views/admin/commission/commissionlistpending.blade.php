@@ -18,48 +18,52 @@
                     {{ session('error') }}
                 </div>
             @endif
-        </div>    
+        </div>
         @include('partials_admin/sidebar')
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('License List') }}</div>
                 <div class="card-body">
-                    @include('partials_general/searchbar')
+                    <div class="row custom_row_position ">
+                        <div class="col-md-12 input-group mb-3">
+                            @include('partials_general/searchbar')
+                        </div>
+                    </div>
                     @if(count($payments) >0)
                     <table id="tableListing" border="1" style="width:100%;table-layout: fixed;"  class="table table-striped table-responsive ">
                         <thead class="thead-dark">
                             <tr>
-                                <th class="ellipsis"> {{ __('Sr no') }} </th> 
-                                <th class="ellipsis"> {{ __('License Id') }} </th> 
+                                <th class="ellipsis"> {{ __('Sr no') }} </th>
+                                <th class="ellipsis"> {{ __('License Id') }} </th>
                                 <th class="ellipsis"> {{ __('Sales Person Id') }} </th>
-                                <th class="ellipsis"> {{ __('Commission') }} </th> 
-                                <th class="ellipsis"> {{ __('Status') }} </th> 
-                                <th class="ellipsis"> {{ __('Sales Person Name') }} </th> 
-                                
-                                <th colspan="2"> {{ __('Actions') }} </th> 
+                                <th class="ellipsis"> {{ __('Commission') }} </th>
+                                <th class="ellipsis"> {{ __('Status') }} </th>
+                                <th class="ellipsis"> {{ __('Sales Person Name') }} </th>
+
+                                <th colspan="2"> {{ __('Actions') }} </th>
                             </tr>
                         </thead>
                         <tbody>
-                            
+
                                 @foreach($payments as $key=> $payment)
                                     <tr>
-                                        
+
                                         <td  class="ellipsis"> {{ $key+1 }} </td>
                                         <td class="ellipsis"> {{ $payment->license_id }} </td>
                                         <td class="ellipsis">{{$payment->sales_person_id}}</td><td class="ellipsis">{{$payment->commission}}</td>
-                                        
+
                                         @if($payment->is_approved == 0)
                                         <td  class="ellipsis ">Pending</td>
                                         @endif
                                         <td class="ellipsis">{{$payment->sales_person->first_name}}</td>
-                                    {{--    <td> 
+                                    {{--    <td>
                                             @if($license->license_type && $license->license_type->type == '1' )
                                                 Monthly {{ '('. $license->license_type->price . ')' }}
                                             @elseif ($license->license_type &&  $license->license_type->type == '2' )
                                                 Yearly {{ '('. $license->license_type->price . ')' }}
                                             @elseif ($license->license_type &&  $license->license_type->type == '3' )
                                                 Life time {{ '('. $license->license_type->price . ')' }}
-                                            @endif      
+                                            @endif
                                         </td>
                                         --}}
                                     {{--     <td> {{ $license->user ? $license->user->first_name : '' }} </td>
@@ -68,33 +72,33 @@
                                         <td> {{ $license->trial_activated_at }} </td>
                                         <td> {{ $license->license_activated_at }} </td> --}}
 
-                                        <td colspan="2"> 
+                                        <td colspan="2">
                                             {{-- route('paymentstatus',['id'=>$payment->id])
-                                            {{ route('deletelicense',['id'=>$payment->id]) }}  
-                                           
+                                            {{ route('deletelicense',['id'=>$payment->id]) }}
+
 v-on:click=changeStatus({{$payment->id}},{{$payment->is_approved}})
 v-on:click=changeStatus({{$payment->id}},{{$payment->is_approved}})
-                                         
+
                                             --}}
-                                          
-                                           
-                                             <a class="response"  v-on:click="changeActiveStatus({{$payment->id}})" href="javascript:void(0)" id="Approved"  > {{ __('Approve') }}  </a> 
+
+
+                                             <a class="response"  v-on:click="changeActiveStatus({{$payment->id}})" href="javascript:void(0)" id="Approved"  > {{ __('Approve') }}  </a>
 
 
                                            <!-- |
-                                          
-                                        
 
-                                           
-                                        
 
-                                            <a class="response" v-on:click="changeDeactiveStatus({{$payment->id}})" href="javascript:void(0)" id="Disapprove"  > {{ __('Disapprove') }}  </a> 
-                                            
+
+
+
+
+                                            <a class="response" v-on:click="changeDeactiveStatus({{$payment->id}})" href="javascript:void(0)" id="Disapprove"  > {{ __('Disapprove') }}  </a>
+
                                         </td> -->
                                     </tr>
 
                                 @endforeach
-                                
+
                         </tbody>
                     </table>
                     @include('partials_general/searchalert')
@@ -103,7 +107,7 @@ v-on:click=changeStatus({{$payment->id}},{{$payment->is_approved}})
                     @else
                     <p> *nothing found</p>
                     @endif
-                    
+
                 </div>
             </div>
         </div>
@@ -137,7 +141,7 @@ data:{
     response_check:false,
     is_current_result:true,
     is_button_check:'',
-    
+
 },
 methods:{
     changeActiveStatus:function(para){
@@ -156,11 +160,11 @@ methods:{
               icon: 'success',
               title: 'Successful',
               text: 'Payment Approved!',
-             
+
             }).then(function(){
-                  document.location.reload(true); 
+                  document.location.reload(true);
             } );
-     
+
 
     }
             }).catch((error)=>{
@@ -168,18 +172,18 @@ methods:{
         })}else{
                 return false;
             }
-        
-   
-   
+
+
+
      }else{
         return false;
      }
-     
-     
-       
 
 
-        
+
+
+
+
 
     },
     changeDeactiveStatus:function(para){
@@ -200,13 +204,13 @@ this.payment_id = para;
      }else{
         return false;
      }
-        
 
 
-        
+
+
 
     },
-   
+
 },
 
 
@@ -228,10 +232,10 @@ this.payment_id = para;
     url : '{{URL::to('commission-pending-search')}}',
     data:{'search':$value},
     success:function(data){
-    
+
     $('tbody').html(data);
     $(document).ready(function(){
-    $(".Approvedr").click(function(){ 
+    $(".Approvedr").click(function(){
     var param = $(this).data('value');
     console.log("Value: " + param);
     var t = $('#Approved').text();
@@ -246,15 +250,15 @@ this.payment_id = para;
               icon: 'success',
               title: 'Successful',
               text: 'Payment Approved!',
-             
+
             }).then(function(){
-                  document.location.reload(true); 
+                  document.location.reload(true);
             } );
 }
 });
     }
-    
-    
+
+
 
 
   });
@@ -264,10 +268,10 @@ this.payment_id = para;
 });
 });
 });
- jQuery.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } }); 
+ jQuery.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
 });
- 
- 
- 
+
+
+
 
 </script>

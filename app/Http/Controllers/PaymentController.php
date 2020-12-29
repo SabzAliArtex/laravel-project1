@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 use App\Payment;
 use Illuminate\Http\Request;
-use DB; 
+use App\User;
+use Illuminate\Support\Facades\Auth;
+use DB;
 
 class PaymentController extends Controller
 {
@@ -15,11 +17,11 @@ class PaymentController extends Controller
     public function index()
     {
         //
-           $payments = Payment::with('sales_person','license')->orderByRaw('id DESC')->paginate(10);
-           $results = $payments;
-           return view('admin.commission.commissionlist',[
-                'payments' => $payments
-           ]);
+
+           $data['payments'] = Payment::with('sales_person','license')->orderByRaw('id DESC')->paginate(10);
+          $data['users_sales'] = User::where('role','=',3)->where('is_deleted' ,'0')->where('id','<>', Auth::user()->id)->Paginate('10');
+
+           return view('admin.commission.commissionlist',$data);
 
     }
     public function paymentSearch(Request $request){
@@ -34,29 +36,30 @@ class PaymentController extends Controller
          return view('admin.commission.subviews.commissionlistsearchresults',[
           'payments'=>$payments,
           'formatCheck'=>$formatCheck,
-        ]);  
+        ]);
 
 
 
 
     }else{
       $formatCheck = 0;
-      
+
              $payments= DB::table('payments AS p1')
                 ->join('licenses','licenses.id','p1.license_id')
                 ->Join('users as t1','t1.id','p1.sales_person_id')
                 ->where('p1.is_approved','LIKE','%'.$query.'%')
                 ->orWhere('t1.first_name','LIKE','%'.$query.'%')
                 ->orWhere('t1.last_name','LIKE','%'.$query.'%')
+                ->orWhere('p1.updated_at','LIKE','%'.$query.'%')
                 ->get();
-                
-               
+
+
             return view('admin.commission.subviews.commissionlistsearchresults',[
           'payments'=>$payments,
           'formatCheck'=>$formatCheck,
-        ]); 
+        ]);
     }
-   
+
     }
 
 
@@ -102,7 +105,7 @@ class PaymentController extends Controller
     {   $payments = Payment::find($id);
         $word = "Approve";
         $word2 = "Pending";
-        
+
         if(strpos($status, $word) !== false){
             $payments->is_approved = 1;
             $payments->save();
@@ -114,10 +117,10 @@ class PaymentController extends Controller
             $payments->save();
             return $payments;
         }
-        
-        
+
+
             # code...
-        
+
 
     }
       public function editSearched(Request $request)
@@ -128,7 +131,7 @@ class PaymentController extends Controller
       $payments = Payment::find($id);
         $word = "Approve";
         $word2 = "Pending";
-        
+
         if(strpos($status, $word) !== false){
             $payments->is_approved = 1;
             $payments->save();
@@ -140,10 +143,10 @@ class PaymentController extends Controller
             $payments->save();
             return $payments;
         }
-        
-        
+
+
             # code...
-        
+
 
     }
 
@@ -203,7 +206,7 @@ class PaymentController extends Controller
                 ->orWhere('u.first_name','LIKE','%'.$query.'%')
                 ->orWhere('u.last_name','LIKE','%'.$query.'%')
                 ->get();
-                
+
                 return view('admin.commission.subviews.commissionlistpendingsearchresults',[
                 'formatCheck'=>$formatCheck,
                 'payments'=>$payments,

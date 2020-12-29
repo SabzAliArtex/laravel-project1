@@ -14,7 +14,7 @@
                     {{ session('error') }}
                 </div>
             @endif
-        </div>    
+        </div>
         @include('partials_admin/sidebar')
         <div class="col-md-8">
             <div class="card">
@@ -22,21 +22,25 @@
           <i class="fas fa-plus"></i>Add License
         </a></div>
                 <div class="card-body">
-                    @include('partials_general/searchbar')
+                    <div class="row custom_row_position ">
+                        <div class="col-md-12 input-group mb-3">
+                            @include('partials_general/searchbar')
+                        </div>
+                    </div>
                     @if(count($licenses) >0)
 
                     <table id="tableListing" border="1" style="overflow: scroll;"  class="table table-striped table-responsive">
                         <thead class="thead-dark">
                             <tr>
-                                <th> {{ __('Sr no') }} </th> 
-                                <th> {{ __('License Key') }} </th> 
+                                <th> {{ __('Sr no') }} </th>
+                                <th> {{ __('License Key') }} </th>
                                 <th> {{ __('License Type') }} </th>
-                                <th> {{ __('User Name') }} </th> 
-                                <th> {{ __('User Email') }} </th> 
-                                <th> {{ __('Sales Person Name') }} </th> 
-                                <th> {{ __('Trial Activated At') }} </th> 
-                                <th> {{ __('Activated At') }} </th> 
-                                <th colspan="2"> {{ __('Actions') }} </th> 
+                                <th> {{ __('User Name') }} </th>
+                                <th> {{ __('User Email') }} </th>
+                                <th> {{ __('Sales Person Name') }} </th>
+                                <th> {{ __('Trial Activated At') }} </th>
+                                <th> {{ __('Activated At') }} </th>
+                                <th colspan="2"> {{ __('Actions') }} </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -44,14 +48,14 @@
                                     <tr>
                                         <td> {{ $key+1 }} </td>
                                         <td> {{ $license->license }} </td>
-                                        <td> 
+                                        <td>
                                             @if($license->license_type && $license->license_type->type == '1' )
                                                 Monthly {{ '('. $license->license_type->price . ')' }}
                                             @elseif ($license->license_type &&  $license->license_type->type == '2' )
                                                 Yearly {{ '('. $license->license_type->price . ')' }}
                                             @elseif ($license->license_type &&  $license->license_type->type == '3' )
                                                 Life time {{ '('. $license->license_type->price . ')' }}
-                                            @endif      
+                                            @endif
                                         </td>
                                         <td> {{ $license->user ? $license->user->first_name : '' }} </td>
                                         <td> {{ $license->user ? $license->user->email : '' }} </td>
@@ -59,7 +63,7 @@
                                         <td> {{ $license->trial_activated_at }} </td>
                                         <td> {{ $license->license_activated_at }} </td>
 
-                                        <td colspan="2"> 
+                                        <td colspan="2">
                                             <a href="{{ route('editlicense',['license'=>$license->license]) }}"> {{ __('Edit') }}  </a>
 
                                             |
@@ -68,7 +72,7 @@
                                     </tr>
 
                                 @endforeach
-                                
+
                         </tbody>
                     </table>
                     {{$licenses->render()}}
@@ -100,8 +104,8 @@ $('tbody').html(data);
 });
 });
 });
- jQuery.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } }); 
+ jQuery.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
 });
-  
+
 
 </script>

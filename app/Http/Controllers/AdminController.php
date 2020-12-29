@@ -65,7 +65,7 @@ class AdminController extends Controller
     }
     public function Users(){
         $data['users'] = User::with('userrole')->where('is_deleted' ,'0')->where('id','<>', Auth::user()->id)->Paginate('10');
-        $data['users_sales'] = User::where('role','=',3)->where('is_deleted' ,'0')->where('id','<>', Auth::user()->id)->Paginate('10');
+
 
 
     	// echo '<pre>'; print_r($data); exit;
