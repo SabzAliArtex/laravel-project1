@@ -2,16 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3406f65e-5bd1-4f44-a8ad-a8cd5fa6b5aa" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/resources/views/admin/addsalesperson.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/AdminController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/AdminController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/LicenseController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/LicenseController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/LicenseTypeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/LicenseTypeController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/license/licensetype.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/license/licensetype.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/salespersons.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/salespersons.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/user/activelicenselist.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/user/activelicenselist.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/welcome.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/welcome.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
