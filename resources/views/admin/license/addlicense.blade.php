@@ -15,7 +15,7 @@
                 </div>
             @endif
         </div>  </div>
-           
+
         <div class="row">
         @include('partials_admin/sidebar')
         <div class="col-md-8">
@@ -37,13 +37,26 @@
                                 @enderror
                             </div>
                         </div>
+                        <div class="form-group row">
+                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('No. of device Allowed') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="noofdevs" type="number" class="form-control @error('title') is-invalid @enderror" name="numofdevs"  required autocomplete="off" placeholder="1">
+
+                                @error('license')
+                                <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
 
                         <div class="form-group row">
                             <label for="Role" class="col-md-4 col-form-label text-md-right">{{ __('Select license Type') }}</label>
 
                             <div class="col-md-6">
                                 <select class="form-control @error('licensetype') is-invalid @enderror role" name="license_type" required>
-                                    
+
                                     <option value=""> Select License Type </option>
                                    @foreach($Licensetypes as $Licensetype)
                                     <option value="{{ $Licensetype->id }}"> {{ $Licensetype->title.' ( '.$Licensetype->price .' )' }} </option>
@@ -63,11 +76,11 @@
 
                             <div class="col-md-6">
                                 <select class="form-control @error('salesperson') is-invalid @enderror role" name="sales_person" >
-                                    
+
                                     <option value=""> Select Sales person </option>
                                    @foreach($sales_persons as $sales_person)
-                                    <option value="{{ $sales_person->id }}"> 
-                                        {{ $sales_person->first_name.' '.$sales_person->last_name }} 
+                                    <option value="{{ $sales_person->id }}">
+                                        {{ $sales_person->first_name.' '.$sales_person->last_name }}
                                     </option>
                                    @endforeach
                                 </select>
@@ -92,8 +105,8 @@
             </div>
         </div>
         </div>
-        
-   
+
+
 </div>
 
 @endsection

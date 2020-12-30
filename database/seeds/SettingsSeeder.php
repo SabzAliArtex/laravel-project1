@@ -25,15 +25,14 @@ class SettingsSeeder extends Seeder
         //
         DB::table('settings')->insert([
             'app_name' => $appname,
-
-        'mail_mailer'=>$mailmailer,
-        'mail_host'=>$mailhost,
-        'mail_port'=>$mailport,
-        'mail_username'=>$mailusername,
-        'mail_password'=>$mailpassword,
-        'mail_enc'=>$mailencryption,
-        'mail_fromAddress'=>$mailfrom,
-        'mail_fromName'=>$mailfromname,
+            'mail_mailer'=>$mailmailer,
+            'mail_host'=>$mailhost,
+            'mail_port'=>$mailport,
+            'mail_username'=>$mailusername,
+            'mail_password'=>$mailpassword,
+            'mail_enc'=>$mailencryption,
+            'mail_fromAddress'=>$mailfrom,
+            'mail_fromName'=>$mailfromname,
             'created_at' => date("Y-m-d H:i:s"),
             'updated_at' => date("Y-m-d H:i:s"),
 

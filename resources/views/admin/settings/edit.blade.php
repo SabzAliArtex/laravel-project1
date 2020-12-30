@@ -21,7 +21,7 @@
 
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">{{ __('Edit User') }}</div>
+                    <div class="card-header">{{ __('Edit Settings') }}</div>
                     <div class="card-body">
                         <form method="POST" action="{{ route('editappsettings') }}" enctype="multipart/form-data">
                             {{csrf_field()}}
@@ -54,7 +54,7 @@
                                 <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Mailer') }}</label>
 
                                 <div class="col-md-6">
-                                    <input type="text" name="app_url" class="form-control" autocomplete="0" required value="{{$settings->mail_mailer}}" >
+                                    <input type="text" name="mail_mailer" class="form-control" autocomplete="0" required value="{{$settings->mail_mailer}}" >
                                     @error('app_url')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -66,7 +66,7 @@
                                 <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Host') }}</label>
 
                                 <div class="col-md-6">
-                                    <input type="text" name="app_env" class="form-control" autocomplete="0" required value="{{$settings->mail_host}}" >
+                                    <input type="text" name="mail_host" class="form-control" autocomplete="0" required value="{{$settings->mail_host}}" >
                                     @error('app_env')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -78,7 +78,7 @@
                                 <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('PORT') }}</label>
 
                                 <div class="col-md-6">
-                                    <input type="text" name="app_key" class="form-control" autocomplete="0" required value="{{$settings->mail_port}}" >
+                                    <input type="text" name="mail_port" class="form-control" autocomplete="0" required value="{{$settings->mail_port}}" >
                                     @error('app_key')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -90,7 +90,7 @@
                                 <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Mail Username') }}</label>
 
                                 <div class="col-md-6">
-                                    <input type="text" name="app_debug" class="form-control" autocomplete="0" required value="{{$settings->mail_username}}" >
+                                    <input type="text" name="mail_username" class="form-control" autocomplete="0" required value="{{$settings->mail_username}}" >
                                     @error('app_debug')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -102,7 +102,7 @@
                                 <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Mail Encryption') }}</label>
 
                                 <div class="col-md-6">
-                                    <input type="text" name="app_debug" class="form-control" autocomplete="0" required value="{{$settings->mail_enc}}" >
+                                    <input type="text" name="mail_enc" class="form-control" autocomplete="0" required value="{{$settings->mail_enc}}" >
                                     @error('app_debug')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -114,7 +114,7 @@
                                 <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Mail FRom Address') }}</label>
 
                                 <div class="col-md-6">
-                                    <input type="text" name="app_debug" class="form-control" autocomplete="0" required value="{{$settings->mail_fromAddress}}" >
+                                    <input type="text" name="mail_fromAddress" class="form-control" autocomplete="0" required value="{{$settings->mail_fromAddress}}" >
                                     @error('app_debug')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -126,7 +126,7 @@
                                 <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Mail From Username') }}</label>
 
                                 <div class="col-md-6">
-                                    <input type="text" name="app_debug" class="form-control" autocomplete="0" required value="{{$settings->mail_fromName}}" >
+                                    <input type="text" name="mailFromUsername" class="form-control" autocomplete="0" required value="{{$settings->mail_fromName}}" >
                                     @error('app_debug')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>

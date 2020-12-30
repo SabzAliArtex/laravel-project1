@@ -79,45 +79,55 @@ class SettingController extends Controller
      */
     public function update(Request $request, Setting $setting)
     {
-        //
+
         $request->validate([
-            'app_key'=>'required',
             'app_name'=>'required',
-            'app_debug'=>'required',
-            'app_env'=>'required',
-            'app_url'=>'required',
+            'mail_mailer'=>'required',
+            'mail_host'=>'required',
+            'mail_port'=>'required',
+            'mail_username'=>'required',
+            'mail_enc'=>'required',
+            'mail_fromAddress'=>'required',
+            'mailFromUsername'=>'required',
+
         ]);
 
         $setting = Setting::find($request->get('id'));
         $setting->app_name = $request->get('app_name');
-        $setting->app_key = $request->get('app_key');
-        $setting->app_url = $request->get('app_url');
-        $setting->app_debug = $request->get('app_debug');
-        $setting->app_env = $request->get('app_env');
+        $setting->mail_mailer = $request->get('mail_mailer');
+        $setting->mail_host = $request->get('mail_host');
+        $setting->mail_port = $request->get('mail_port');
+        $setting->mail_username = $request->get('mail_username');
+        $setting->mail_enc = $request->get('mail_enc');
+        $setting->mail_fromAddress = $request->get('mail_fromAddress');
+        $setting->mail_fromName = $request->get('mailFromUsername');
+        $setting->created_at = date("Y-m-d H:i:s");
+        $setting->updated_at = date("Y-m-d H:i:s");
         $settings_updated = $setting->save();
+
         if(isset($settings_updated)){
 
-            //
-
-            $name = $request->get('app_name');
-            $app_name=str_replace(' ','',$name);
-            $key = $request->get('app_key');
-            $app_key=str_replace(' ','',$key);
-            $envap = $request->get('app_env');
-            $app_env=str_replace(' ','',$envap);
-            $url = $request->get('app_url');
-            $app_url=str_replace(' ','',$url);
-            $debug = $request->get('app_debug');
-            $app_debug=str_replace(' ','',$debug);
+            $app_name = removeSpace($request->get('app_name'));
+            $mail_mailer = removeSpace($request->get('mail_mailer'));
+            $mail_host = removeSpace($request->get('mail_host'));
+            $mail_port = removeSpace( $request->get('mail_port'));
+            $mail_username = removeSpace($request->get('mail_username'));
+            $mail_enc = removeSpace($request->get('mail_enc'));
+            $mail_fromAddress = removeSpace($request->get('mail_fromAddress'));
+            $mailFromUsername = removeSpace($request->get('mailFromUsername'));
             $env = new DotenvEditor();
             $env->changeEnv([
                 'APP_NAME'   => $app_name,
-                'APP_KEY'   =>$app_key,
-                'APP_ENV'   => $app_env,
-                'APP_DEBUG'   => $app_debug,
-                'APP_URL'   => $app_url,
+                'MAIL_MAILER'   =>$mail_mailer,
+                'MAIL_HOST'   => $mail_host,
+                'MAIL_USERNAME'   => $mail_username,
+                'MAIL_PORT'   => $mail_port,
+                'MAIL_ENCRYPTION'   => $mail_enc,
+                'MAIL_FROM_ADDRESS'   => $mail_fromAddress,
+                'MAIL_FROM_NAME'   => $mailFromUsername,
 
             ]);
+
             return back()->with('success','Updated Successfully');
 
         }

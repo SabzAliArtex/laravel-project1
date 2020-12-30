@@ -23,7 +23,7 @@ class CreateLicenseTable extends Migration
             $table->dateTime('license_expiry')->nullable();
             $table->longText('allowed_test')->nullable();
             //adding no_of_devices_allowed column to store number of devices on which one license is valid
-            $table->integer('no_of_devices_allowed')->nullable();
+            $table->integer('no_of_devices_allowed')->default(1);
             $table->integer('is_deleted')->default('0')->nullable();
             $table->dateTime('trial_activated_at')->nullable('0000-00-00');
             $table->dateTime('license_activated_at')->nullable('0000-00-00');

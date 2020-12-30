@@ -23,11 +23,6 @@
                     <div class="card-header">
                         <span class="custom-card-header-span-settings">{{ __('Application Settings') }}</span>
                         </div>   <div class="card-body" id="card-check">
-                       {{-- <div class="row custom_row_position ">
-                            <div class="col-md-12 input-group mb-3">
-                                @include('partials_general/searchbar')
-                            </div>
-                        </div>--}}
 
                         <table id="tableListing"  border="1" width="100%"  class="table table-striped table-responsive">
                             <thead class="thead-dark">

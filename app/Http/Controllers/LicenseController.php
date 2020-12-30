@@ -26,29 +26,29 @@ class LicenseController extends Controller
     public function index()
     {
         $licenses = License::with('sales_person','user','license_type')->where('is_deleted',0)->orderByRaw('id DESC')->paginate(10);
-        
 
-        
+
+
         // echo '<pre>'; print_r($licenses); exit;
         if(Auth::user()->userrole->role == 'User'){
-          
+
 
         return view('user.license.licenselist',[
           'licenses' => $licenses,
-          
+
         ]);
 
         }
-       
+
        if(Auth::user()->userrole->role == 'Admin'){
 
-        return view('admin.license.licenselist',compact('licenses'));  
+        return view('admin.license.licenselist',compact('licenses'));
 
         }
 
        if(Auth::user()->userrole->role == 'Sales Person'){
 
-        return view('salesPerson.license.licenselist',compact('licenses'));  
+        return view('salesPerson.license.licenselist',compact('licenses'));
 
         }
     }
@@ -62,7 +62,7 @@ class LicenseController extends Controller
          return view('admin.license.subviews.licensesearchresults',[
           'licenses'=>$licenses,
           'formatCheck'=>$formatCheck,
-        ]);  
+        ]);
 
 
 
@@ -80,11 +80,11 @@ class LicenseController extends Controller
             ->orWhere('sp.first_name','LIKE','%'.$query.'%')
             ->orWhere('sp.last_name','LIKE','%'.$query.'%')
             ->get();
-               
+
             return view('admin.license.subviews.licensesearchresults',[
           'licenses'=>$licenses,
           'formatCheck'=>$formatCheck,
-        ]); 
+        ]);
     }
    }
 
@@ -109,24 +109,24 @@ class LicenseController extends Controller
      */
     public function store(Request $request)
     {
-        
+
         $this->validate($request, [
             "license" => "required",
-            
+
         ],[
             "license.required" => "Please enter Valid License Code",
-            
+
         ]);
 
+            $license = new License();
+            $license->license = $request['license'];
+            $license->no_of_devices_allowed = $request['numofdevs'];
+            $license->sales_person_id = $request['sales_person'];
+            $license->license_type_id = $request['license_type'];
+            $license->save();
 
-        $license = License::create([
-            'license' => $request['license'],
-            'sales_person_id' => $request['sales_person'],
-            'license_type_id' => $request['license_type'],
-        ]);
-        
-        Session::flash("success", "License addedd successfully!");
-        return back();
+            Session::flash("success", "License added successfully!");
+            return back();
     }
     public function EditLicense($license)
     {
@@ -147,11 +147,12 @@ class LicenseController extends Controller
 
         if(!$License){
             Session::flash("error", "Something went wrong!");
-            return back(); 
+            return back();
         }
 
         $License->license_type_id = $request['license_type'];
         $License->sales_person_id = $request['sales_person'];
+        $License->no_of_devices_allowed = $request['numofdevs'];
         $License->save();
 
         Session::flash("success", "License updated successfully!");
@@ -160,7 +161,7 @@ class LicenseController extends Controller
     public function DeleteLicense($id){
 
         $License = License::find($id);
-        
+
         $License->is_deleted = 1;
         $License->save();
         Session::flash("success", "Deleted successfully");
@@ -187,7 +188,7 @@ class LicenseController extends Controller
       $license_dev_count_rows = License_devices::with('deviceLicense')->where('device_id','=',$dev_id)->first();
        $license_count_rows = License_devices::with('deviceLicense')->where('license_id','=',$license_id)->get();
        $license_count_user = $license_count_rows->count();
-      
+
       $license_data = License::where('id','=',$license_id)->first();
       $license_data->user_id = $userPerson->id;
       $license_data->save();
@@ -197,14 +198,14 @@ class LicenseController extends Controller
         //$userPerson->role == 2 means that person is of type 'USER'
      return getLicenseLimit($license_count_user,$license_device_limit,$user_id,$license_id,$dev_name,$dev_os,$dev_id);
 
-    
- 
+
+
       }else if($license_dev_count_rows->device_id == $dev_id){
       return error_code(500);
       }
-      
 
-    
+
+
 }
     public function licenseActivation_old($user_id,$license_id,$dev_name,$dev_os,$dev_id){
       $response = array();
@@ -214,21 +215,21 @@ class LicenseController extends Controller
         //$userPerson->role == 2 means that person is of type 'USER'
       $license = new License();
       $license_checks=License_devices::all()->first();
-       /*Can be used later$license->user_id  = $userPerson->id;$license->license = $license_key;$license->license_expiry = null ;$license->trial_activated_at = date("Y-m-d H:i:s") ;$license->license_activated_at = date("Y-m-d H:i:s") ;$license->device_name ='Example Device Name' ;$license->device_model ='Example Model Name' ;$license->device_unique_id = 'Example Machine Address';*/  
+       /*Can be used later$license->user_id  = $userPerson->id;$license->license = $license_key;$license->license_expiry = null ;$license->trial_activated_at = date("Y-m-d H:i:s") ;$license->license_activated_at = date("Y-m-d H:i:s") ;$license->device_name ='Example Device Name' ;$license->device_model ='Example Model Name' ;$license->device_unique_id = 'Example Machine Address';*/
         if(!isset($license_id)){
             $response['message'] = "License Key Not Found";
             return json_encode($response);
         }
-        if($license_checks->license != $license_id){      
+        if($license_checks->license != $license_id){
             $response['message'] = "License Key isn't Valid";
             return json_encode($response);
-            
+
         }
         /*else{
             $license->is_active == 1;
 
         }*/
-                
+
             if(!isset($dev_model) || !isset($dev_name) || !isset($dev_id))
             {
                 $response['message'] = "Device Credentials are Invalid";
@@ -242,11 +243,11 @@ class LicenseController extends Controller
                 $license->device_unique_id = $dev_id;
                 /*Adding for time being as license_type_id doesnt have default value*/
                 $license->license_type_id = 1;
-                
+
                 /*----------------------===============----------------------------*/
                 $license->is_active = 1;
                 $license->license = 'example value';
-               
+
                 /*----------=====-----------*/
                 $today = date("d-M-Y",time());
                   $trialPeriod = 20;
@@ -254,12 +255,12 @@ class LicenseController extends Controller
                   $getExpiryDate = strtotime('+'.$trialPeriod."days", strtotime($startDate));
                   $expiryDate = date("d-M-Y", $getExpiryDate);
                   /*$checkStatus = License::latest()->count();*/
-                  
-                  
+
+
 
                 /*$checkStatus = mysqli_num_rows(mysqli_query($db,"SELECT * FROM timebomb"));*/
                   /*  if($checkStatus == 0){
-                    mysqli_query($db,"INSERT INTO timebomb(StartDate,ExpiryDate) values   
+                    mysqli_query($db,"INSERT INTO timebomb(StartDate,ExpiryDate) values
                          ('$startDate','$expiryDate')") or die(mysqli_error());
                    }else{
                    $getPeriod = mysqli_query($db,"SELECT * FROM timebomb");
@@ -268,20 +269,20 @@ class LicenseController extends Controller
                     }
                     if($endOfTrial == $today){
                     echo "<center><font size='5' color='red'>
-                 PLEASE YOUR TRIAL PERIOD IS OVER. 
+                 PLEASE YOUR TRIAL PERIOD IS OVER.
                  IF YOU ENJOYED USING THIS PRODUCT, <br/>
-                 CONTACT ALBERT (0205173224) FOR THE FULL VERSION. 
+                 CONTACT ALBERT (0205173224) FOR THE FULL VERSION.
                   THANK YOU.";
                     exit();
                             }
 
                         }*/
                 }
-               
+
                     $license->save();
-            }   
-        
-               
+            }
+
+
   }else{
 
     $response['message'] = "Not a Registered User";
@@ -289,7 +290,7 @@ class LicenseController extends Controller
   }
 }
 public function trialActivation($loggeduserid,$license_key){
-  
+
       $response = array();
       $response['message'] = "";
       $token = rand();
@@ -300,7 +301,7 @@ public function trialActivation($loggeduserid,$license_key){
       if(isset($licenseTrial)){
       $licenseTrial->trial_activated_at =  date("Y-m-d H:i:s");
       $licenseTrial->save();
-      
+
       $sales_person = User::find($licenseTrial->sales_person_id);
 
 
@@ -328,15 +329,15 @@ public function userTrialExpire($license_key){
       $today = strtotime("today midnight");
       $sales_person = User::find($license->sales_person_id);
       $user_license = User::find($license->user_id);
-      
+
       if($today<=$expire){
           echo 1;
         Notification::send($sales_person,new LicenseExpired($sales_person,$token));
         Notification::send($user_license,new LicenseExpired($user_license,$token));
-          
+
 
        }
-    
+
 }
 
 
@@ -345,8 +346,8 @@ public function createLicenseUser(Request $request)
       $license_key = generate_license_key();
       $user = User::find($request->get('user'));
       Notification::send($user,new CreateLicenseUser($user,$license_key));
-      
-} 
+
+}
 
 
     }

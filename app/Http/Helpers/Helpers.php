@@ -96,7 +96,13 @@ function error_code($code){
     $response['message'] = "License is Valid for ". $limit." devices only" ;
       return $response;
   }
+
   }
+
+  function removeSpace($value){
+    $result = str_replace(' ','',$value);
+    return $result;
+}
 
 
 

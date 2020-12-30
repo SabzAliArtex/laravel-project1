@@ -3,9 +3,14 @@
   <component name="ChangeListManager">
     <list default="true" id="3406f65e-5bd1-4f44-a8ad-a8cd5fa6b5aa" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/settings.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/settings.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2020_11_28_115614_create_settings_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_11_28_115614_create_settings_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/LicenseController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/LicenseController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/SettingController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/SettingController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Helpers/Helpers.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Helpers/Helpers.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_11_07_100736_create_license_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_11_07_100736_create_license_table.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/database/seeds/SettingsSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeds/SettingsSeeder.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/app.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/license/addlicense.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/license/addlicense.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/license/editlicense.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/license/editlicense.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/admin/settings/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/settings/edit.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/admin/settings/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/settings/index.blade.php" afterDir="false" />
     </list>
@@ -185,7 +190,8 @@
       <updated>1609160766392</updated>
       <workItem from="1609160770169" duration="38000" />
       <workItem from="1609215303545" duration="701000" />
-      <workItem from="1609216038764" duration="26820000" />
+      <workItem from="1609216038764" duration="26858000" />
+      <workItem from="1609301668022" duration="5481000" />
     </task>
     <servers />
   </component>
