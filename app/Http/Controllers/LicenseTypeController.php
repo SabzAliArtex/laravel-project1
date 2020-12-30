@@ -133,9 +133,10 @@ class LicenseTypeController extends Controller
 
     public function deleteLicenseType($id)
     {
-        $user = LicenseType::find($id);
 
+        $user = LicenseType::find($id);
         $user->is_deleted = 1;
+        $user->is_active = 0;
         $user->save();
         Session::flash("success", "Deleted successfully");
         return back();

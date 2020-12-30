@@ -126,7 +126,7 @@ class LicenseController extends Controller
         $license->save();
 
         Session::flash("success", "License added successfully!");
-        return back();
+        return redirect('license');
     }
 
     public function EditLicense($license)
@@ -164,9 +164,11 @@ class LicenseController extends Controller
     public function DeleteLicense($id)
     {
 
+
         $License = License::find($id);
 
         $License->is_deleted = 1;
+        $License->is_active = 0;
         $License->save();
         Session::flash("success", "Deleted successfully");
 

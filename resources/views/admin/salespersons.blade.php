@@ -19,7 +19,7 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header"><span class="custom-card-header-span">{{ __('Sales Person') }}</span> <a
-                            href="{{ route('AddUser') }}" class="btn btn-info btn-md button-add border border-light ">
+                            href="{{ route('AddSalesPerson') }}" class="btn btn-info btn-md button-add border border-light ">
                             <i class="fas fa-plus"></i>Add Sales Person
                         </a></div>
                     <div class="card-body">

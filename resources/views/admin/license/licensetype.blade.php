@@ -38,7 +38,7 @@
                                     <th> {{ __('Sr no') }} </th>
                                     <th> {{ __('Title') }} </th>
                                     <th> {{ __('Price') }} </th>
-                                    <th> {{ __('Type') }} </th>
+                                    <th id="thn"> {{ __('Type') }} </th>
                                     <th> {{ __('Allowd Tests') }} </th>
                                     <th> {{ __('Status') }} </th>
                                     <th> {{ __('Actions') }} </th>

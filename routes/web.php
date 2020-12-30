@@ -39,6 +39,7 @@ Route::group(['middleware' => ['admin','verified']], function () {
 	Route::get('/users', 'AdminController@Users')->name('userslist');
 	Route::get('/users-search-results', 'AdminController@searchUsers')->name('usersSearchedlist');
 	Route::get('/addUser', 'AdminController@AddUser')->name('AddUser');
+	Route::get('/addSalesPerson', 'AdminController@addSalesPerson')->name('AddSalesPerson');
 	Route::post('/addUser', 'AdminController@AddUserPost')->name('AddUser');
 	Route::get('/edituser/{id}', 'AdminController@EditUser')->name('edituser');
 	Route::post('/edituser/{id}', 'AdminController@EditUserPost')->name('edituser');

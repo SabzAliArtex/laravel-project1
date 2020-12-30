@@ -69,7 +69,7 @@
                 <div class="top-right links">
                     @auth
                         @if(Auth::user()->role == 1)
-                        <a class="dropdown-item" href="{{ route('home') }}">
+                        <a class="dropdown-item" href="{{ route('admin.home') }}">
                             {{ __('Home') }}
                         </a>
                         @elseif (Auth::user()->role == 2)

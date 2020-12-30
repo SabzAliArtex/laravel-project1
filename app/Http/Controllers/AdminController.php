@@ -68,6 +68,11 @@ class AdminController extends Controller
         $data['roles'] = UserRole::all();
         return view('admin.adduser', $data);
     }
+    public function addSalesPerson()
+    {
+        $data['roles'] = UserRole::all();
+        return view('admin.addsalesperson', $data);
+    }
 
     public function Users()
     {
@@ -87,6 +92,7 @@ class AdminController extends Controller
 
     public function salesPersonsSearch(Request $request)
     {
+
         $formatCheck = 0;
         $query = $request->get('search');
         if ($query == "") {
@@ -103,7 +109,8 @@ class AdminController extends Controller
                 ->Join('user_roles AS t1', function ($join) {
                     $join->on('t1.id', '=', 'd1.role');
                     $join->where('t1.id', '=', '3');
-                })->where('email', 'LIKE', '%' . $query . '%')
+                })->select('d1.*', 't1.role')
+                ->where('email', 'LIKE', '%' . $query . '%')
                 ->orWhere('first_name', 'LIKE', '%' . $query . '%')
                 ->orWhere('last_name', 'LIKE', '%' . $query . '%')
                 ->get();
@@ -186,8 +193,11 @@ class AdminController extends Controller
         } catch (\Exception $e) {
 
         }
-        Session::flash("success", "User added successfully");
-        return back();
+        if ($get->get('is_salesperson') != NULL){
+            return redirect('sales-persons')->with('success','Sales Person Added Successfully');
+        }
+       /* Session::flash("success", "User added successfully");*/
+        return redirect('users')->with('success','User Added Successfully');
     }
 
     public function EditUserPost(Request $get, $id)
