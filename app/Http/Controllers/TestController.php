@@ -30,7 +30,7 @@ class TestController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -41,7 +41,7 @@ class TestController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\test  $test
+     * @param \App\test $test
      * @return \Illuminate\Http\Response
      */
     public function show(test $test)
@@ -52,7 +52,7 @@ class TestController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\test  $test
+     * @param \App\test $test
      * @return \Illuminate\Http\Response
      */
     public function edit(test $test)
@@ -63,8 +63,8 @@ class TestController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\test  $test
+     * @param \Illuminate\Http\Request $request
+     * @param \App\test $test
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, test $test)
@@ -75,7 +75,7 @@ class TestController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\test  $test
+     * @param \App\test $test
      * @return \Illuminate\Http\Response
      */
     public function destroy(test $test)

@@ -1,68 +1,70 @@
 @extends('layouts.app')
 
 @section('content')
-<head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-</head>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    </head>
 
-<div class="container" id="paymentStatus">
-    <div class="row">
-        <div class="col-md-12">
-            @if (session('success'))
-                <div class="alert alert-success" role="alert">
-                    {{ session('success') }}
-                </div>
-            @endif
-            @if (session('error'))
-                <div class="alert alert-danger" role="alert">
-                    {{ session('error') }}
-                </div>
-            @endif
-        </div>
-        @include('partials_admin/sidebar')
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Commissions') }}</div>
-                <div class="card-body">
-                    <div class="row custom_row_position">
-
-                        <div class="col-md-3">
-                        @include('partials_general/searchfilter')
-                        </div>
-                        <div class="col-md-3 date-filter-width">@include('partials_general/datefilter')</div>
-                        <div class="col-md-6 input-group custom_serachbar_position">
-                        {{--@include('partials_general/searchbar')--}}
-                        </div>
+    <div class="container" id="paymentStatus">
+        <div class="row">
+            <div class="col-md-12">
+                @if (session('success'))
+                    <div class="alert alert-success" role="alert">
+                        {{ session('success') }}
                     </div>
+                @endif
+                @if (session('error'))
+                    <div class="alert alert-danger" role="alert">
+                        {{ session('error') }}
+                    </div>
+                @endif
+            </div>
+            @include('partials_admin/sidebar')
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">{{ __('Commissions') }}</div>
+                    <div class="card-body">
+                        <div class="row custom_row_position">
 
-                    @if(count($payments) >0)
-                    <table id="tableListing" border="1" style="width:100%;table-layout: fixed;"  class="table table-striped table-responsive">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th  class="ellipsis"> {{ __('Sr no') }} </th>
-                                <th id="thn" class="ellipsis"> {{ __('License Id') }} </th>
-                                <th class="ellipsis"> {{ __('Sales Person Id') }} </th>
-                                <th class="ellipsis"> {{ __('Commission') }} </th>
-                                <th class="ellipsis"> {{ __('Status') }} </th>
-                                <th class="ellipsis"> {{ __('Sales Person Name') }} </th>
+                            <div class="col-md-3">
+                                @include('partials_general/searchfilter')
+                            </div>
+                            <div class="col-md-3 date-filter-width">@include('partials_general/datefilter')</div>
+                            <div class="col-md-6 input-group custom_serachbar_position">
+                                {{--@include('partials_general/searchbar')--}}
+                            </div>
+                        </div>
+
+                        @if(count($payments) >0)
+                            <table id="tableListing" border="1" style="width:100%;table-layout: fixed;"
+                                   class="table table-striped table-responsive">
+                                <thead class="thead-dark">
+                                <tr>
+                                    <th class="ellipsis"> {{ __('Sr no') }} </th>
+                                    <th id="thn" class="ellipsis"> {{ __('License Id') }} </th>
+                                    <th class="ellipsis"> {{ __('Sales Person Id') }} </th>
+                                    <th class="ellipsis"> {{ __('Commission') }} </th>
+                                    <th class="ellipsis"> {{ __('Status') }} </th>
+                                    <th class="ellipsis"> {{ __('Sales Person Name') }} </th>
 
                                 <!-- <th colspan="2"> {{ __('Actions') }} </th>  -->
-                            </tr>
-                        </thead>
-                        <tbody>
+                                </tr>
+                                </thead>
+                                <tbody>
 
                                 @foreach($payments as $key=> $payment)
                                     <tr>
 
-                                        <td  class="ellipsis"> {{ $key+1 }} </td>
+                                        <td class="ellipsis"> {{ $key+1 }} </td>
                                         <td class="ellipsis"> {{ $payment->license_id }} </td>
-                                        <td class="ellipsis">{{$payment->sales_person_id}}</td><td class="ellipsis">{{$payment->commission}}</td>
+                                        <td class="ellipsis">{{$payment->sales_person_id}}</td>
+                                        <td class="ellipsis">{{$payment->commission}}</td>
 
                                         @if($payment->is_approved == 1)
-                                        <td  class="ellipsis ">Approved</td>
+                                            <td class="ellipsis ">Approved</td>
                                         @else
 
-                                        <td  class="ellipsis ">Pending</td>
+                                            <td class="ellipsis ">Pending</td>
                                         @endif
                                         <td class="ellipsis">{{$payment->sales_person->first_name}}</td>
                                     {{--    <td>
@@ -81,7 +83,7 @@
                                         <td> {{ $license->trial_activated_at }} </td>
                                         <td> {{ $license->license_activated_at }} </td> --}}
 
-                                        <!-- <td colspan="2">
+                                    <!-- <td colspan="2">
                                             {{-- route('paymentstatus',['id'=>$payment->id])
                                             {{ route('deletelicense',['id'=>$payment->id]) }}
 
@@ -91,7 +93,7 @@ v-on:click=changeStatus({{$payment->id}},{{$payment->is_approved}})
                                             --}}
 
 
-                                            <a class="response"  v-on:click="changeActiveStatus({{$payment->id}})" href="javascript:void(0)" id="Approved"  > {{ __('Approve') }}  </a>
+                                        <a class="response"  v-on:click="changeActiveStatus({{$payment->id}})" href="javascript:void(0)" id="Approved"  > {{ __('Approve') }} </a>
 
                                             |
 
@@ -100,28 +102,28 @@ v-on:click=changeStatus({{$payment->id}},{{$payment->is_approved}})
 
 
 
-                                            <a class="response" v-on:click="changeDeactiveStatus({{$payment->id}})" href="javascript:void(0)" id="Disapprove"  > {{ __('Disapprove') }}  </a>
+                                            <a class="response" v-on:click="changeDeactiveStatus({{$payment->id}})" href="javascript:void(0)" id="Disapprove"  > {{ __('Disapprove') }} </a>
 
                                         </td> -->
                                     </tr>
 
                                 @endforeach
 
-                        </tbody>
-                    </table>
-                    @include('partials_general/searchalert')
-                    {{$payments->render()}}
-                    <div></div>
-                    @else
-                    <p> *nothing found</p>
-                    @endif
+                                </tbody>
+                            </table>
+                            @include('partials_general/searchalert')
+                            {{$payments->render()}}
+                            <div></div>
+                        @else
+                            <p> *nothing found</p>
+                        @endif
 
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-</div>
+    </div>
 @endsection
 <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -220,26 +222,26 @@ this.payment_id = para;
 
 </script> -->
 <script type="text/javascript">
-  document.addEventListener('DOMContentLoaded', function () {
-    // Your jquery code
-     jQuery.noConflict();
-    jQuery(document).ready(function(){
-    jQuery('#myInput, .search-filter ,.date-filter').on('keyup change',function(){
-    $value=jQuery(this).val();
-    console.log($value);
-    jQuery.ajax({
-    type : 'get',
-    url : '{{URL::to('payment-search')}}',
-    data:{'search':$value},
-    success:function(data){
-    $('tbody').html(data);
+    document.addEventListener('DOMContentLoaded', function () {
+        // Your jquery code
+        jQuery.noConflict();
+        jQuery(document).ready(function () {
+            jQuery('#myInput, .search-filter ,.date-filter').on('keyup change', function () {
+                $value = jQuery(this).val();
+                console.log($value);
+                jQuery.ajax({
+                    type: 'get',
+                    url: '{{URL::to('payment-search')}}',
+                    data: {'search': $value},
+                    success: function (data) {
+                        $('tbody').html(data);
 
-    }
+                    }
+                });
+            });
+        });
+        jQuery.ajaxSetup({headers: {'csrftoken': '{{ csrf_token() }}'}});
     });
-    });
-    });
-    jQuery.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
-});
 
 
 </script>

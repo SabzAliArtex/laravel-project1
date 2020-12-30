@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use Brotzka\DotenvEditor\DotenvEditor;
 
 
-
 class SettingController extends Controller
 {
     /**
@@ -21,7 +20,7 @@ class SettingController extends Controller
         /*config(['database.connections.mysql.host' => '127.0.0.1']);*/
         /*To get this data use config():*/
         $data['settings'] = Setting::all();
-        return view('admin.settings.index',$data);
+        return view('admin.settings.index', $data);
 
     }
 
@@ -38,7 +37,7 @@ class SettingController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -49,7 +48,7 @@ class SettingController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Setting  $setting
+     * @param \App\Setting $setting
      * @return \Illuminate\Http\Response
      */
     public function show(Setting $setting)
@@ -60,35 +59,35 @@ class SettingController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Setting  $setting
+     * @param \App\Setting $setting
      * @return \Illuminate\Http\Response
      */
-    public function edit(Setting $setting,$id)
+    public function edit(Setting $setting, $id)
     {
         $data['settings'] = Setting::find($id);
-        return view('admin.settings.edit',$data);
+        return view('admin.settings.edit', $data);
         //
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Setting  $setting
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Setting $setting
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Setting $setting)
     {
 
         $request->validate([
-            'app_name'=>'required',
-            'mail_mailer'=>'required',
-            'mail_host'=>'required',
-            'mail_port'=>'required',
-            'mail_username'=>'required',
-            'mail_enc'=>'required',
-            'mail_fromAddress'=>'required',
-            'mailFromUsername'=>'required',
+            'app_name' => 'required',
+            'mail_mailer' => 'required',
+            'mail_host' => 'required',
+            'mail_port' => 'required',
+            'mail_username' => 'required',
+            'mail_enc' => 'required',
+            'mail_fromAddress' => 'required',
+            'mailFromUsername' => 'required',
 
         ]);
 
@@ -105,30 +104,30 @@ class SettingController extends Controller
         $setting->updated_at = date("Y-m-d H:i:s");
         $settings_updated = $setting->save();
 
-        if(isset($settings_updated)){
+        if (isset($settings_updated)) {
 
             $app_name = removeSpace($request->get('app_name'));
             $mail_mailer = removeSpace($request->get('mail_mailer'));
             $mail_host = removeSpace($request->get('mail_host'));
-            $mail_port = removeSpace( $request->get('mail_port'));
+            $mail_port = removeSpace($request->get('mail_port'));
             $mail_username = removeSpace($request->get('mail_username'));
             $mail_enc = removeSpace($request->get('mail_enc'));
             $mail_fromAddress = removeSpace($request->get('mail_fromAddress'));
             $mailFromUsername = removeSpace($request->get('mailFromUsername'));
             $env = new DotenvEditor();
             $env->changeEnv([
-                'APP_NAME'   => $app_name,
-                'MAIL_MAILER'   =>$mail_mailer,
-                'MAIL_HOST'   => $mail_host,
-                'MAIL_USERNAME'   => $mail_username,
-                'MAIL_PORT'   => $mail_port,
-                'MAIL_ENCRYPTION'   => $mail_enc,
-                'MAIL_FROM_ADDRESS'   => $mail_fromAddress,
-                'MAIL_FROM_NAME'   => $mailFromUsername,
+                'APP_NAME' => $app_name,
+                'MAIL_MAILER' => $mail_mailer,
+                'MAIL_HOST' => $mail_host,
+                'MAIL_USERNAME' => $mail_username,
+                'MAIL_PORT' => $mail_port,
+                'MAIL_ENCRYPTION' => $mail_enc,
+                'MAIL_FROM_ADDRESS' => $mail_fromAddress,
+                'MAIL_FROM_NAME' => $mailFromUsername,
 
             ]);
 
-            return back()->with('success','Updated Successfully');
+            return back()->with('success', 'Updated Successfully');
 
         }
 
@@ -137,7 +136,7 @@ class SettingController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Setting  $setting
+     * @param \App\Setting $setting
      * @return \Illuminate\Http\Response
      */
     public function destroy(Setting $setting)

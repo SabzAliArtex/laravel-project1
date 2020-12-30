@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Jenssegers\Agent\Agent;
 use Illuminate\Http\Request;
 use App\User;
@@ -14,7 +15,7 @@ class HomeController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth','verified']);
+        $this->middleware(['auth', 'verified']);
     }
     /**
      * Create a new controller instance.
@@ -30,8 +31,7 @@ class HomeController extends Controller
     {
 
 
-       
         return view('admin.home');
     }
-   
+
 }

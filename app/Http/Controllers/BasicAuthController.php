@@ -16,35 +16,43 @@ use Illuminate\Support\Facades\Auth;
 
 class BasicAuthController extends Controller
 {
-    public function __construct(){
-        
+    public function __construct()
+    {
+
     }
-    public function login(){
+
+    public function login()
+    {
         return view("auth.login");
     }
-    public function forgetpassword(){
+
+    public function forgetpassword()
+    {
         return view("auth.reset");
     }
-    public function register(){
+
+    public function register()
+    {
         return view("auth.register");
     }
     // public function register(){
     //     return view("auth.verify");
     // }
-    public function loginpost(Request $get){
-        $this->validate($get,[
+    public function loginpost(Request $get)
+    {
+        $this->validate($get, [
             "email" => 'required|email|exists:users,email',
             "password" => 'required'
-        ],[
+        ], [
             "email.required" => 'Enter your email here',
             "email.email" => 'Enter your valid email',
             "email.exists" => 'This email is not registered',
             "password.required" => 'Enter your password'
-        ]);         
+        ]);
         $user = User::with('userrole')->where('email', $get->email)->first();
-        if(Hash::check($get->password, $user->password)){
+        if (Hash::check($get->password, $user->password)) {
             Auth::login($user);
-            if($get->remember){
+            if ($get->remember) {
                 $reminfo = [
                     'email' => $get->email,
                     'password' => $get->password
@@ -52,15 +60,15 @@ class BasicAuthController extends Controller
                 Session::put('reminfo', $reminfo);
             }
             Session::flash("success", "Login Successful");
-            if($user->role == 1)
+            if ($user->role == 1)
                 return redirect('/home');
-            else if($user->role == 2)
+            else if ($user->role == 2)
                 return redirect('/user/home');
             else
                 return redirect('/salesperson/home');
-        }else{
+        } else {
             Session::flash('error', 'Invalid User Information.');
             return back();
-        }        
+        }
     }
 }

@@ -16,6 +16,7 @@ use Notification;
 use App\Notifications\TrialActivated;
 use App\Notifications\LicenseExpired;
 use App\Notifications\CreateLicenseUser;
+
 class LicenseController extends Controller
 {
     /**
@@ -25,68 +26,67 @@ class LicenseController extends Controller
      */
     public function index()
     {
-        $licenses = License::with('sales_person','user','license_type')->where('is_deleted',0)->orderByRaw('id DESC')->paginate(10);
-
+        $licenses = License::with('sales_person', 'user', 'license_type')->where('is_deleted', 0)->orderByRaw('id DESC')->paginate(10);
 
 
         // echo '<pre>'; print_r($licenses); exit;
-        if(Auth::user()->userrole->role == 'User'){
+        if (Auth::user()->userrole->role == 'User') {
 
 
-        return view('user.license.licenselist',[
-          'licenses' => $licenses,
+            return view('user.license.licenselist', [
+                'licenses' => $licenses,
 
-        ]);
-
-        }
-
-       if(Auth::user()->userrole->role == 'Admin'){
-
-        return view('admin.license.licenselist',compact('licenses'));
+            ]);
 
         }
 
-       if(Auth::user()->userrole->role == 'Sales Person'){
+        if (Auth::user()->userrole->role == 'Admin') {
 
-        return view('salesPerson.license.licenselist',compact('licenses'));
+            return view('admin.license.licenselist', compact('licenses'));
+
+        }
+
+        if (Auth::user()->userrole->role == 'Sales Person') {
+
+            return view('salesPerson.license.licenselist', compact('licenses'));
 
         }
     }
-   public function licenseSearchResults(Request $request){
-    $query = $request['search'];
-    $formatCheck = 0;
-    if($query == ""){
-      $formatCheck = 1;
 
-        $licenses = License::with('sales_person','user','license_type')->where('is_deleted',0)->orderByRaw('id DESC')->paginate(10);
-         return view('admin.license.subviews.licensesearchresults',[
-          'licenses'=>$licenses,
-          'formatCheck'=>$formatCheck,
-        ]);
+    public function licenseSearchResults(Request $request)
+    {
+        $query = $request['search'];
+        $formatCheck = 0;
+        if ($query == "") {
+            $formatCheck = 1;
+
+            $licenses = License::with('sales_person', 'user', 'license_type')->where('is_deleted', 0)->orderByRaw('id DESC')->paginate(10);
+            return view('admin.license.subviews.licensesearchresults', [
+                'licenses' => $licenses,
+                'formatCheck' => $formatCheck,
+            ]);
 
 
+        } else {
+            $formatCheck = 0;
+            $licenses = DB::table('licenses')
+                ->join('users as u', 'u.id', '=', 'licenses.user_id')
+                ->join('users as sp', 'sp.id', '=', 'licenses.sales_person_id')
+                ->join('license_types', 'license_types.id', '=', 'licenses.license_type_id')
+                ->select('licenses.*', 'license_types.*', 'u.first_name', 'u.last_name', 'u.email', 'sp.first_name as fname', 'sp.last_name as lname')
+                ->where('u.first_name', 'LIKE', '%' . $query . '%')
+                ->orWhere('u.last_name', 'LIKE', '%' . $query . '%')
+                ->orWhere('u.email', 'LIKE', '%' . $query . '%')
+                ->orWhere('sp.first_name', 'LIKE', '%' . $query . '%')
+                ->orWhere('sp.last_name', 'LIKE', '%' . $query . '%')
+                ->get();
 
-
-    }else{
-      $formatCheck = 0;
-       $licenses = DB::table('licenses')
-            ->join('users as u', 'u.id', '=', 'licenses.user_id')
-            ->join('users as sp', 'sp.id', '=', 'licenses.sales_person_id')
-            ->join('license_types', 'license_types.id', '=', 'licenses.license_type_id')
-            ->select('licenses.*','license_types.*','u.first_name','u.last_name','u.email','sp.first_name as fname','sp.last_name as lname')
-            ->where('u.first_name','LIKE','%'.$query.'%')
-            ->orWhere('u.last_name','LIKE','%'.$query.'%')
-            ->orWhere('u.email','LIKE','%'.$query.'%')
-            ->orWhere('sp.first_name','LIKE','%'.$query.'%')
-            ->orWhere('sp.last_name','LIKE','%'.$query.'%')
-            ->get();
-
-            return view('admin.license.subviews.licensesearchresults',[
-          'licenses'=>$licenses,
-          'formatCheck'=>$formatCheck,
-        ]);
+            return view('admin.license.subviews.licensesearchresults', [
+                'licenses' => $licenses,
+                'formatCheck' => $formatCheck,
+            ]);
+        }
     }
-   }
 
 
     /**
@@ -96,15 +96,15 @@ class LicenseController extends Controller
      */
     public function create()
     {
-        $sales_persons = User::where([['is_active','1'],['role','3'],['is_deleted','0']])->get();
-        $Licensetypes = LicenseType::where('is_active','1')->get();
-        return view('admin.license.addlicense',compact('sales_persons','Licensetypes'));
+        $sales_persons = User::where([['is_active', '1'], ['role', '3'], ['is_deleted', '0']])->get();
+        $Licensetypes = LicenseType::where('is_active', '1')->get();
+        return view('admin.license.addlicense', compact('sales_persons', 'Licensetypes'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -113,39 +113,41 @@ class LicenseController extends Controller
         $this->validate($request, [
             "license" => "required",
 
-        ],[
+        ], [
             "license.required" => "Please enter Valid License Code",
 
         ]);
 
-            $license = new License();
-            $license->license = $request['license'];
-            $license->no_of_devices_allowed = $request['numofdevs'];
-            $license->sales_person_id = $request['sales_person'];
-            $license->license_type_id = $request['license_type'];
-            $license->save();
+        $license = new License();
+        $license->license = $request['license'];
+        $license->no_of_devices_allowed = $request['numofdevs'];
+        $license->sales_person_id = $request['sales_person'];
+        $license->license_type_id = $request['license_type'];
+        $license->save();
 
-            Session::flash("success", "License added successfully!");
-            return back();
+        Session::flash("success", "License added successfully!");
+        return back();
     }
+
     public function EditLicense($license)
     {
         $licenses = License::where('license', $license)->firstOrFail();
-        $sales_persons = User::where([['is_active','1'],['role','3'],['is_deleted','0']])->get();
-        $Licensetypes = Licensetype::where('is_active','1')->get();
+        $sales_persons = User::where([['is_active', '1'], ['role', '3'], ['is_deleted', '0']])->get();
+        $Licensetypes = Licensetype::where('is_active', '1')->get();
 
-        return view('admin.license.editlicense',compact("licenses","sales_persons","Licensetypes"));
+        return view('admin.license.editlicense', compact("licenses", "sales_persons", "Licensetypes"));
     }
+
     public function EditLicensePost(Request $request)
     {
         $License = License::find($request['id']);
         $this->validate($request, [
             "license_type" => "required",
-        ],[
+        ], [
             "license_type.required" => "Pleas select license ",
         ]);
 
-        if(!$License){
+        if (!$License) {
             Session::flash("error", "Something went wrong!");
             return back();
         }
@@ -158,7 +160,9 @@ class LicenseController extends Controller
         Session::flash("success", "License updated successfully!");
         return back();
     }
-    public function DeleteLicense($id){
+
+    public function DeleteLicense($id)
+    {
 
         $License = License::find($id);
 
@@ -168,186 +172,189 @@ class LicenseController extends Controller
 
         return back();
     }
-    public function licenseActivation($user_id,$license_id,$dev_id,$dev_os,$dev_name){
-      /*user 3 licen 1 */
 
-      $response = array();
-      $response['message'] = "";
-     if(!isset($license_id)){
-          $response['message'] = "License Key Not Found";
-          return json_encode($response);
-      }
-    if(!isset($dev_os) || !isset($dev_name) || !isset($dev_id))
-        {
-            $response['message'] = "Device Credentials are Invalid";
-         return  json_encode($response);
+    public function licenseActivation($user_id, $license_id, $dev_id, $dev_os, $dev_name)
+    {
+        /*user 3 licen 1 */
 
-        }
-
-      $userPerson = User::where([['id',$user_id]])->first();
-      $license_dev_count_rows = License_devices::with('deviceLicense')->where('device_id','=',$dev_id)->first();
-       $license_count_rows = License_devices::with('deviceLicense')->where('license_id','=',$license_id)->get();
-       $license_count_user = $license_count_rows->count();
-
-      $license_data = License::where('id','=',$license_id)->first();
-      $license_data->user_id = $userPerson->id;
-      $license_data->save();
-      $license_device_limit = $license_data->no_of_devices_allowed;
-      if (is_null($license_dev_count_rows)) {
-
-        //$userPerson->role == 2 means that person is of type 'USER'
-     return getLicenseLimit($license_count_user,$license_device_limit,$user_id,$license_id,$dev_name,$dev_os,$dev_id);
-
-
-
-      }else if($license_dev_count_rows->device_id == $dev_id){
-      return error_code(500);
-      }
-
-
-
-}
-    public function licenseActivation_old($user_id,$license_id,$dev_name,$dev_os,$dev_id){
-      $response = array();
-      $response['message'] = "";
-      $userPerson = User::where([['id',$user_id]])->first();
-      if($userPerson->role == 2){
-        //$userPerson->role == 2 means that person is of type 'USER'
-      $license = new License();
-      $license_checks=License_devices::all()->first();
-       /*Can be used later$license->user_id  = $userPerson->id;$license->license = $license_key;$license->license_expiry = null ;$license->trial_activated_at = date("Y-m-d H:i:s") ;$license->license_activated_at = date("Y-m-d H:i:s") ;$license->device_name ='Example Device Name' ;$license->device_model ='Example Model Name' ;$license->device_unique_id = 'Example Machine Address';*/
-        if(!isset($license_id)){
+        $response = array();
+        $response['message'] = "";
+        if (!isset($license_id)) {
             $response['message'] = "License Key Not Found";
             return json_encode($response);
         }
-        if($license_checks->license != $license_id){
-            $response['message'] = "License Key isn't Valid";
+        if (!isset($dev_os) || !isset($dev_name) || !isset($dev_id)) {
+            $response['message'] = "Device Credentials are Invalid";
             return json_encode($response);
 
         }
-        /*else{
-            $license->is_active == 1;
 
-        }*/
+        $userPerson = User::where([['id', $user_id]])->first();
+        $license_dev_count_rows = License_devices::with('deviceLicense')->where('device_id', '=', $dev_id)->first();
+        $license_count_rows = License_devices::with('deviceLicense')->where('license_id', '=', $license_id)->get();
+        $license_count_user = $license_count_rows->count();
 
-            if(!isset($dev_model) || !isset($dev_name) || !isset($dev_id))
-            {
-                $response['message'] = "Device Credentials are Invalid";
-             return  json_encode($response);
+        $license_data = License::where('id', '=', $license_id)->first();
+        $license_data->user_id = $userPerson->id;
+        $license_data->save();
+        $license_device_limit = $license_data->no_of_devices_allowed;
+        if (is_null($license_dev_count_rows)) {
 
-            }else{
-            if($license_checks->device_name != $dev_name && $license_checks->device_model != $dev_model && $license_checks->device_unique_id !=$dev_id){
-
-                $license->device_name =$dev_name;
-                $license->device_model =$dev_model;
-                $license->device_unique_id = $dev_id;
-                /*Adding for time being as license_type_id doesnt have default value*/
-                $license->license_type_id = 1;
-
-                /*----------------------===============----------------------------*/
-                $license->is_active = 1;
-                $license->license = 'example value';
-
-                /*----------=====-----------*/
-                $today = date("d-M-Y",time());
-                  $trialPeriod = 20;
-                  $startDate = date("d-M-Y", time());
-                  $getExpiryDate = strtotime('+'.$trialPeriod."days", strtotime($startDate));
-                  $expiryDate = date("d-M-Y", $getExpiryDate);
-                  /*$checkStatus = License::latest()->count();*/
+            //$userPerson->role == 2 means that person is of type 'USER'
+            return getLicenseLimit($license_count_user, $license_device_limit, $user_id, $license_id, $dev_name, $dev_os, $dev_id);
 
 
-
-                /*$checkStatus = mysqli_num_rows(mysqli_query($db,"SELECT * FROM timebomb"));*/
-                  /*  if($checkStatus == 0){
-                    mysqli_query($db,"INSERT INTO timebomb(StartDate,ExpiryDate) values
-                         ('$startDate','$expiryDate')") or die(mysqli_error());
-                   }else{
-                   $getPeriod = mysqli_query($db,"SELECT * FROM timebomb");
-                    while($period = mysqli_fetch_array($getPeriod)){
-                    $endOfTrial = $period['ExpiryDate'];
-                    }
-                    if($endOfTrial == $today){
-                    echo "<center><font size='5' color='red'>
-                 PLEASE YOUR TRIAL PERIOD IS OVER.
-                 IF YOU ENJOYED USING THIS PRODUCT, <br/>
-                 CONTACT ALBERT (0205173224) FOR THE FULL VERSION.
-                  THANK YOU.";
-                    exit();
-                            }
-
-                        }*/
-                }
-
-                    $license->save();
-            }
-
-
-  }else{
-
-    $response['message'] = "Not a Registered User";
-    return json_encode($response);
-  }
-}
-public function trialActivation($loggeduserid,$license_key){
-
-      $response = array();
-      $response['message'] = "";
-      $token = rand();
-      $userPerson = User::where([['id',$loggeduserid]])->first();
-      if(isset($userPerson)){
-      if($userPerson->role == 2){
-      $licenseTrial = License::where('license','=',$license_key)->first();
-      if(isset($licenseTrial)){
-      $licenseTrial->trial_activated_at =  date("Y-m-d H:i:s");
-      $licenseTrial->save();
-
-      $sales_person = User::find($licenseTrial->sales_person_id);
-
-
-      /* sending email -- uncomment if email functionality needed
-      Notification::send($sales_person,new TrialActivated($sales_person, $token));*/
-
-      $response['message']  = "Trial Period Activated";
-      return json_encode($response);
-      }else{
-      $response['message'] = "License Key is not valid";
-      return json_encode($response);
-            }
-                                }
-      }else{
-      $response['message'] = "Invalid Person";
-      return json_encode($response);
-           }
-       }
-
-public function userTrialExpire($license_key){
-      $token = rand();
-      $license =License::where('license','=',$license_key)->first();
-      $trialDate = $license->trial_activated_at;
-      $expire = strtotime($trialDate. ' + 30 days');
-      $today = strtotime("today midnight");
-      $sales_person = User::find($license->sales_person_id);
-      $user_license = User::find($license->user_id);
-
-      if($today<=$expire){
-          echo 1;
-        Notification::send($sales_person,new LicenseExpired($sales_person,$token));
-        Notification::send($user_license,new LicenseExpired($user_license,$token));
-
-
-       }
-
-}
-
-
-public function createLicenseUser(Request $request)
-{     $token = rand();
-      $license_key = generate_license_key();
-      $user = User::find($request->get('user'));
-      Notification::send($user,new CreateLicenseUser($user,$license_key));
-
-}
+        } else if ($license_dev_count_rows->device_id == $dev_id) {
+            return error_code(500);
+        }
 
 
     }
+
+    public function licenseActivation_old($user_id, $license_id, $dev_name, $dev_os, $dev_id)
+    {
+        $response = array();
+        $response['message'] = "";
+        $userPerson = User::where([['id', $user_id]])->first();
+        if ($userPerson->role == 2) {
+            //$userPerson->role == 2 means that person is of type 'USER'
+            $license = new License();
+            $license_checks = License_devices::all()->first();
+            /*Can be used later$license->user_id  = $userPerson->id;$license->license = $license_key;$license->license_expiry = null ;$license->trial_activated_at = date("Y-m-d H:i:s") ;$license->license_activated_at = date("Y-m-d H:i:s") ;$license->device_name ='Example Device Name' ;$license->device_model ='Example Model Name' ;$license->device_unique_id = 'Example Machine Address';*/
+            if (!isset($license_id)) {
+                $response['message'] = "License Key Not Found";
+                return json_encode($response);
+            }
+            if ($license_checks->license != $license_id) {
+                $response['message'] = "License Key isn't Valid";
+                return json_encode($response);
+
+            }
+            /*else{
+                $license->is_active == 1;
+
+            }*/
+
+            if (!isset($dev_model) || !isset($dev_name) || !isset($dev_id)) {
+                $response['message'] = "Device Credentials are Invalid";
+                return json_encode($response);
+
+            } else {
+                if ($license_checks->device_name != $dev_name && $license_checks->device_model != $dev_model && $license_checks->device_unique_id != $dev_id) {
+
+                    $license->device_name = $dev_name;
+                    $license->device_model = $dev_model;
+                    $license->device_unique_id = $dev_id;
+                    /*Adding for time being as license_type_id doesnt have default value*/
+                    $license->license_type_id = 1;
+
+                    /*----------------------===============----------------------------*/
+                    $license->is_active = 1;
+                    $license->license = 'example value';
+
+                    /*----------=====-----------*/
+                    $today = date("d-M-Y", time());
+                    $trialPeriod = 20;
+                    $startDate = date("d-M-Y", time());
+                    $getExpiryDate = strtotime('+' . $trialPeriod . "days", strtotime($startDate));
+                    $expiryDate = date("d-M-Y", $getExpiryDate);
+                    /*$checkStatus = License::latest()->count();*/
+
+
+                    /*$checkStatus = mysqli_num_rows(mysqli_query($db,"SELECT * FROM timebomb"));*/
+                    /*  if($checkStatus == 0){
+                      mysqli_query($db,"INSERT INTO timebomb(StartDate,ExpiryDate) values
+                           ('$startDate','$expiryDate')") or die(mysqli_error());
+                     }else{
+                     $getPeriod = mysqli_query($db,"SELECT * FROM timebomb");
+                      while($period = mysqli_fetch_array($getPeriod)){
+                      $endOfTrial = $period['ExpiryDate'];
+                      }
+                      if($endOfTrial == $today){
+                      echo "<center><font size='5' color='red'>
+                   PLEASE YOUR TRIAL PERIOD IS OVER.
+                   IF YOU ENJOYED USING THIS PRODUCT, <br/>
+                   CONTACT ALBERT (0205173224) FOR THE FULL VERSION.
+                    THANK YOU.";
+                      exit();
+                              }
+
+                          }*/
+                }
+
+                $license->save();
+            }
+
+
+        } else {
+
+            $response['message'] = "Not a Registered User";
+            return json_encode($response);
+        }
+    }
+
+    public function trialActivation($loggeduserid, $license_key)
+    {
+
+        $response = array();
+        $response['message'] = "";
+        $token = rand();
+        $userPerson = User::where([['id', $loggeduserid]])->first();
+        if (isset($userPerson)) {
+            if ($userPerson->role == 2) {
+                $licenseTrial = License::where('license', '=', $license_key)->first();
+                if (isset($licenseTrial)) {
+                    $licenseTrial->trial_activated_at = date("Y-m-d H:i:s");
+                    $licenseTrial->save();
+
+                    $sales_person = User::find($licenseTrial->sales_person_id);
+
+
+                    /* sending email -- uncomment if email functionality needed
+                    Notification::send($sales_person,new TrialActivated($sales_person, $token));*/
+
+                    $response['message'] = "Trial Period Activated";
+                    return json_encode($response);
+                } else {
+                    $response['message'] = "License Key is not valid";
+                    return json_encode($response);
+                }
+            }
+        } else {
+            $response['message'] = "Invalid Person";
+            return json_encode($response);
+        }
+    }
+
+    public function userTrialExpire($license_key)
+    {
+        $token = rand();
+        $license = License::where('license', '=', $license_key)->first();
+        $trialDate = $license->trial_activated_at;
+        $expire = strtotime($trialDate . ' + 30 days');
+        $today = strtotime("today midnight");
+        $sales_person = User::find($license->sales_person_id);
+        $user_license = User::find($license->user_id);
+
+        if ($today <= $expire) {
+            echo 1;
+            Notification::send($sales_person, new LicenseExpired($sales_person, $token));
+            Notification::send($user_license, new LicenseExpired($user_license, $token));
+
+
+        }
+
+    }
+
+
+    public function createLicenseUser(Request $request)
+    {
+        $token = rand();
+        $license_key = generate_license_key();
+        $user = User::find($request->get('user'));
+        Notification::send($user, new CreateLicenseUser($user, $license_key));
+
+    }
+
+
+}

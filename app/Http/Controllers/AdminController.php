@@ -18,16 +18,19 @@ use DB;
 class AdminController extends Controller
 {
 
-  public function manageprofile(){
+    public function manageprofile()
+    {
         return view('admin.profile');
     }
-    public function updateprofile(Request $get){
+
+    public function updateprofile(Request $get)
+    {
 
         $user = User::find($get->id);
         $this->validate($get, [
             "first_name" => "required",
             "last_name" => "required",
-        ],[
+        ], [
             "first_name.required" => "Please enter first name",
             "last_name.required" => "Please enter last name"
         ]);
@@ -35,113 +38,128 @@ class AdminController extends Controller
         $user->last_name = $get->last_name;
         $user->save();
 
-        if($get->file('thumb')){
+        if ($get->file('thumb')) {
             $this->validate($get, [
                 "thumb" => "mimes:png,jpg,jpeg"
-            ],[
+            ], [
                 "thumb.mimes" => "Please upload png or jpg format"
             ]);
-            if(File::exists($user->thumb)){
+            if (File::exists($user->thumb)) {
                 File::delete($user->thumb);
             }
             $path = 'files/upload/admin/';
 
             $thumb = $get->file('thumb');
-            $image = Str::slug($user->name).rand(12345678,98765432).'.'.$thumb->getClientOriginalExtension();
+            $image = Str::slug($user->name) . rand(12345678, 98765432) . '.' . $thumb->getClientOriginalExtension();
             if (!file_exists($path)) {
                 mkdir($path, 666, true);
             }
-            Image::make($thumb)->resize(300,300)->save($path.$user->first_name.'_'.$image);
+            Image::make($thumb)->resize(300, 300)->save($path . $user->first_name . '_' . $image);
 
-            $user->thumb = $path.$user->first_name.'_'.$image;
+            $user->thumb = $path . $user->first_name . '_' . $image;
             $user->save();
         }
         Session::flash("success", "User information has been updated");
         return back();
     }
-    public function addUser(){
-    	$data['roles'] = UserRole::all();
-    	return view('admin.adduser',$data);
+
+    public function addUser()
+    {
+        $data['roles'] = UserRole::all();
+        return view('admin.adduser', $data);
     }
-    public function Users(){
-        $data['users'] = User::with('userrole')->where('is_deleted' ,'0')->where('id','<>', Auth::user()->id)->Paginate('10');
+
+    public function Users()
+    {
+        $data['users'] = User::with('userrole')->where('is_deleted','=', '0')->where('id', '<>', Auth::user()->id)->Paginate('10');
 
 
+        // echo '<pre>'; print_r($data); exit;
+        return view('admin.userslist', $data);
+    }
 
-    	// echo '<pre>'; print_r($data); exit;
-    	return view('admin.userslist',$data);
+    public function SalesPersons()
+    {
+        $data['users'] = User::with('userrole')->where('is_deleted', '0')->where('role', '=', 3)->paginate(10);
+        // echo '<pre>'; print_r($data); exit;
+        return view('admin.salespersons', $data);
     }
-    public function SalesPersons(){
-    	$data['users'] = User::with('userrole')->where('is_deleted' ,'0')->where('role','=', 3)->paginate(10);
-    	// echo '<pre>'; print_r($data); exit;
-    	return view('admin.salespersons',$data);
-    }
-     public function salesPersonsSearch(Request $request){
+
+    public function salesPersonsSearch(Request $request)
+    {
         $formatCheck = 0;
         $query = $request->get('search');
-        if($query == ""){
-            $formatCheck=1;
+        if ($query == "") {
+            $formatCheck = 1;
             $data['formatCheck'] = $formatCheck;
-       $data['users'] = User::with('userrole')->where('is_deleted' ,'0')->where('role','=', 3)->paginate(10);
+            $data['users'] = User::with('userrole')->where('is_deleted', '0')->where('role', '=', 3)->paginate(10);
             // echo '<pre>'; print_r($data); exit;
-            return view('admin.subviews.salespersonsearch',$data);
-        }else{
-            $formatCheck=0;
+            return view('admin.subviews.salespersonsearch', $data);
+        } else {
+            $formatCheck = 0;
             $data['formatCheck'] = $formatCheck;
             $data['users'] = DB::connection()
                 ->table('users AS d1')
-                ->Join('user_roles AS t1', function($join) {
+                ->Join('user_roles AS t1', function ($join) {
                     $join->on('t1.id', '=', 'd1.role');
                     $join->where('t1.id', '=', '3');
-                })->where('email','LIKE','%'.$query.'%')
-                ->orWhere('first_name','LIKE','%'.$query.'%')
-                ->orWhere('last_name','LIKE','%'.$query.'%')
+                })->where('email', 'LIKE', '%' . $query . '%')
+                ->orWhere('first_name', 'LIKE', '%' . $query . '%')
+                ->orWhere('last_name', 'LIKE', '%' . $query . '%')
                 ->get();
 
-/*
-                 $data['users'] = DB::table('users')
-            ->join('user_roles', 'user_roles.id', '=', 3)
-            ->select('users.*','user_roles.role')
-            ->where('email','LIKE','%'.$query.'%')
-            ->orWhere('first_name','LIKE','%'.$query.'%')
-            ->orWhere('last_name','LIKE','%'.$query.'%')
-            ->orWhere('user_roles.role','LIKE','%'.$query.'%')
-             ->get();*/
+            /*
+                             $data['users'] = DB::table('users')
+                        ->join('user_roles', 'user_roles.id', '=', 3)
+                        ->select('users.*','user_roles.role')
+                        ->where('email','LIKE','%'.$query.'%')
+                        ->orWhere('first_name','LIKE','%'.$query.'%')
+                        ->orWhere('last_name','LIKE','%'.$query.'%')
+                        ->orWhere('user_roles.role','LIKE','%'.$query.'%')
+                         ->get();*/
 
-              return view('admin.subviews.salespersonsearch',$data);
+            return view('admin.subviews.salespersonsearch', $data);
         }
 
 
     }
-    public function EditUser($user_id){
-    	$data['roles'] = UserRole::all();
+
+    public function EditUser($user_id)
+    {
+        $data['roles'] = UserRole::all();
         $data['user'] = User::with('userrole')->find($user_id);
 
-    	return view('admin.edituser',$data);
+        return view('admin.edituser', $data);
     }
-    public function EditSalesPerson($user_id){
-    	$data['roles'] = UserRole::all();
-    	$data['user'] = User::with('userrole')->find($user_id);
-    	return view('admin.editsalesperson',$data);
-    }
-    public function DeleteUser($user_id){
-    	$user = User::find($user_id);
 
-    	$user->is_deleted = 1;
-    	$user->save();
-    	Session::flash("success", "User has been deleted!");
-    	return back();
+    public function EditSalesPerson($user_id)
+    {
+        $data['roles'] = UserRole::all();
+        $data['user'] = User::with('userrole')->find($user_id);
+        return view('admin.editsalesperson', $data);
     }
-    public function addUserPost(Request $get){
-    	// print_r($_POST); exit;
 
-    	$this->validate($get, [
+    public function DeleteUser($user_id)
+    {
+        $user = User::find($user_id);
+        $user->is_deleted = 1;
+        $user->is_active = 0;
+        $user->save();
+        Session::flash("success", "User has been deleted!");
+        return back();
+    }
+
+    public function addUserPost(Request $get)
+    {
+        // print_r($_POST); exit;
+
+        $this->validate($get, [
             "first_name" => "required",
             "last_name" => "required",
             "email" => 'required|email|unique:users,email',
             "password" => 'required|min:8',
             "role" => 'required',
-        ],[
+        ], [
             "first_name.required" => "Please enter first name",
             "last_name.required" => "Please enter last name",
             "email.required" => 'Enter your email here',
@@ -150,9 +168,9 @@ class AdminController extends Controller
             "password.min" => 'Password should be greater then 8 charecters',
             "role.required" => 'Please Enter Role',
         ]);
-        $token = rand(123456,987643);
-        $Comission = $get['commission'] != '' ?  $get['commission']  : 0 ;
-        $user =  User::create([
+        $token = rand(123456, 987643);
+        $Comission = $get['commission'] != '' ? $get['commission'] : 0;
+        $user = User::create([
             'first_name' => $get['first_name'],
             'last_name' => $get['last_name'],
             'role' => $get['role'],
@@ -163,23 +181,24 @@ class AdminController extends Controller
             'is_active' => $get['is_active'],
             'password' => Hash::make($get['password']),
         ]);
-        try{
-            Notification::route('mail', $get['email'])->notify(new VerifyAccount($user , $token));
-        }catch(\Exception $e){
+        try {
+            Notification::route('mail', $get['email'])->notify(new VerifyAccount($user, $token));
+        } catch (\Exception $e) {
 
         }
         Session::flash("success", "User added successfully");
         return back();
     }
 
-    public function EditUserPost(Request $get , $id){
+    public function EditUserPost(Request $get, $id)
+    {
 
-    	$this->validate($get, [
+        $this->validate($get, [
             "first_name" => "required",
             "last_name" => "required",
-            "email" => 'required|email|unique:users,email,'.$id.',id',
+            "email" => 'required|email|unique:users,email,' . $id . ',id',
             "role" => 'required',
-        ],[
+        ], [
             "first_name.required" => "Please enter first name",
             "last_name.required" => "Please enter last name",
             "email.required" => 'Enter your email here',
@@ -187,10 +206,10 @@ class AdminController extends Controller
             "role.required" => 'Please Enter Role',
         ]);
 
-        $Comission = $get['commission'] != '' ?  $get['commission']  : NULL ;
+        $Comission = $get['commission'] != '' ? $get['commission'] : NULL;
         $user = User::find($id);
         $user->first_name = $get['first_name'];
-        $user->last_name 	= $get['last_name'];
+        $user->last_name = $get['last_name'];
         $user->role = $get['role'];
         $user->email = $get['email'];
         $user->commission = $Comission;
@@ -201,33 +220,34 @@ class AdminController extends Controller
         Session::flash("success", "User updated successfully");
         return back();
     }
-    public function searchUsers(Request $request){
+
+    public function searchUsers(Request $request)
+    {
         $formatCheck = 0;
-        $query  = $request['search'];
-        if($query == ""){
+        $query = $request['search'];
+        if ($query == "") {
             $formatCheck = 1;
             $data['formatCheck'] = $formatCheck;
-      $data['users'] = User::with('userrole')
-      ->where('is_deleted' ,'0')
-      ->where('id','<>', Auth::user()->id)
-      ->Paginate(10);
-      // echo '<pre>'; print_r($data); exit;
-        return view('admin.subviews.usersearchresults',$data);
-        }
-        else{
-             $formatCheck = 0;
-             $data['formatCheck'] = $formatCheck;
-             $data['users'] = DB::table('users')
-            ->join('user_roles', 'user_roles.id', '=', 'users.role')
-            ->select('users.*','user_roles.role')
-            ->where('email','LIKE','%'.$query.'%')
-            ->orWhere('first_name','LIKE','%'.$query.'%')
-            ->orWhere('last_name','LIKE','%'.$query.'%')
-            ->orWhere('user_roles.role','LIKE','%'.$query.'%')
-             ->get();
+            $data['users'] = User::with('userrole')
+                ->where('is_deleted', '0')
+                ->where('id', '<>', Auth::user()->id)
+                ->Paginate(10);
+            // echo '<pre>'; print_r($data); exit;
+            return view('admin.subviews.usersearchresults', $data);
+        } else {
+            $formatCheck = 0;
+            $data['formatCheck'] = $formatCheck;
+            $data['users'] = DB::table('users')
+                ->join('user_roles', 'user_roles.id', '=', 'users.role')
+                ->select('users.*', 'user_roles.role')
+                ->where('email', 'LIKE', '%' . $query . '%')
+                ->orWhere('first_name', 'LIKE', '%' . $query . '%')
+                ->orWhere('last_name', 'LIKE', '%' . $query . '%')
+                ->orWhere('user_roles.role', 'LIKE', '%' . $query . '%')
+                ->get();
 
-      // echo '<pre>'; print_r($data); exit;
-        return view('admin.subviews.usersearchresults',$data);
+            // echo '<pre>'; print_r($data); exit;
+            return view('admin.subviews.usersearchresults', $data);
 
         }
 
