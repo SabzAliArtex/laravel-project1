@@ -108,8 +108,11 @@ Route::group(['middleware' => 'salesperson'], function () {
 
 //License and trial Activation Routes
 
-Route::get('activate/license/{user_id}/{license_key}/{dev_id}/{dev_os}/{dev_name}','LicenseController@licenseActivation');
-Route::get('activate/trial/{loggeduserid}/{license_key}','LicenseController@trialActivation')->name('trialactivated');
+Route::post('api/license/activate','API\LicenseController@licenseActivation');
+/*Route::post('api/license/activate/{user_id}/{license_key}/{dev_id}/{dev_os}/{dev_name}','API\LicenseController@licenseActivation');*/
+Route::post('api/license/trial','API\LicenseController@trialActivation')->name('trialactivated');
+/*Route::post('api/license/trial/{loggeduserid}/{license_key}','API\LicenseController@trialActivation')->name('trialactivated');*/
+Route::get('api/license/check','API\LicenseController@checkLicenseExists')->name('is_LicenseExists');
 Route::get('trialdateexpiry/{license_key}','LicenseController@userTrialExpire')->name('trialactivateddate');
 Route::get('create_license_user','LicenseController@createLicenseUser')->name('createuserlicense');
 /*Settings Routes*/
@@ -132,3 +135,11 @@ Route::get('mail', function () {
     return (new App\Notifications\TrialActivated($user,$token))
                 ->toMail($user);
 });*/
+
+Route::get('/pl',function (){
+
+     return view('postlicense');
+
+
+});
+

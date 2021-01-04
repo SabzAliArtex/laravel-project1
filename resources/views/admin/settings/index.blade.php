@@ -16,50 +16,208 @@
                     </div>
                 @endif
             </div>
-            @include('partials_admin/sidebar')
 
-            <div class="col-md-8">
+
+            <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
                         <span class="custom-card-header-span-settings">{{ __('Application Settings') }}</span>
-                        </div>   <div class="card-body" id="card-check">
-
-                        <table id="tableListing"  border="1" width="100%"  class="table table-striped table-responsive">
-                            <thead class="thead-dark">
-                            <tr id="pRow">
-                                <th> {{ __('Sr no') }} </th>
-                                <th id="thname"> {{ __('App Name') }} </th>
-                                <th style="width: 1% !important;"> {{ __('Mailer') }} </th>
-                                <th> {{ __('Host') }} </th>
-                                <th> {{ __('Port') }} </th>
-                                <th> {{ __('Username') }} </th>
-                                <th> {{ __('Encryption') }} </th>
-                                <th> {{ __('From ') }} </th>
-                                <th> {{ __('Username') }} </th>
-                                <th colspan="2">  {{ __('Actions') }} </th>
-                            </tr>
-                            </thead>
-                            <tbody>
-
-                            <tr>
-                                @foreach($settings as $key=> $row)
-                                <td>{{$key + 1}}</td>
-                                <td>{{$row->app_name}}</td>
-                                <td>{{$row->mail_mailer}}</td>
-                                <td>{{$row->mail_host}}</td>
-                                <td>{{$row->mail_port}}</td>
-                                <td>{{$row->mail_username}}</td>
-                                <td>{{$row->mail_enc}}</td>
-                                <td>{{$row->mail_fromAddress}}</td>
-                                <td>{{$row->mail_fromName}}</td>
-
-                                <td><a class="btn btn-default btn-dark btn-md" href="{{route('editsettings',['id'=>$row->id])}}"><i class="fa fa-pencil"> Edit</i></a></td>
-                            </tr>
-                            @endforeach
-
-                            </tbody>
-                        </table>
                     </div>
+                    <div class="card-body" id="card-check">
+
+                        <ul class="nav nav-tabs mb-5">
+                            <li class="active"><a data-toggle="pill" class="btn btn-default bg-white" id="hometab" href="#home">General
+                                    Settings</a></li>
+                            <li class="ml-1"><a  data-toggle="pill" class="btn btn-default bg-white" href="#menu1">Mail
+                                    Settings</a></li>
+
+                        </ul>
+
+                        <div class="tab-content">
+                            <div id="home" class="tab-pane  active">
+                                <form method="POST" action="{{ route('editappsettings') }}"
+                                      enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="form-group row">
+                                        <label for="name"
+                                               class="col-md-4 col-form-label text-md-right">{{ __('Application Name') }}</label>
+
+                                        <div class="col-md-6">
+
+                                            <input type="hidden" name="id" value="{{$settings->id}}">
+                                            <input type="hidden" name="checkName" value="1">
+                                            <input id="first_name" type="text"
+                                                   class="form-control @error('first_name') is-invalid @enderror"
+                                                   name="app_name" value="{{ $settings->app_name }}" required
+                                                   autocomplete="off"
+                                                   autofocus>
+
+                                            @error('first_name')
+                                            <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="form-group row mb-0">
+                                        <div class="col-md-6 offset-md-4">
+                                            <button type="submit" class="btn btn-primary">
+                                                {{ __('Update') }}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div id="menu1" class="tab-pane fade">
+                                <form method="POST" action="{{ route('editappsettings') }}"
+                                      enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="form-group row">
+                                        <label for="name"
+                                               class="col-md-4 col-form-label text-md-right">{{ __('Mail Mailer') }}</label>
+
+                                        <div class="col-md-6">
+                                            <input type="hidden" name="id" value="{{$settings->id}}">
+                                            <input id="first_name" type="text"
+                                                   class="form-control @error('first_name') is-invalid @enderror"
+                                                   name="mail_mailer" value="{{ $settings->mail_mailer }}" required
+                                                   autocomplete="off"
+                                                   autofocus>
+
+                                            @error('first_name')
+                                            <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label for="name"
+                                               class="col-md-4 col-form-label text-md-right">{{ __('Mail Host') }}</label>
+
+                                        <div class="col-md-6">
+                                            <input id="last_name" type="text"
+                                                   class="form-control @error('last_name') is-invalid @enderror"
+                                                   name="mail_host" value="{{$settings->mail_host  }}" required
+                                                   autocomplete="name"
+                                                   autofocus>
+
+                                            @error('last_name')
+                                            <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label for="email"
+                                               class="col-md-4 col-form-label text-md-right">{{ __('Mail Port') }}</label>
+
+                                        <div class="col-md-6">
+                                            <input id="email" type="text" value="{{ $settings->mail_port  }}"
+                                                   class="form-control @error('email') is-invalid @enderror"
+                                                   name="mail_port">
+
+                                            @error('email')
+                                            <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label for="phone"
+                                               class="col-md-4 col-form-label text-md-right">{{ __('Mail Username') }}</label>
+
+                                        <div class="col-md-6">
+                                            <input id="phone" type="phone"
+                                                   class="form-control @error('phone') is-invalid @enderror"
+                                                   name="mail_username"
+                                                   value="{{ $settings->mail_username}}" required autocomplete="phone">
+
+                                            @error('phone')
+                                            <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label for="phone"
+                                               class="col-md-4 col-form-label text-md-right">{{ __('Mail Encryption') }}</label>
+
+                                        <div class="col-md-6">
+                                            <input id="phone" type="text" value="{{$settings->mail_enc }}"
+                                                   class="form-control @error('password') is-invalid @enderror"
+                                                   name="mail_enc"
+                                                   required autocomplete="password">
+
+                                            @error('password')
+                                            <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group row comission_row">
+                                        <label for="comission"
+                                               class="col-md-4 col-form-label text-md-right">{{ __('Mail from Address') }}</label>
+
+                                        <div class="col-md-6">
+                                            <input id="comission" type="text" value="{{$settings->mail_fromAddress }}"
+                                                   class="form-control @error('comission') is-invalid @enderror"
+                                                   name="mail_fromAddress" autocomplete="comission">
+
+                                            @error('comission')
+                                            <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="form-group row comission_row">
+                                        <label for="comission"
+                                               class="col-md-4 col-form-label text-md-right">{{ __('Mail from Name') }}</label>
+
+                                        <div class="col-md-6">
+                                            <input id="comission" type="text" value="{{$settings->mail_fromName }}"
+                                                   class="form-control @error('comission') is-invalid @enderror"
+                                                   name="mailFromUsername" autocomplete="comission">
+
+                                            @error('comission')
+                                            <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row mb-0">
+                                        <div class="col-md-6 offset-md-4">
+                                            <button type="submit" class="btn btn-primary">
+                                                {{ __('Update Mail Settings') }}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="mt-5">
+                            <p style="text-align: center;color: red">*Warning,make changes carefully, as it is sensitive
+                                information.</p>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -69,23 +227,23 @@
 <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function () {
         jQuery.noConflict();
-        jQuery(document).ready(function(){
-            jQuery('#myInput').on('keyup',function(){
-                $value=jQuery(this).val();
+        jQuery(document).ready(function () {
+            jQuery('#myInput').on('keyup', function () {
+                $value = jQuery(this).val();
                 jQuery.ajax({
-                    type : 'get',
-                    url : '{{URL::to('users-search-results')}}',
-                    data:{'search':$value},
-                    success:function(data){
+                    type: 'get',
+                    url: '{{URL::to('users-search-results')}}',
+                    data: {'search': $value},
+                    success: function (data) {
                         $('tbody').html(data);
-                        document.getElementById("thname").style.width="1%";
+                        document.getElementById("thname").style.width = "1%";
 
 
                     }
                 });
             });
         });
-        jQuery.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
+        jQuery.ajaxSetup({headers: {'csrftoken': '{{ csrf_token() }}'}});
     });
 
 
@@ -93,25 +251,26 @@
 <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function () {
         jQuery.noConflict();
-        jQuery(document).ready(function(){
-            jQuery('.search-filter').on('change',function(){
-                $value=jQuery(this).val();
+        jQuery(document).ready(function () {
+            jQuery('.search-filter').on('change', function () {
+                $value = jQuery(this).val();
                 console.log($value);
                 jQuery.ajax({
-                    type : 'get',
-                    url : '{{URL::to('users-search-results')}}',
-                    data:{'search':$value},
-                    success:function(data){
+                    type: 'get',
+                    url: '{{URL::to('users-search-results')}}',
+                    data: {'search': $value},
+                    success: function (data) {
                         $('tbody').html(data);
-                        document.getElementById("thname").style.width="1%";
+                        document.getElementById("thname").style.width = "1%";
 
 
                     }
                 });
             });
         });
-        jQuery.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
+        jQuery.ajaxSetup({headers: {'csrftoken': '{{ csrf_token() }}'}});
     });
 
 
 </script>
+

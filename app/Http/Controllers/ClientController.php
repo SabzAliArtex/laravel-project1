@@ -79,6 +79,8 @@ class ClientController extends Controller
 
         $licenses = License_devices::with('deviceLicense', 'users', 'license_type')
             ->orderByRaw('id DESC')->paginate(10);
+
+
         return view('admin.useranddevslist', compact('licenses'));
 
     }

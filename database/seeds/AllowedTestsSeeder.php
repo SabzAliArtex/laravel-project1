@@ -13,7 +13,7 @@ class AllowedTestsSeeder extends Seeder
     {
         //
           DB::table('tests')->insert([
-            'name' => 'Diagnostics',
+            'name' => 'CCVT',
             'description' => 'Test under supervision of waggoner experts',
             'is_active' => 1,
         ]);

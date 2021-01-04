@@ -11070,7 +11070,55 @@ input[type=number] {
     -moz-appearance: textfield;
 }
 
+.tablink {
+    background-color: #555;
+    color: white;
+    float: left;
+    border: none !important;
+    outline: none !important;
+    cursor: pointer;
+    padding: 14px 16px;
+    font-size: 17px;
+    width: 25%;
+}
 
+.tablink:hover {
+    background-color: #777;
+}
+
+/* Style the tab content */
+.tabcontent {
+    color: white;
+    display: none;
+    padding: 50px;
+    text-align: center;
+}
+
+#London {background-color:#7a97b3}
+#Paris {background-color:#7a97b3;}
+
+/*//customcenter*/
+.custom_center {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+.custom_formdiv{
+    position: relative;
+    left: 34%;
+    width: 50%;
+}
+.btnSettingsAPP{
+    left: 126px;
+    position: relative;
+}
+.nav-tabs>li.active>a:focus{background-color: #7A97B3 !important; color:white !important;}
+.nav-tabs>li>a:focus{background-color: #7A97B3 !important; color:white !important;}
+.nav-tabs>li>a:focus #hometab{background-color: white !important;}
+.nav-tabs>li.active>a{background-color: #7A97B3 !important; color:white !important;}
                                     /*Custom Media Queries starting*/
 
 

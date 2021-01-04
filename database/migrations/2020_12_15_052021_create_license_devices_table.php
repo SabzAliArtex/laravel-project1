@@ -15,7 +15,7 @@ class CreateLicenseDevicesTable extends Migration
     {
         Schema::create('license_devices', function (Blueprint $table) {
             $table->id();
-            $table->integer('license_id');
+            $table->string('license_id');
             $table->integer('user_id');
             $table->integer('device_id');
             $table->string('device_name');

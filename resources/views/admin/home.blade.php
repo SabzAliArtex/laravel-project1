@@ -39,6 +39,14 @@
                             .thumb p {
                                 margin-bottom: 0.1em;
                             }
+                            img{
+                                background: grey;
+                                height:250px;
+                                width: 100%;
+                                border:1px solid grey;
+                                margin-top: 20px;
+                                box-shadow: 0 8px 6px -6px black;
+                            }
                         </style>
                         <div class="row boxes">
                             <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">
@@ -85,7 +93,10 @@
 
                         </div>
                     </div>
+
                 </div>
+
+
             </div>
         </div>
     </div>
