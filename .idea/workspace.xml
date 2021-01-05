@@ -6,8 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="3406f65e-5bd1-4f44-a8ad-a8cd5fa6b5aa" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/API/LicenseController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/API/LicenseController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/postlicense.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/postlicense.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/database.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/database.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/license/addlicensetype.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/license/addlicensetype.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -199,7 +199,8 @@
       <workItem from="1609737185529" duration="7209000" />
       <workItem from="1609753917627" duration="30000" />
       <workItem from="1609760566103" duration="3067000" />
-      <workItem from="1609820719469" duration="3258000" />
+      <workItem from="1609820719469" duration="4195000" />
+      <workItem from="1609841051028" duration="323000" />
     </task>
     <servers />
   </component>

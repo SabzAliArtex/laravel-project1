@@ -81,7 +81,7 @@
                             </div>
                             <div class="form-group row">
                                 <label for="Role"
-                                       class="col-md-4 col-form-label text-md-right">{{ __('Select Allowed Test') }}</label>
+                                       class="col-md-4 col-form-label text-md-right">{{ __('Select Allowed Test') }}</label>.e
 
 
                                 <div class="col-md-6">
