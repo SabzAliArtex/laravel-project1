@@ -5,22 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3406f65e-5bd1-4f44-a8ad-a8cd5fa6b5aa" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/resources/views/postlicense.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ClientController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ClientController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/LicenseController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/LicenseController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/SettingController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/SettingController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Notifications/VerifyAccount.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Notifications/VerifyAccount.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2020_11_28_115614_create_settings_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_11_28_115614_create_settings_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2020_12_15_052021_create_license_devices_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_12_15_052021_create_license_devices_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeds/AllowedTestsSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeds/AllowedTestsSeeder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/app.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/home.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/home.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/settings/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/settings/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/useranddevslist.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/useranddevslist.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/auth/verify.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/auth/verify.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layouts/app.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/app.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/API/LicenseController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/API/LicenseController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/postlicense.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/postlicense.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -212,6 +199,7 @@
       <workItem from="1609737185529" duration="7209000" />
       <workItem from="1609753917627" duration="30000" />
       <workItem from="1609760566103" duration="3067000" />
+      <workItem from="1609820719469" duration="3258000" />
     </task>
     <servers />
   </component>

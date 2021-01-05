@@ -8,7 +8,7 @@
     <title>Document</title>
 </head>
 <body>
-<form action="{{url('api/license/activate')}}" method="post">
+<form action="{{url('api/license/trial')}}" method="post">
     {{csrf_field()}}
     <input type="text" value="4" name="loggedinuser_id"  id="" placeholder="User id">
     <input type="text" value="CCVT7MFP9R9M8PLP5S2N" name="license_key" id="" placeholder="license key">

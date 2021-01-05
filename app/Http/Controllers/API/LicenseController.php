@@ -7,13 +7,15 @@ use App\License;
 use App\License_devices;
 use App\User;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Route;
+use App\Apiloggs;
 class LicenseController extends Controller
 {
     //
     public function licenseActivation(Request $request)
     {
-
+        $payload = $request->all();
+        $this->loggs($payload);
         $user_id = $request->get('user_id');
         $license_id = $request->get('license_key');
         $dev_id = $request->get('dev_id');
@@ -52,9 +54,11 @@ class LicenseController extends Controller
         }
 
 
+
     }
     public function trialActivation(Request $request)
-    {
+    {    $payload = $request->all();
+        $this->loggs($payload);
         $loggeduserid = $request->get('loggedinuser_id');
         $license_key = $request->get('license_key');
         $response = array();
@@ -70,10 +74,11 @@ class LicenseController extends Controller
             $response['message'] = "Invalid Person";
             return json_encode($response);
         }
+        $this->loggs($request);
     }
     public function checkLicenseExists(Request $request)
-    {
-
+    {   $payload = $request->all();
+        $this->loggs($payload);
         $license_key = $request->get('licensecode');
         $is_license = License::where('license', '=', $license_key)->first();
         if (!$is_license) {
@@ -105,6 +110,27 @@ class LicenseController extends Controller
             $response['message'] = "License Key is not valid";
             return json_encode($response);
         }
+    }
+    public function loggs($payload){
+        $current_route = Route::getCurrentRoute()->uri;
+        $current_controller = Route::getCurrentRoute()->getActionName();
+        $current_payload = json_encode($payload);
+
+        $log = Apiloggs::create([
+            'current_url'=>$current_route,
+            'current_controller'=>$current_controller,
+            'current_payload'=>$current_payload,
+        ]);
+        if($log){
+            $response['message'] = "Loggs are being maintained";
+            return json_encode($response);
+        }else{
+            $response['message'] = "Failed to maintain Loggs";
+            return json_encode($response);
+
+        }
+
+
     }
 
 }
