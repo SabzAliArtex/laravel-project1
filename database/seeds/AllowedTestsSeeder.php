@@ -16,6 +16,14 @@ class AllowedTestsSeeder extends Seeder
             'name' => 'CCVT',
             'description' => 'Test under supervision of waggoner experts',
             'is_active' => 1,
+        ]);DB::table('tests')->insert([
+            'name' => 'Waggoner',
+            'description' => 'Test under supervision of waggoner experts',
+            'is_active' => 1,
+        ]);DB::table('tests')->insert([
+            'name' => 'CCVT EYE TEST',
+            'description' => 'Test under supervision of waggoner experts',
+            'is_active' => 1,
         ]);
     }
 }

@@ -69,7 +69,7 @@
                                          <td> {{ $license->user ? $license->user->email : '' }} </td>
 
                                              <td><a href="{{ route('user.deleteuserlicense',['id'=>$license->id]) }}" onclick="return confirm('Are you sure.')"> {{ __('Delete') }}  </a></td>
-                                             <td><a @click="openDetailModal({{$license->id}})" href="#"> {{ __('Details') }}  </a></td>
+                                             <td><a @click="openDetailModal({{$license->id}})" href="javascript:void(0)"> {{ __('Details') }}  </a></td>
 
                                     </tr>
                                 @endforeach
@@ -146,30 +146,32 @@
     </div>
 
 @endsection
+
+
 <script type="text/javascript">
-  document.addEventListener('DOMContentLoaded', function () {
-    // Your jquery code
-     jQuery.noConflict();
-    jQuery(document).ready(function(){
- jQuery('#myInput').on('keyup',function(){
-$value=jQuery(this).val();
-jQuery.ajax({
-type : 'get',
-url : '{{URL::to('user')}}',
-data:{'search':$value},
-success:function(data){
-$('tbody').html(data);
-}
-});
-});
-});
- jQuery.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
-});
+    document.addEventListener('DOMContentLoaded', function () {
+        // Your jquery code
+        jQuery.noConflict();
+        jQuery(document).ready(function(){
+            jQuery('#myInput').on('keyup',function(){
+                $value=jQuery(this).val();
+                console.log($value);
+
+                jQuery.ajax({
+                    type : 'get',
+                    url : '{{URL::to('user')}}',
+                    data:{'search':$value},
+                    success:function(data){
+                        $('tbody').html(data);
+                    }
+                });
+            });
+        });
+        jQuery.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
+    });
 
 
 </script>
-
-
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
@@ -193,7 +195,7 @@ $('tbody').html(data);
                 console.log(this.licid);
                 this.alldata = res.data;
 
-                    $('#myModal').modal('show');
+                    jQuery('#myModal').modal('show');
                 }).catch((error)=>{
 
                 })

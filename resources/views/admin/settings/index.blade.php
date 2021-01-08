@@ -35,8 +35,9 @@
 
                         <div class="tab-content">
                             <div id="home" class="tab-pane  active">
-                                <form method="POST" action="{{ route('editappsettings') }}"
-                                      enctype="multipart/form-data">
+                                @if($settings != null || count($settings)<0)
+                                    <form method="POST" action="{{ route('editappsettings') }}"
+                                                              enctype="multipart/form-data">
                                     @csrf
                                     <div class="form-group row">
                                         <label for="name"
@@ -67,145 +68,153 @@
                                         </div>
                                     </div>
                                 </form>
+                                @else
+                                    <p style="text-align: center;color: red">*Settings not Set by Admin.</p>
+                                @endif
+
                             </div>
                             <div id="menu1" class="tab-pane fade">
-                                <form method="POST" action="{{ route('editappsettings') }}"
-                                      enctype="multipart/form-data">
-                                    @csrf
-                                    <div class="form-group row">
-                                        <label for="name"
-                                               class="col-md-4 col-form-label text-md-right">{{ __('Mail Mailer') }}</label>
+                                @if($settings != null || count($settings)<0)
+                                      <form method="POST" action="{{ route('editappsettings') }}"
+                                                                   enctype="multipart/form-data">
+                                        @csrf
+                                        <div class="form-group row">
+                                            <label for="name"
+                                                   class="col-md-4 col-form-label text-md-right">{{ __('Mail Mailer') }}</label>
 
-                                        <div class="col-md-6">
-                                            <input type="hidden" name="id" value="{{$settings->id}}">
-                                            <input id="first_name" type="text"
-                                                   class="form-control @error('first_name') is-invalid @enderror"
-                                                   name="mail_mailer" value="{{ $settings->mail_mailer }}" required
-                                                   autocomplete="off"
-                                                   autofocus>
+                                            <div class="col-md-6">
+                                                <input type="hidden" name="id" value="{{$settings->id}}">
+                                                <input id="first_name" type="text"
+                                                       class="form-control @error('first_name') is-invalid @enderror"
+                                                       name="mail_mailer" value="{{ $settings->mail_mailer }}" required
+                                                       autocomplete="off"
+                                                       autofocus>
 
-                                            @error('first_name')
-                                            <span class="invalid-feedback" role="alert">
+                                                @error('first_name')
+                                                <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
-                                            @enderror
+                                                @enderror
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div class="form-group row">
-                                        <label for="name"
-                                               class="col-md-4 col-form-label text-md-right">{{ __('Mail Host') }}</label>
+                                        <div class="form-group row">
+                                            <label for="name"
+                                                   class="col-md-4 col-form-label text-md-right">{{ __('Mail Host') }}</label>
 
-                                        <div class="col-md-6">
-                                            <input id="last_name" type="text"
-                                                   class="form-control @error('last_name') is-invalid @enderror"
-                                                   name="mail_host" value="{{$settings->mail_host  }}" required
-                                                   autocomplete="name"
-                                                   autofocus>
+                                            <div class="col-md-6">
+                                                <input id="last_name" type="text"
+                                                       class="form-control @error('last_name') is-invalid @enderror"
+                                                       name="mail_host" value="{{$settings->mail_host  }}" required
+                                                       autocomplete="name"
+                                                       autofocus>
 
-                                            @error('last_name')
-                                            <span class="invalid-feedback" role="alert">
+                                                @error('last_name')
+                                                <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
-                                            @enderror
+                                                @enderror
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div class="form-group row">
-                                        <label for="email"
-                                               class="col-md-4 col-form-label text-md-right">{{ __('Mail Port') }}</label>
+                                        <div class="form-group row">
+                                            <label for="email"
+                                                   class="col-md-4 col-form-label text-md-right">{{ __('Mail Port') }}</label>
 
-                                        <div class="col-md-6">
-                                            <input id="email" type="text" value="{{ $settings->mail_port  }}"
-                                                   class="form-control @error('email') is-invalid @enderror"
-                                                   name="mail_port">
+                                            <div class="col-md-6">
+                                                <input id="email" type="text" value="{{ $settings->mail_port  }}"
+                                                       class="form-control @error('email') is-invalid @enderror"
+                                                       name="mail_port">
 
-                                            @error('email')
-                                            <span class="invalid-feedback" role="alert">
+                                                @error('email')
+                                                <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
-                                            @enderror
+                                                @enderror
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div class="form-group row">
-                                        <label for="phone"
-                                               class="col-md-4 col-form-label text-md-right">{{ __('Mail Username') }}</label>
+                                        <div class="form-group row">
+                                            <label for="phone"
+                                                   class="col-md-4 col-form-label text-md-right">{{ __('Mail Username') }}</label>
 
-                                        <div class="col-md-6">
-                                            <input id="phone" type="phone"
-                                                   class="form-control @error('phone') is-invalid @enderror"
-                                                   name="mail_username"
-                                                   value="{{ $settings->mail_username}}" required autocomplete="phone">
+                                            <div class="col-md-6">
+                                                <input id="phone" type="phone"
+                                                       class="form-control @error('phone') is-invalid @enderror"
+                                                       name="mail_username"
+                                                       value="{{ $settings->mail_username}}" required autocomplete="phone">
 
-                                            @error('phone')
-                                            <span class="invalid-feedback" role="alert">
+                                                @error('phone')
+                                                <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
-                                            @enderror
+                                                @enderror
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div class="form-group row">
-                                        <label for="phone"
-                                               class="col-md-4 col-form-label text-md-right">{{ __('Mail Encryption') }}</label>
+                                        <div class="form-group row">
+                                            <label for="phone"
+                                                   class="col-md-4 col-form-label text-md-right">{{ __('Mail Encryption') }}</label>
 
-                                        <div class="col-md-6">
-                                            <input id="phone" type="text" value="{{$settings->mail_enc }}"
-                                                   class="form-control @error('password') is-invalid @enderror"
-                                                   name="mail_enc"
-                                                   required autocomplete="password">
+                                            <div class="col-md-6">
+                                                <input id="phone" type="text" value="{{$settings->mail_enc }}"
+                                                       class="form-control @error('password') is-invalid @enderror"
+                                                       name="mail_enc"
+                                                       required autocomplete="password">
 
-                                            @error('password')
-                                            <span class="invalid-feedback" role="alert">
+                                                @error('password')
+                                                <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
-                                            @enderror
+                                                @enderror
+                                            </div>
                                         </div>
-                                    </div>
 
 
-                                    <div class="form-group row comission_row">
-                                        <label for="comission"
-                                               class="col-md-4 col-form-label text-md-right">{{ __('Mail from Address') }}</label>
+                                        <div class="form-group row comission_row">
+                                            <label for="comission"
+                                                   class="col-md-4 col-form-label text-md-right">{{ __('Mail from Address') }}</label>
 
-                                        <div class="col-md-6">
-                                            <input id="comission" type="text" value="{{$settings->mail_fromAddress }}"
-                                                   class="form-control @error('comission') is-invalid @enderror"
-                                                   name="mail_fromAddress" autocomplete="comission">
+                                            <div class="col-md-6">
+                                                <input id="comission" type="text" value="{{$settings->mail_fromAddress }}"
+                                                       class="form-control @error('comission') is-invalid @enderror"
+                                                       name="mail_fromAddress" autocomplete="comission">
 
-                                            @error('comission')
-                                            <span class="invalid-feedback" role="alert">
+                                                @error('comission')
+                                                <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
-                                            @enderror
+                                                @enderror
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group row comission_row">
-                                        <label for="comission"
-                                               class="col-md-4 col-form-label text-md-right">{{ __('Mail from Name') }}</label>
+                                        <div class="form-group row comission_row">
+                                            <label for="comission"
+                                                   class="col-md-4 col-form-label text-md-right">{{ __('Mail from Name') }}</label>
 
-                                        <div class="col-md-6">
-                                            <input id="comission" type="text" value="{{$settings->mail_fromName }}"
-                                                   class="form-control @error('comission') is-invalid @enderror"
-                                                   name="mailFromUsername" autocomplete="comission">
+                                            <div class="col-md-6">
+                                                <input id="comission" type="text" value="{{$settings->mail_fromName }}"
+                                                       class="form-control @error('comission') is-invalid @enderror"
+                                                       name="mailFromUsername" autocomplete="comission">
 
-                                            @error('comission')
-                                            <span class="invalid-feedback" role="alert">
+                                                @error('comission')
+                                                <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
-                                            @enderror
+                                                @enderror
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div class="form-group row mb-0">
-                                        <div class="col-md-6 offset-md-4">
-                                            <button type="submit" class="btn btn-primary">
-                                                {{ __('Update Mail Settings') }}
-                                            </button>
+                                        <div class="form-group row mb-0">
+                                            <div class="col-md-6 offset-md-4">
+                                                <button type="submit" class="btn btn-primary">
+                                                    {{ __('Update Mail Settings') }}
+                                                </button>
+                                            </div>
                                         </div>
-                                    </div>
-                                </form>
+                                    </form>
+                                @else
+                                    <p style="text-align: center;color: red">*Settings not set by Admin.</p>
+                                    @endif
                             </div>
 
 

@@ -7,14 +7,14 @@
             <div class="card">
                 <div class="card-header">{{ __('Side Bar') }}</div>
                 <div class="card-body">
-                    <li> 
+                    <li>
                         <a href="{{ route('salesperson.license') }}"> {{ __('All Licenses') }} </a>
                     </li>
-                    <li> 
+                    <li>
                         <a href="{{ route('salesperson.activelicense') }}"> {{ __('Activated Licenses') }} </a>
                     </li>
-                </div> 
-            </div>       
+                </div>
+            </div>
         </div>
         <div class="col-md-8">
             <div class="card">

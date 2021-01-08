@@ -96,6 +96,7 @@ class LicenseController extends Controller
      */
     public function create()
     {
+
         $sales_persons = User::where([['is_active', '1'], ['role', '3'], ['is_deleted', '0']])->get();
         $Licensetypes = LicenseType::where('is_active', '1')->get();
         return view('admin.license.addlicense', compact('sales_persons', 'Licensetypes'));
@@ -110,25 +111,58 @@ class LicenseController extends Controller
     public function store(Request $request)
     {
 
-        $this->validate($request, [
-            "license" => "required",
+        if (isset($request['numberoflicenses'])) {
 
-        ], [
-            "license.required" => "Please enter Valid License Code",
+            if ($request['numberoflicenses']>20){
 
-        ]);
+                return back()->with("error","Enter value less than or equal to 20");
 
-        $license = new License();
-        $license->license = $request['license'];
-        $license->no_of_devices_allowed = $request['numofdevs'];
-        $license->sales_person_id = $request['sales_person'];
-        $license->license_type_id = $request['license_type'];
-        $license->save();
+            }
 
-        Session::flash("success", "License added successfully!");
-        return redirect('license');
+            $this->validate($request, [
+                "numberoflicenses" => "required | min:1 | max:20",
+
+            ], [
+                "numberoflicenses.required" => "Quantity can neither be empty nor 0",
+                "numberoflicenses.min" => "Quantity cannot be less than 1",
+
+            ]);
+
+
+            for ($i=1;$i<=$request->get('numberoflicenses');$i++){
+                    $license = new License();
+                    $license->license = generate_license_key();
+                    $license->no_of_devices_allowed = $request['numofdevs'];
+                    $license->sales_person_id = $request['sales_person'];
+                    $license->license_type_id = $request['license_type'];
+                    $license->save();
+            }
+
+
+
+
+            Session::flash("success", "License added successfully!");
+            return redirect('license');
+        } else {
+            $this->validate($request, [
+                "license" => "required",
+
+            ], [
+                "license.required" => "Please enter Valid License Code",
+
+            ]);
+
+            $license = new License();
+            $license->license = $request['license'];
+            $license->no_of_devices_allowed = $request['numofdevs'];
+            $license->sales_person_id = $request['sales_person'];
+            $license->license_type_id = $request['license_type'];
+            $license->save();
+
+            Session::flash("success", "License added successfully!");
+            return redirect('license');
+        }
     }
-
     public function EditLicense($license)
     {
         $licenses = License::where('license', $license)->firstOrFail();
@@ -285,6 +319,13 @@ class LicenseController extends Controller
         $is_license->save();
         return true;
     }
+
+    public function multipleLicenses(){
+        $sales_persons = User::where([['is_active', '1'], ['role', '3'], ['is_deleted', '0']])->get();
+        $Licensetypes = LicenseType::where('is_active', '1')->get();
+        return view('admin.license.addmultiplelicense', compact('sales_persons', 'Licensetypes'));
+    }
+
 
 
 }

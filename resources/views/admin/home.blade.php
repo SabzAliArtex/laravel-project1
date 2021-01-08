@@ -48,6 +48,7 @@
                                 box-shadow: 0 8px 6px -6px black;
                             }
                         </style>
+
                         <div class="row boxes">
                             <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">
                                 <div class="thumb">

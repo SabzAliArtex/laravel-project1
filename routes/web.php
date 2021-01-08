@@ -72,10 +72,12 @@ Route::group(['middleware' => ['admin','verified']], function () {
 	Route::get('/paymentstatus/{id}/{status}', 'PaymentController@edit')->name('paymentstatus');
 	Route::get('/paymentstatus', 'PaymentController@editSearched')->name('paymentstatussearched');
 	Route::get('/licenseactivation','LicenseController@licenseActivation')->name('licenseactivation');
+	Route::get('/license/multiple','LicenseController@multipleLicenses')->name('license.multiple');
+	Route::post('/license/multiple/create','LicenseController@store')->name('license.multiple.add');
 
 });
 // Users Routes
-Route::group(['middleware' => 'user'], function () {
+Route::group(['middleware' => ['user','auth']], function () {
 	Route::get('/user/home', 'ClientController@userHome')->name('user.home');
 	Route::get('/user/profile', 'ClientController@manageprofile')->name('user.profile');
 	Route::post('/user/profile', 'ClientController@updateprofile')->name('user.updateprofile');
@@ -83,14 +85,14 @@ Route::group(['middleware' => 'user'], function () {
  	Route::get('/user', 'ClientController@searchResults')->name('user.searchresults');
  	Route::get('/user/deletelicense/{id}', 'ClientController@deleteLicense')->name('user.deleteuserlicense');
  	Route::get('/user/deactivatedevice/{id}', 'ClientController@deactivateDevice')->name('user.deactivateuserdevice');
- 		Route::get('/user/activatedevice/{id}', 'ClientController@activateDevice')->name('user.activateuserdevice');
+ 	Route::get('/user/activatedevice/{id}', 'ClientController@activateDevice')->name('user.activateuserdevice');
  	Route::get('/user/getuserdetails/{id}', 'ClientController@LicensesActivated')->name('user.licenselistcomplete');
-
 });
 Route::get('/user/getuseranddevices', 'ClientController@alluseranddevs')->name('a');
 Route::get('/getuseranddevices-search-results', 'ClientController@alluseranddevssearch')->name('getusersearchedresults');
+
 // Sales Person Routes
-Route::group(['middleware' => 'salesperson'], function () {
+Route::group(['middleware' => ['salesperson', 'auth']], function () {
 	Route::get('/salesperson/home', 'SalesPersonController@userHome')->name('salesperson.home');
 	Route::get('/salesperson/profile', 'SalesPersonController@manageprofile')->name('salesperson.profile');
 	Route::post('/salesperson/profile', 'SalesPersonController@updateprofile')->name('salesperson.updateprofile');

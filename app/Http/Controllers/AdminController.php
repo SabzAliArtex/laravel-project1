@@ -250,10 +250,10 @@ class AdminController extends Controller
             $data['users'] = DB::table('users')
                 ->join('user_roles', 'user_roles.id', '=', 'users.role')
                 ->select('users.*', 'user_roles.role')
-                ->where('email', 'LIKE', '%' . $query . '%')
-                ->orWhere('first_name', 'LIKE', '%' . $query . '%')
-                ->orWhere('last_name', 'LIKE', '%' . $query . '%')
-                ->orWhere('user_roles.role', 'LIKE', '%' . $query . '%')
+                ->where([['email', 'LIKE', '%' . $query . '%'],['users.id','<>',Auth::user()->id]])
+                ->orWhere([['first_name', 'LIKE', '%' . $query . '%'],['users.id','<>',Auth::user()->id]])
+                ->orWhere([['last_name', 'LIKE', '%' . $query . '%'],['users.id','<>',Auth::user()->id]])
+                ->orWhere([['user_roles.role', 'LIKE', '%' . $query . '%'],['users.id','<>',Auth::user()->id]])
                 ->get();
 
             // echo '<pre>'; print_r($data); exit;

@@ -26,6 +26,9 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
+    @toastr_css
+    @toastr_js
+
     <style type="text/css">
 
 .example {

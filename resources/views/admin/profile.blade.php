@@ -133,7 +133,7 @@
                                 @if(Auth::user()->thumb)
                                     <img src="{{ asset(Auth::user()->thumb) }}" style="height: 100px;">
                                 @else
-                                    <img src="{{ asset('files/upload/user/user.jpg') }}" style="height: 100px;">
+                                    <img src="{{ asset('files/upload/user/user.png') }}" style="height: 100px;">
                                 @endif
                             </div>
                         </div>

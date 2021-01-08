@@ -14,12 +14,18 @@ class SettingController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware(['auth','admin']);
+    }
+
     public function index()
     {
         //store date
         /*config(['database.connections.mysql.host' => '127.0.0.1']);*/
         /*To get this data use config():*/
         $data['settings'] = Setting::first();
+
 
         return view('admin.settings.index', $data);
 

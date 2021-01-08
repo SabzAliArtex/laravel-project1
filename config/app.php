@@ -179,6 +179,8 @@ return [
 
         //brotzka
         Brotzka\DotenvEditor\DotenvEditorServiceProvider::class,
+        //toastr
+        Yoeunes\Toastr\ToastrServiceProvider::class
 
 
 

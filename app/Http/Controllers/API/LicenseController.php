@@ -17,6 +17,7 @@ class LicenseController extends Controller
         $payload = $request->all();
         $this->loggs($payload);
         $user_id = $request->get('user_id');
+
         $license_id = $request->get('license_key');
         $dev_id = $request->get('dev_id');
         $dev_os = $request->get('dev_os');
@@ -59,7 +60,7 @@ class LicenseController extends Controller
     public function trialActivation(Request $request)
     {    $payload = $request->all();
         $this->loggs($payload);
-        $loggeduserid = $request->get('loggedinuser_id');
+        $loggeduserid = $request->get('user_id');
         $license_key = $request->get('license_key');
         $response = array();
         $response['message'] = "";
