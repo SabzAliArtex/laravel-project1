@@ -5,44 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3406f65e-5bd1-4f44-a8ad-a8cd5fa6b5aa" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/resources/views/admin/license/addmultiplelicense.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/ccvt-licensing.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/ccvt-licensing.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/API/LicenseController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/API/LicenseController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/AdminController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/AdminController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/LicenseController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/LicenseController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/PaymentController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/PaymentController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/SettingController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/SettingController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/app.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/app.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2020_11_21_063814_add_image_column_users.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_11_21_063814_add_image_column_users.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeds/AllowedTestsSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeds/AllowedTestsSeeder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeds/DatabaseSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeds/DatabaseSeeder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeds/PaymentSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeds/PaymentSeeder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeds/UserSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeds/UserSeeder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/app.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/mix-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/mix-manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/adduser.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/adduser.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/commission/commissionlist.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/commission/commissionlist.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/home.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/home.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/license/addlicense.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/license/addlicense.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/license/addlicensetype.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/license/addlicensetype.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/profile.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/profile.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/settings/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/admin/settings/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layouts/app.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/app.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/partials_admin/sidebar.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/partials_admin/sidebar.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/postlicense.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/postlicense.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/salesperson/home.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/salesperson/home.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/salesperson/profile.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/salesperson/profile.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/user/activelicenselist.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/user/activelicenselist.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/user/licenselist.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/user/licenselist.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/user/profile.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/user/profile.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -251,6 +214,23 @@
       <workItem from="1610016922337" duration="749000" />
       <workItem from="1610080107034" duration="2081000" />
       <workItem from="1610083669349" duration="21817000" />
+      <workItem from="1610166166160" duration="784000" />
+      <workItem from="1610338499970" duration="44000" />
+      <workItem from="1610349979507" duration="219000" />
+      <workItem from="1610350929745" duration="35000" />
+      <workItem from="1610351035823" duration="21000" />
+      <workItem from="1610351114524" duration="21000" />
+      <workItem from="1610434714011" duration="1693000" />
+      <workItem from="1610512106397" duration="1847000" />
+      <workItem from="1610598027407" duration="20000" />
+      <workItem from="1610967148992" duration="111000" />
+      <workItem from="1611035700313" duration="103000" />
+      <workItem from="1611136529501" duration="61000" />
+      <workItem from="1611140133869" duration="481000" />
+      <workItem from="1611376847701" duration="117000" />
+      <workItem from="1611377275005" duration="100000" />
+      <workItem from="1611378293343" duration="487000" />
+      <workItem from="1611388713792" duration="28000" />
     </task>
     <servers />
   </component>
