@@ -16,10 +16,10 @@ class CreateLicenseDevicesTable extends Migration
         Schema::create('license_devices', function (Blueprint $table) {
             $table->id();
             $table->string('license_id');
-            $table->integer('user_id');
-            $table->integer('device_id');
-            $table->string('device_name');
-            $table->string('device_os');
+            $table->string('user_id')->change();
+            $table->string('device_id')->change();
+            $table->string('device_name')->nullable()->change();
+            $table->string('device_os')->nullable()->change();
             $table->dateTime('activation_date');
             $table->boolean('is_deleted')->default('0')->nullable();
             $table->timestamps();

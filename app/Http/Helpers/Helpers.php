@@ -82,10 +82,10 @@ if($num == 300){
 function error_code($code){
   if(isset($code)){
     if($code == 500){
-    $response['message'] = "License Activated For Device Already";
+    $response['Message'] = "License Activated For Device Already";
     return json_encode($response);
   }else if($code == 400){
-        $response['message'] = "Not a Registered User";
+        $response['Message'] = "Not a Registered User";
     return json_encode($response);
   }
 

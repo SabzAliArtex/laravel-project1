@@ -27,17 +27,17 @@ class LicenseController extends Controller
          $dev_name = $request->get('dev_name');
          /*user 3 licen 1 */
          $response = array();
-         $response['message'] = "";
+         $response['Message'] = "";
          if (!isset($license_id)) {
-             $response['message'] = "License Object is null";
+             $response['Message'] = "License Object is null";
              return json_encode($response);
          }
-         if (!isset($dev_os) || !isset($dev_name) || !isset($dev_id)) {
-             $response['message'] = "Device Credentials are Invalid";
-             return json_encode($response);
+        //  if (!isset($dev_os) || !isset($dev_name) || !isset($dev_id)) {
+        //      $response['Message'] = "Device Credentials are Invalid";
+        //      return json_encode($response);
 
-         }
-         $userPerson = User::where([['email', $user_id]])->first();
+        //  }
+         $userPerson = User::where('email','=', $user_id)->first();
          $license_dev_count_rows = License_devices::with('deviceLicense')->where('device_id', '=', $dev_id)->first();
          $license_count_rows = License_devices::with('deviceLicense')->where('license_id', '=', $license_id)->get();
          $license_count_user = $license_count_rows->count();
@@ -63,12 +63,12 @@ class LicenseController extends Controller
     public function trialActivation(Request $request)
     {    $payload = $request->all();
         $this->loggs($payload);
-        $loggeduserid = $request->get('user_id');
-        $license_key = $request->get('license_key');
+        $loggeduserid = $request->get('UserEmail');
+        $license_key = $request->get('LicenseCode');
         $response = array();
         $response['Message'] = "";
         $token = rand();
-        $userPerson = User::where([['id', $loggeduserid]])->first();
+        $userPerson = User::where([['email', $loggeduserid]])->first();
         if (isset($userPerson)) {
             if ($userPerson->role == 2) {
                 $licenseTrial = License::where('license', '=', $license_key)->first();
@@ -83,7 +83,7 @@ class LicenseController extends Controller
     public function checkLicenseExists(Request $request)
     {   $payload = $request->all();
         $this->loggs($payload);
-        $license_key = $request->get('licensecode');
+        $license_key = $request->get('LicenseCode');
         $is_license = License::where('license', '=', $license_key)->first();
         if (!$is_license) {
             return false;
