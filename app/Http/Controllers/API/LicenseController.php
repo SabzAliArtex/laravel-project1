@@ -11,48 +11,51 @@ use Illuminate\Support\Facades\Route;
 use App\Apiloggs;
 class LicenseController extends Controller
 {
-    //
+    
+   
     public function licenseActivation(Request $request)
     {
+        
         $payload = $request->all();
-        $this->loggs($payload);
-        $user_id = $request->get('user_id');
+         
+         $this->loggs($payload);
+         $user_id = $request->get('UserEmail');
 
-        $license_id = $request->get('license_key');
-        $dev_id = $request->get('dev_id');
-        $dev_os = $request->get('dev_os');
-        $dev_name = $request->get('dev_name');
-        /*user 3 licen 1 */
-        $response = array();
-        $response['message'] = "";
-        if (!isset($license_id)) {
-            $response['message'] = "License Object is null";
-            return json_encode($response);
-        }
-        if (!isset($dev_os) || !isset($dev_name) || !isset($dev_id)) {
-            $response['message'] = "Device Credentials are Invalid";
-            return json_encode($response);
+         $license_id = $request->get('LicenseCode');
+         $dev_id = $request->get('DeviceUniqueId');
+         $dev_os = $request->get('dev_os');
+         $dev_name = $request->get('dev_name');
+         /*user 3 licen 1 */
+         $response = array();
+         $response['message'] = "";
+         if (!isset($license_id)) {
+             $response['message'] = "License Object is null";
+             return json_encode($response);
+         }
+         if (!isset($dev_os) || !isset($dev_name) || !isset($dev_id)) {
+             $response['message'] = "Device Credentials are Invalid";
+             return json_encode($response);
 
-        }
-        $userPerson = User::where([['id', $user_id]])->first();
-        $license_dev_count_rows = License_devices::with('deviceLicense')->where('device_id', '=', $dev_id)->first();
-        $license_count_rows = License_devices::with('deviceLicense')->where('license_id', '=', $license_id)->get();
-        $license_count_user = $license_count_rows->count();
+         }
+         $userPerson = User::where([['email', $user_id]])->first();
+         $license_dev_count_rows = License_devices::with('deviceLicense')->where('device_id', '=', $dev_id)->first();
+         $license_count_rows = License_devices::with('deviceLicense')->where('license_id', '=', $license_id)->get();
+         $license_count_user = $license_count_rows->count();
 
-        $license_data = License::where('license', '=', $license_id)->first();
+         $license_data = License::where('license', '=', $license_id)->first();
 
-        $license_data->user_id = $userPerson->id;
-        $license_data->license_activated_at = date("Y-m-d H:i:s");
-        $license_data->save();
-        $license_device_limit = $license_data->no_of_devices_allowed;
+         $license_data->user_id = $userPerson->id;
+         $license_data->license_activated_at = date("Y-m-d H:i:s");
+         $license_data->save();
+         $license_device_limit = $license_data->no_of_devices_allowed;
 
-        if (is_null($license_dev_count_rows)) {
-//$userPerson->role == 2 means that person is of type 'USER'
-            return getLicenseLimit($license_count_user, $license_device_limit, $user_id, $license_id, $dev_name, $dev_os, $dev_id);
+         if (is_null($license_dev_count_rows)) {
+            //$userPerson->role == 2 means that person is of type 'USER'
+             return getLicenseLimit($license_count_user, $license_device_limit, $userPerson->id, $license_id, $dev_name, $dev_os, $dev_id);
 
-        } else if ($license_dev_count_rows->device_id == $dev_id) {
-            return error_code(500);
-        }
+         } else if ($license_dev_count_rows->device_id == $dev_id) {
+             return error_code(500);
+         }
 
 
 
@@ -63,7 +66,7 @@ class LicenseController extends Controller
         $loggeduserid = $request->get('user_id');
         $license_key = $request->get('license_key');
         $response = array();
-        $response['message'] = "";
+        $response['Message'] = "";
         $token = rand();
         $userPerson = User::where([['id', $loggeduserid]])->first();
         if (isset($userPerson)) {
@@ -72,7 +75,7 @@ class LicenseController extends Controller
              $this->trialActivateGeneral($licenseTrial);
             }
         } else {
-            $response['message'] = "Invalid Person";
+            $response['Message'] = "Invalid Person";
             return json_encode($response);
         }
         $this->loggs($request);

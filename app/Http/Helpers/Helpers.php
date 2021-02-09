@@ -59,13 +59,13 @@ function random_str($length = 8)
     function getLicenseLimit($license_count_rows, $license_device_limit,$user_id,$license_id,$dev_name,$dev_os,$dev_id){
          if($license_count_rows < $license_device_limit){
           $license_devices = new License_devices();
-      $license_devices->user_id = $user_id;
-      $license_devices->license_id = $license_id;
-      $license_devices->device_id = $dev_id;
-      $license_devices->device_name = $dev_name;
-      $license_devices->device_os = $dev_os;
-      $license_devices->activation_date = date("Y-m-d H:i:s");
-      $license_devices->save();
+          $license_devices->user_id = $user_id;
+          $license_devices->license_id = $license_id;
+          $license_devices->device_id = $dev_id;
+          $license_devices->device_name = $dev_name;
+          $license_devices->device_os = $dev_os;
+          $license_devices->activation_date = date("Y-m-d H:i:s");
+          $license_devices->save();
       return success_code(300);
     }else{
       return limit_error_code(600,$license_device_limit);
@@ -74,7 +74,7 @@ function random_str($length = 8)
     }
 function success_code($num){
 if($num == 300){
- $response["message"] = "License Activated";
+ $response["Message"] = "License Activated";
  return json_encode($response);
 }
 

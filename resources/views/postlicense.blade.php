@@ -8,11 +8,11 @@
     <title>Document</title>
 </head>
 <body>
-<form action="{{url('api/license/trial')}}" method="post">
+<form action="{{url('api/license/activate')}}" method="post">
     {{csrf_field()}}
-    <input type="text" value="4" name="user_id"   placeholder="User id">
-    <input type="text" value="CCVTCP1RKM5SBRDP5P2M" name="license_key" id="" placeholder="license key">
-    <input type="text" value="{{ rand()}}" name="dev_id" id="" placeholder="dev id">
+    <input type="email" value="user@ystsol.com" name="UserEmail"   placeholder="User id">
+    <input type="text" value="CCVT0M0NKRKM3S3R9R7P" name="LicenseCode" id="" placeholder="license key">
+    <input type="text" value="{{ rand()}}" name="DeviceUniqueId" id="" placeholder="dev id">
     <input type="text" value="android" name="dev_os" id="" placeholder="dev os">
     <input type="text" value="samsung   " name="dev_name" id="" placeholder="dev name">
     <input type="submit" value="Activate">

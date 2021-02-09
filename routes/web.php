@@ -145,3 +145,4 @@ Route::get('/pl',function (){
 
 });
 
+Route::get('test','API\LicenseController@test');
