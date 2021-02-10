@@ -1,10 +1,11 @@
 <?php
-use App\Http\Middleware\Authenticate;
 use App\License;
-use App\License_devices;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
+use App\License_devices;
 use Jenssegers\Agent\Agent;
+use Illuminate\Http\Request;
+use App\Traits\LicenseBooking;
+use App\Http\Middleware\Authenticate;
 /**
  * Premium Checker
  * Returns true or false regarding current
@@ -66,16 +67,29 @@ function random_str($length = 8)
           $license_devices->device_os = $dev_os;
           $license_devices->activation_date = date("Y-m-d H:i:s");
           $license_devices->save();
-      return success_code(300);
+      return success_code(300,$license_devices);
     }else{
       return limit_error_code(600,$license_device_limit);
 
     }
     }
-function success_code($num){
+function success_code($num,$license){
 if($num == 300){
- $response["Message"] = "License Activated";
- return json_encode($response);
+//  $responseLicense = array([
+//     'LicenseCode'=>$license->license_id,
+//     'ActivationTime'=>$license->activation_date,
+//     'IsTrial'=>false,
+//     'StartTrialTime'=>$license->activation_date,
+
+
+//  ]);
+$isTrial=false;
+
+$responseLicense = new LicenseBooking();
+
+$responseLicense->set_license($license,$isTrial);
+
+ return json_encode(array("License"=>$responseLicense,"Message"=>"Activated","IsOK"=>true,"IsError"=>false));
 }
 
 }

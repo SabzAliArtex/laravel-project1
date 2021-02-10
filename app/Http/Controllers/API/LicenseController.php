@@ -17,6 +17,7 @@ class LicenseController extends Controller
     {
         
         $payload = $request->all();
+        
          
          $this->loggs($payload);
          $user_id = $request->get('UserEmail');
