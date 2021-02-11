@@ -114,7 +114,7 @@ Route::post('api/license/activate','API\LicenseController@licenseActivation');
 /*Route::post('api/license/activate/{user_id}/{license_key}/{dev_id}/{dev_os}/{dev_name}','API\LicenseController@licenseActivation');*/
 Route::post('api/license/trial','API\LicenseController@trialActivation')->name('trialactivated');
 /*Route::post('api/license/trial/{loggeduserid}/{license_key}','API\LicenseController@trialActivation')->name('trialactivated');*/
-Route::get('api/license/check','API\LicenseController@checkLicenseExists')->name('is_LicenseExists');
+Route::get('api/license/check/{code}','API\LicenseController@checkLicenseExists')->name('is_LicenseExists');
 Route::get('trialdateexpiry/{license_key}','LicenseController@userTrialExpire')->name('trialactivateddate');
 Route::get('create_license_user','LicenseController@createLicenseUser')->name('createuserlicense');
 /*Settings Routes*/

@@ -17,7 +17,7 @@ class CreateLicenseTable extends Migration
             $table->id();
             $table->integer('user_id')->nullable();
             $table->integer('sales_person_id')->nullable();
-            $table->integer('license_type_id');
+            $table->integer('license_type_id')->nullable();
             $table->longText('license');
             $table->integer('license_duration')->nullable();
             $table->dateTime('license_expiry')->nullable();

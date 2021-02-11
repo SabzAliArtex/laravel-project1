@@ -10,11 +10,10 @@
 <body>
 <form action="{{url('api/license/activate')}}" method="post">
     {{csrf_field()}}
-    <input type="email" value="user@ystsol.com" name="UserEmail"   placeholder="User id">
+    <input type="email" value="mohammadfahad.ystsol@gmail.com" name="UserEmail"   placeholder="User id">
     <input type="text" value="CCVT0M0NKRKM3S3R9R7P" name="LicenseCode" id="" placeholder="license key">
     <input type="text" value="{{ rand()}}" name="DeviceUniqueId" id="" placeholder="dev id">
-    <input type="text" value="android" name="dev_os" id="" placeholder="dev os">
-    <input type="text" value="samsung   " name="dev_name" id="" placeholder="dev name">
+    <input type="text" value="2021-02-11T10:18:46.334947" name="StartTrialTime">
     <input type="submit" value="Activate">
 </form>
 

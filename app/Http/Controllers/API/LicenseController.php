@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
-use App\License;
-use App\License_devices;
 use App\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
+use App\License;
 use App\Apiloggs;
+use App\License_devices;
+use Illuminate\Http\Request;
+use App\Traits\LicenseBooking;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Route;
+
 class LicenseController extends Controller
 {
     
@@ -44,7 +46,15 @@ class LicenseController extends Controller
          $license_count_user = $license_count_rows->count();
 
          $license_data = License::where('license', '=', $license_id)->first();
+         
+         if($license_data == null){
+            $responseLicenseTrial = new LicenseBooking();
+            
+            return json_encode(array("License"=>$responseLicenseTrial,"Message"=>"Your License is Invalid","IsOK"=>false,"IsError"=>true));
 
+        }else{
+
+            
          $license_data->user_id = $userPerson->id;
          $license_data->license_activated_at = date("Y-m-d H:i:s");
          $license_data->save();
@@ -57,6 +67,9 @@ class LicenseController extends Controller
          } else if ($license_dev_count_rows->device_id == $dev_id) {
              return error_code(500);
          }
+        
+
+        }
 
 
 
@@ -66,14 +79,21 @@ class LicenseController extends Controller
         $this->loggs($payload);
         $loggeduserid = $request->get('UserEmail');
         $license_key = $request->get('LicenseCode');
+        $startTrialTime = $request->get('StartTrialTime');
         $response = array();
         $response['Message'] = "";
         $token = rand();
         $userPerson = User::where([['email', $loggeduserid]])->first();
+        
         if (isset($userPerson)) {
             if ($userPerson->role == 2) {
-                $licenseTrial = License::where('license', '=', $license_key)->first();
-             $this->trialActivateGeneral($licenseTrial);
+                // $licenseTrial = License::where('license', '=', $license_key)->first();
+                
+                $license_new_trial = new License();
+                $license_new_trial->user_id = $userPerson->id;
+                $license_new_trial->license = generate_license_key();
+                $license_new_trial->save();
+                return $this->trialActivateGeneral($license_new_trial,$startTrialTime);
             }
         } else {
             $response['Message'] = "Invalid Person";
@@ -81,38 +101,36 @@ class LicenseController extends Controller
         }
         $this->loggs($request);
     }
-    public function checkLicenseExists(Request $request)
-    {   $payload = $request->all();
+    public function checkLicenseExists($LicenseCode)
+    {   $payload = $LicenseCode;
         $this->loggs($payload);
-        $license_key = $request->get('LicenseCode');
+        $license_key = $LicenseCode;
         $is_license = License::where('license', '=', $license_key)->first();
         if (!$is_license) {
-            return false;
+            return json_encode(array("result"=>false));
         }
         $is_license->updated_at = date('Y-m-d H:i:s');
         $is_license->save();
-        return true;
+        return json_encode(array("result"=>true));
     }
 
 
     //General Function for Activation
-    public function trialActivateGeneral($licenseTrial){
+    public function trialActivateGeneral($licenseTrial,$startTrialTime){
 
 
         if (isset($licenseTrial)) {
-            $licenseTrial->trial_activated_at = date("Y-m-d H:i:s");
+            $licenseTrial->trial_activated_at = $startTrialTime;
             $licenseTrial->save();
-
-            $sales_person = User::find($licenseTrial->sales_person_id);
-
-
-            /* sending email -- uncomment if email functionality needed
+            /* $sales_person = User::find($licenseTrial->sales_person_id);
+             sending email -- uncomment if email functionality needed
             Notification::send($sales_person,new TrialActivated($sales_person, $token));*/
-
-            $response['message'] = "Trial Period Activated";
-            return json_encode($response);
+            $isTrial=True;
+            $responseLicenseTrial = new LicenseBooking();
+            $responseLicenseTrial->set_license_trial($licenseTrial,$isTrial);
+            return json_encode(array("License"=>$responseLicenseTrial,"Message"=>"Trial Activated","IsOK"=>true,"IsError"=>false));
         } else {
-            $response['message'] = "License Key is not valid";
+            $response['Message'] = "License Key is not valid";
             return json_encode($response);
         }
     }
