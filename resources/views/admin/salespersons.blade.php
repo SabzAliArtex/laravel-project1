@@ -34,7 +34,7 @@
                             <thead class="thead-dark">
                             <tr>
                                 <th> {{ __('Sr no') }} </th>
-                                <th id="thname"> {{ __('Name') }} </th>
+                                <th id="thn"> {{ __('Name') }} </th>
                                 <th> {{ __('Email') }} </th>
                                 <th> {{ __('Comission') }} </th>
                                 <th> {{ __('Role') }} </th>
