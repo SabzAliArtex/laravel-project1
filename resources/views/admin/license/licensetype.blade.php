@@ -39,7 +39,7 @@
                                     <th> {{ __('Title') }} </th>
                                     <th> {{ __('Price') }} </th>
                                     <th id="thn"> {{ __('Type') }} </th>
-                                    <th> {{ __('Allowd Tests') }} </th>
+                                    <th> {{ __('Allowed Tests') }} </th>
                                     <th> {{ __('Status') }} </th>
                                     <th> {{ __('Actions') }} </th>
                                 </tr>

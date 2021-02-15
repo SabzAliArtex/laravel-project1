@@ -35,33 +35,71 @@ class LicenseController extends Controller
             $response['Message'] = "License Object is null";
             return json_encode($response);
         }
-        //  if (!isset($dev_os) || !isset($dev_name) || !isset($dev_id)) {
-        //      $response['Message'] = "Device Credentials are Invalid";
-        //      return json_encode($response);
-
-        //  }
         $userPerson = User::where('email', '=', $user_id)->first();
         $license_dev_count_rows = License_devices::with('deviceLicense')->where('device_id', '=', $dev_id)->first();
         $license_count_rows = License_devices::with('deviceLicense')->where('license_id', '=', $license_id)->get();
         $license_count_user = $license_count_rows->count();
-
-        $license_data = License::where('license', '=', $license_id)->first();
-
+        $license_data = License::where('license', '=', $license_id)->with('license_type')->first();
+        
         if ($license_data == null) {
-            $responseLicenseTrial = new LicenseBooking();
-
-            return json_encode(array("License" => $responseLicenseTrial, "Message" => "Your License is Invalid", "IsOK" => false, "IsError" => true));
-        } else {
-
-
+            $responseLicenseTrial = new LicenseBooking();   
+            return json_encode(array( 
+                "License" => $responseLicenseTrial, 
+                "Message" => "Your License is Invalid",
+                "IsOK" => false, 
+                "IsError" => true
+            ));
+        }
+         else
+          { $licenseValidity="license expiry";
             $license_data->user_id = $userPerson->id;
             $license_data->license_activated_at = date("Y-m-d H:i:s");
+            
+            
+           
+            if($license_data->license_type->type == 1){
+                 // / Monthly
+                //  valid true, expired false
+                //  $is_valid = calculateMonthExpiry($license_data->license_activated_at);
+                $next_month = strtotime('+1 month',strtotime( $license_data->license_activated_at));
+                $license_data->license_expiry = date('Y:m:d H:i:s', $next_month);
+                $licenseValidity = ($license_data->license_activated_at>=$next_month)?'false':'true';
+                if($licenseValidity == true){
+                    $license_data->is_active = 1;
+                    
+                }else{
+                    $license_data->is_active = 0;
+                    
+                } 
+
+            }elseif($license_data->license_type->type == 2){
+                // Yearly
+
+                // $licenseValidity = calculateYearExpiry($license_data->license_activated_at);
+                $next_year = strtotime('+1 year',strtotime( $license_data->license_activated_at));
+                $license_data->license_expiry = date('Y:m:d H:i:s', $next_year);
+                $licenseValidity = ($license_data->license_activated_at>=$next_year)?'false':'true';
+                if($licenseValidity == true){
+                    // $license_data->is_active = 1;
+                    $expiry_date = $license_data->license_expiry;
+                    
+                }else{
+                    // $license_data->is_active = 0;
+                    $expiry_date = $license_data->license_expiry;
+                    
+                }
+            }
+            else{
+                    // Lifetime 
+                    $licenseValidity = true;
+                    $expiry_date = $license_data->license_expiry;
+            }
+            
             $license_data->save();
             $license_device_limit = $license_data->no_of_devices_allowed;
-
             if (is_null($license_dev_count_rows)) {
                 //$userPerson->role == 2 means that person is of type 'USER'
-                return getLicenseLimit($license_count_user, $license_device_limit, $userPerson->id, $license_id, $dev_name, $dev_os, $dev_id);
+                return getLicenseLimit($license_count_user, $license_device_limit, $userPerson->id, $license_id, $dev_name, $dev_os, $dev_id,$licenseValidity,$expiry_date);
             } else if ($license_dev_count_rows->device_id == $dev_id) {
                 return error_code(500);
             }

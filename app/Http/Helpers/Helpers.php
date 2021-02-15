@@ -57,7 +57,7 @@ function random_str($length = 8)
        echo $device;
       }
     }
-    function getLicenseLimit($license_count_rows, $license_device_limit,$user_id,$license_id,$dev_name,$dev_os,$dev_id){
+    function getLicenseLimit($license_count_rows, $license_device_limit,$user_id,$license_id,$dev_name,$dev_os,$dev_id,$is_valid,$expiry_date){
          if($license_count_rows < $license_device_limit){
           $license_devices = new License_devices();
           $license_devices->user_id = $user_id;
@@ -67,13 +67,13 @@ function random_str($length = 8)
           $license_devices->device_os = $dev_os;
           $license_devices->activation_date = date("Y-m-d H:i:s");
           $license_devices->save();
-      return success_code(300,$license_devices);
+      return success_code(300,$license_devices,$is_valid,$expiry_date);
     }else{
       return limit_error_code(600,$license_device_limit);
 
     }
     }
-function success_code($num,$license){
+function success_code($num,$license,$is_valid,$expiry_date){
 if($num == 300){
 //  $responseLicense = array([
 //     'LicenseCode'=>$license->license_id,
@@ -89,7 +89,7 @@ $responseLicense = new LicenseBooking();
 
 $responseLicense->set_license($license,$isTrial);
 
- return json_encode(array("License"=>$responseLicense,"Message"=>"Activated","IsOK"=>true,"IsError"=>false));
+ return json_encode(array("License"=>$responseLicense,"Message"=>"Activated","IsOK"=>true,"IsError"=>false,"IsValid"=>$is_valid,"ExpiryDate",$expiry_date));
 }
 
 }
@@ -117,6 +117,9 @@ function error_code($code){
     $result = str_replace(' ','',$value);
     return $result;
 }
+
+
+
 
 
 
