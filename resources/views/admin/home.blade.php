@@ -82,13 +82,13 @@
                             <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">
                                 <div class="thumb">
                                     Active Licenses
-                                    <p> {{ App\License::where('trial_activated_at', '!=' , NULL)->count() }}</p>
+                                    <p> {{ App\License::where('is_active', '!=' , NULL)->count() }}</p>
                                 </div>
                             </div>
                             <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">
                                 <div class="thumb">
                                     Inactive Licenses
-                                    <p> {{ App\License::where('trial_activated_at', NULL)->count() }} </p>
+                                    <p> {{ App\License::where('is_active', 0)->orWhere('is_active', NULL)->count() }} </p>
                                 </div>
                             </div>
 

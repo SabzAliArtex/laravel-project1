@@ -13,7 +13,8 @@ use App\Http\Middleware\Authenticate;
  *
  * @param type $permissionName
  * @return boolean
- */
+ */ 
+  
 function generate_license_key(){
    $rendom_string =  config('app.License_prefix').random_str(16);
    $license_key = License::where('license','=' , $rendom_string)->first();
@@ -67,6 +68,7 @@ function random_str($length = 8)
           $license_devices->device_os = $dev_os;
           $license_devices->activation_date = date("Y-m-d H:i:s");
           $license_devices->save();
+          
       return success_code(300,$license_devices,$is_valid,$expiry_date);
     }else{
       return limit_error_code(600,$license_device_limit);
@@ -89,15 +91,21 @@ $responseLicense = new LicenseBooking();
 
 $responseLicense->set_license($license,$isTrial);
 
- return json_encode(array("License"=>$responseLicense,"Message"=>"Activated","IsOK"=>true,"IsError"=>false,"IsValid"=>$is_valid,"ExpiryDate",$expiry_date));
+ return json_encode(array("License"=>$responseLicense,"Message"=>"Activated","IsOK"=>true,"IsError"=>false,"IsValid"=>$is_valid,"ExpiryDate"=>$expiry_date));
 }
 
 }
 function error_code($code){
   if(isset($code)){
     if($code == 500){
-    $response['Message'] = "License Activated For Device Already";
-    return json_encode($response);
+      $isTrial=false;
+
+      $responseLicense = new LicenseBooking();
+      
+      
+      
+       return json_encode(array("License"=>$responseLicense,"Message"=>"Duplication not Allowed. License Already Activated for this device.","IsOK"=>false,"IsError"=>true,"IsValid"=>true,"ExpiryDate"=>""));
+      
   }else if($code == 400){
         $response['Message'] = "Not a Registered User";
     return json_encode($response);
@@ -107,8 +115,14 @@ function error_code($code){
   }
   function limit_error_code($code,$limit){
      if($code == 600){
-    $response['message'] = "License is Valid for ". $limit." devices only" ;
-      return $response;
+      $isTrial=false;
+
+      $responseLicense = new LicenseBooking();
+      
+      
+      
+       return json_encode(array("License"=>$responseLicense,"Message"=>"License is valid for ".$limit." devices.","IsOK"=>false,"IsError"=>true,"IsValid"=>true,"ExpiryDate"=>""));
+ 
   }
 
   }

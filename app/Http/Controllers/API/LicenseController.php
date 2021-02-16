@@ -17,18 +17,18 @@ class LicenseController extends Controller
 
     public function licenseActivation(Request $request)
     {
-
+        $expiry_date='';
         $payload = $request->all();
-
-
         $this->loggs($payload);
         $user_id = $request->get('UserEmail');
-
+        $user_password = $request->get('UserPassword');
+        $user_firstname = $request->get('UserFirstName');
+        $user_lastname = $request->get('UserLastName');
+        $user_phone = $request->get('UserPhone');
         $license_id = $request->get('LicenseCode');
         $dev_id = $request->get('DeviceUniqueId');
         $dev_os = $request->get('dev_os');
         $dev_name = $request->get('dev_name');
-        /*user 3 licen 1 */
         $response = array();
         $response['Message'] = "";
         if (!isset($license_id)) {
@@ -36,6 +36,18 @@ class LicenseController extends Controller
             return json_encode($response);
         }
         $userPerson = User::where('email', '=', $user_id)->first();
+        if($userPerson == NULL){
+          $userPerson = User::create([
+                "email"=>$user_id, 
+                "role"=>2,
+                "first_name"=>$user_firstname,
+                "last_name"=>$user_lastname,
+                "phone"=>$user_phone,
+                "password"=>$user_password, 
+                "is_active"=>1
+            ]);
+        }
+        
         $license_dev_count_rows = License_devices::with('deviceLicense')->where('device_id', '=', $dev_id)->first();
         $license_count_rows = License_devices::with('deviceLicense')->where('license_id', '=', $license_id)->get();
         $license_count_user = $license_count_rows->count();
@@ -54,6 +66,7 @@ class LicenseController extends Controller
           { $licenseValidity="license expiry";
             $license_data->user_id = $userPerson->id;
             $license_data->license_activated_at = date("Y-m-d H:i:s");
+            $license_data->is_active = 1;
             
             
            
@@ -62,15 +75,17 @@ class LicenseController extends Controller
                 //  valid true, expired false
                 //  $is_valid = calculateMonthExpiry($license_data->license_activated_at);
                 $next_month = strtotime('+1 month',strtotime( $license_data->license_activated_at));
+                
                 $license_data->license_expiry = date('Y:m:d H:i:s', $next_month);
                 $licenseValidity = ($license_data->license_activated_at>=$next_month)?'false':'true';
                 if($licenseValidity == true){
-                    $license_data->is_active = 1;
                     
+                    $expiry_date = $license_data->license_expiry;
                 }else{
-                    $license_data->is_active = 0;
+                    $expiry_date = $license_data->license_expiry;
                     
                 } 
+                
 
             }elseif($license_data->license_type->type == 2){
                 // Yearly

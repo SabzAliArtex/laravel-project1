@@ -16,6 +16,10 @@ class LicenseBooking
   public $IsAvailable = false;
   public $IsActivated = false;
   public $UserEmail;
+  public $UserPassword;
+  public $UserFirstName;
+  public $UserLastName;
+  public $UserPhone;
   public $DeviceInfo;
   public $DeviceUniqueId;
   public $FirstStartTime;
@@ -35,6 +39,10 @@ class LicenseBooking
     $this->IsActivated = true;
     $useremail = User::where('id', $license->user_id)->first();
     $this->UserEmail = $useremail->email;
+    $this->UserPassword = $useremail->password;
+    $this->UserFirstName = $useremail->first_name;
+    $this->UserLastName = $useremail->last_name;
+    $this->Userphone = $useremail->phone;
     $this->DeviceInfo = 'xyz';
     $this->DeviceUniqueId = $license->device_id;
     $this->FirstStartTime = "2021-02-10T11:05:35.07741+05:00";
@@ -55,6 +63,10 @@ class LicenseBooking
     $this->IsActivated = false;
     $useremail = User::where('id', $license->user_id)->first();
     $this->UserEmail = $useremail->email;
+    $this->UserPassword = $useremail->password;
+    $this->UserFirstName = $useremail->first_name;
+    $this->UserLastName = $useremail->last_name;
+    $this->Userphone = $useremail->phone;
     $this->DeviceInfo = 'xyz';
     $this->DeviceUniqueId = $license->device_id;
     $this->FirstStartTime = "2021-02-10T11:05:35.07741+05:00";
