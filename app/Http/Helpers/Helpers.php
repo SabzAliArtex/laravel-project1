@@ -132,11 +132,3 @@ function error_code($code){
     return $result;
 }
 
-
-
-
-
-
-
-
-

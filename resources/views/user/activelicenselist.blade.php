@@ -34,7 +34,7 @@
                         </div>
                     </div>
 
-
+                    
                 <table  id="tableListing" border="1"  class="table table-striped table-responsive">
                         <thead class="thead-dark">
                             <tr >
@@ -49,9 +49,11 @@
                             </tr>
                         </thead>
                         <tbody>
-
+                            
+                                
                                 @foreach($licenses as $key=> $license)
                                     <tr>
+                                        
 
                                         <td> {{ $key + 1 }} </td>
 
@@ -63,21 +65,71 @@
                                                 Yearly {{ '('. $license->license_type->price . ')' }}
                                             @elseif ($license->license_type &&  $license->license_type->type == '3' )
                                                 Life time {{ '('. $license->license_type->price . ')' }}
+                                            @else
+                                                Trial
+                                           
                                             @endif
                                         </td>
                                        <td> {{ $license->user ? $license->user->first_name : '' }} </td>
                                          <td> {{ $license->user ? $license->user->email : '' }} </td>
-
-                                             <td><a href="{{ route('user.deleteuserlicense',['id'=>$license->id]) }}" onclick="return confirm('Are you sure.')"> {{ __('Delete') }}  </a></td>
+                                        
+                                        @if($license->license_type_id == '4')
+                                             <td><a @click="openLicenseActivationModel({{ $license }})" href="javascript:void(0)"> {{ __('Purchase') }}  </a></td>
+                                             {{-- <td><a @click="openDetailModal({{$license->id}})" href="javascript:void(0)"> {{ __('Details') }}  </a></td> --}}
+                                        @else
+                                            <td><a href="{{ route('user.deleteuserlicense',['id'=>$license->id]) }}" onclick="return confirm('Are you sure.')"> {{ __('Delete') }}  </a></td>
                                              <td><a @click="openDetailModal({{$license->id}})" href="javascript:void(0)"> {{ __('Details') }}  </a></td>
+                                        @endif 
 
                                     </tr>
                                 @endforeach
                         </tbody>
                     </table>
 
+ 
 
+    <div class="modal fade" id="licenseModal" tabindex="-1" role="dialog" aria-labelledby="LicenseModalLabel" aria-hidden="true">
 
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header border-bottom-0">
+                              <h5 class="modal-title font-weight-bold" id="LicenseModalLabel">License Activation</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            
+                            <form>
+                              <div class="modal-body">
+                                  <div class="form-activation">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="licensetype" value="1" v-model="purchase.license_type_id" id="monthlypackage" >
+                                    <label class="form-check-label" for="monthlypackage">
+                                     Monthly
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="licensetype" value="2" v-model="purchase.license_type_id" id="yearlypackage">
+                                    <label class="form-check-label" for="yearlypackage">
+                                      Yearly
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="licensetype" value="3" v-model="purchase.license_type_id" id="lifetimepackage">
+                                    <label class="form-check-label" for="lifetimepackage">
+                                      Lifetime
+                                    </label>
+                                </div>
+                            </div>
+                              </div>
+                              <hr/>
+                              <div class="modal-footer border-top-0 d-flex justify-content-center">
+                                <button type="button" @click="purchaseLicense()" class="btn btn-license">Purchase</button>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
 
 
   <!-- The Modal -->
@@ -93,6 +145,7 @@
 
       <!-- Modal body -->
       <div class="modal-body">
+          
           <table class="table table-striped table-responsive">
     <thead>
       <tr >
@@ -109,8 +162,10 @@
     </thead>
     <tbody>
       <tr  v-for="(row,key,index) in alldata" :key="row.id">
+          
         <td>@{{key+1}}</td>
-        <td>@{{row.device_license[0].license}}</td>
+        <td>@{{row.license_id}}</td>
+        
         <td><div v-if="row.license_type && row.license_type.type==1">Monthly(@{{row.license_type.price}})</div>
           <div v-if="row.license_type && row.license_type.type==2">Yearly(@{{row.license_type.price}})</div>
           <div v-if="row.license_type && row.license_type.type==3">Lifetime(@{{row.license_type.price}})</div></td>
@@ -183,17 +238,65 @@
         el:'#details',
         data:{
             alldata:{},
+            purchase:{
+
+                    id:'',
+                    user_id:'',
+                    sales_person_id:'',
+                    license_type_id:'',
+                    license:'',
+                    license_duration:'',
+                    license_expiry:'',
+                    allowed_test:'',
+                    no_of_devices_allowed:'',
+                    is_deleted:'',
+                    trial_activated_at:'',
+                    license_activated_at:'',
+                    user_device_unique_id:'',
+                    is_active:'',
+                    
+                                                                                                                                  
+
+            },
             licid:'',
             message:'Hello vue',
             myInput:'',
 
         },
         methods:{
+            openLicenseActivationModel:function(license){
+               this.purchase = license;
+               $("#monthlypackage").prop("checked", true);
+                   
+               
+                               
+                    jQuery('#licenseModal').modal('show');
+
+            },
+            purchaseLicense:function(){
+                console.log(this.purchase);
+          
+                   
+                        axios.post('/purchase/license',this.purchase).then((res)=>{
+
+                            Swal.fire({
+                            icon: 'success',
+                            title: 'Congratulations',
+                            text: 'You have purchased License. Activate it on your device from which you started trial',
+                            
+                            })      
+                            jQuery('#licenseModal').modal('hide');
+                         })
+                    
+                    
+                
+            },
             openDetailModal:function(licenseid){
                 axios.get('/user/getuserdetails/'+licenseid).then((res)=>{
                 this.licid = licenseid;
                 console.log(this.licid);
                 this.alldata = res.data;
+                
 
                     jQuery('#myModal').modal('show');
                 }).catch((error)=>{

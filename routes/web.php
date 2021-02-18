@@ -87,6 +87,7 @@ Route::group(['middleware' => ['user','auth']], function () {
  	Route::get('/user/deactivatedevice/{id}', 'ClientController@deactivateDevice')->name('user.deactivateuserdevice');
  	Route::get('/user/activatedevice/{id}', 'ClientController@activateDevice')->name('user.activateuserdevice');
  	Route::get('/user/getuserdetails/{id}', 'ClientController@LicensesActivated')->name('user.licenselistcomplete');
+ 	Route::post('/purchase/license', 'ClientController@purchaseLicense')->name('user.purchase');
 });
 Route::get('/user/getuseranddevices', 'ClientController@alluseranddevs')->name('a');
 Route::get('/getuseranddevices-search-results', 'ClientController@alluseranddevssearch')->name('getusersearchedresults');

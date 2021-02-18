@@ -12,7 +12,9 @@
     <form action="{{ url('api/license/trial') }}" method="post">
         {{ csrf_field() }}
         <input type="text" value="alex" name="UserFirstName" placeholder="User id">
+        {{-- <input type="text" value="alex" name="UserFirstName" placeholder="User id"> --}}
         <input type="text" value="alex" name="UserLastName" placeholder="User id">
+        {{-- <input type="text" value="1" name="LicenseType" placeholder="LicenseType"> --}}
         <input type="email" value="mohammadfahad.ystsol@gmail.com" name="UserEmail" placeholder="User id">
         <input type="text" value="1223123" name="UserPhone" placeholder="User id">
         <input type="password" value="12345678" name="UserPassword" placeholder="User id">

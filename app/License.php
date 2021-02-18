@@ -22,5 +22,9 @@ class License extends Model
 	{
    		return $this->hasOne('App\LicenseType','id','license_type_id');
 	}
+	public function license_activation(){
+		return $this->hasmany('App\LicenseActivation','license_id','id');
+	}
+	
 }
 

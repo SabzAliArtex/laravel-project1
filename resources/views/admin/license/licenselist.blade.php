@@ -56,6 +56,8 @@
                                                 Yearly {{ '('. $license->license_type->price . ')' }}
                                             @elseif ($license->license_type &&  $license->license_type->type == '3' )
                                                 Life time {{ '('. $license->license_type->price . ')' }}
+                                                 @elseif ($license->license_type &&  $license->license_type->type == '4' )
+                                                Trial {{ '('. $license->license_type->price . ')' }}
                                             @endif
                                         </td>
                                         <td> {{ $license->user ? $license->user->first_name : '' }} </td>

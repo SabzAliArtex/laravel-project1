@@ -16,10 +16,11 @@ class CreateLicenseActivationsTable extends Migration
         Schema::create('license_activations', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id')->nullable();
-            $table->longText('license');
+            // $table->longText('license');
             $table->dateTime('license_expiry')->nullable();
             $table->dateTime('trial_activated_at')->nullable('0000-00-00');
             $table->dateTime('license_activated_at')->nullable('0000-00-00');
+            $table->integer('license_id')->nullable();
             $table->timestamps();
         });
     }

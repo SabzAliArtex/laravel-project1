@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
-use App\User;
-use App\License_devices;
-use App\License;
-use Hash;
-use File;
+use DB;
 use Str;
+use File;
+use Hash;
 use Image;
 use Session;
-use DB;
+use App\User;
+use App\License;
+use App\License_devices;
+use App\LicenseActivation;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ClientController extends Controller
 {
@@ -123,9 +124,13 @@ class ClientController extends Controller
     }
 
     public function LicensesActivated($licenseid)
+
     {
+        
+        $LicenseCode = License::find($licenseid);
+        
         $licenses = License_devices::with('deviceLicense', 'users', 'license_type')
-            ->where([['license_id', '=', $licenseid], ['user_id', '=', Auth::user()->id], ['is_deleted', '=', 0]])->orderByRaw('id DESC')->get();
+            ->where([['license_id', '=', $LicenseCode->license], ['user_id', '=', Auth::user()->id], ['is_deleted', '=', 0]])->orderByRaw('id DESC')->get();
         return $licenses;
 
     }
@@ -138,10 +143,28 @@ class ClientController extends Controller
         where([['user_id', Auth::user()->id], ['is_deleted', '=', 0]])
             ->orderByRaw('id DESC')
             ->paginate(10);
+            
+            
         return view('user.activelicenselist', compact('licenses'));
         //
         /*$licenses = License_devices::with('deviceLicense','users','license_type')-> where([['user_id', Auth::user()->id],['is_deleted', '=' , 0]])-> whereIn('license_id',$l) ->orderByRaw('id DESC') ->get(); */
 
+    }
+    public function purchaseLicense(Request $request){
+       
+       $license = License::where([['user_id','=', Auth::user()->id],['license_type_id', '>=',4]])->first();
+       $license->license_type_id = $request->get('license_type_id');
+      
+       LicenseActivation::create([
+            'license_id'=>$license->id,
+            "user_id"=>$license->user_id,
+            "license_expiry"=>$license->license_expiry,
+            "trial_activated_at"=>$license->trial_activated_at,
+            "license_activated_at"=>$license->license_activated_at
+            
+        ]);
+        $license->save();
+       return $license;
     }
 
     public function searchResults(Request $request)

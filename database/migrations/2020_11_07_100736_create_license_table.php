@@ -27,10 +27,10 @@ class CreateLicenseTable extends Migration
             $table->integer('is_deleted')->default('0')->nullable();
             $table->dateTime('trial_activated_at')->nullable('0000-00-00');
             $table->dateTime('license_activated_at')->nullable('0000-00-00');
-            $table->longText('device_name')->nullable();
-            $table->longText('device_model')->nullable();
-            $table->longText('device_unique_id')->nullable();
-            $table->tinyInteger('is_active')->default('0');
+            // $table->longText('device_name')->nullable();
+            // $table->longText('device_model')->nullable();
+             $table->longText('user_device_unique_id')->nullable();
+             $table->tinyInteger('is_active')->default('0');
             $table->timestamps();
         });
     }
