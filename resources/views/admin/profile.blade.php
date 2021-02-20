@@ -18,7 +18,7 @@
 
             @include('partials_admin/sidebar')
 
-            <div class="col-md-5">
+            <div class="col-md-6">
                 <div class="card">
                     <div class="card-header">{{ __('Edit Profile') }}</div>
                     <div class="card-body">

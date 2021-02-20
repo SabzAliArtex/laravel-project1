@@ -12,7 +12,7 @@
             </div>
             @include('partials_admin/sidebar')
 
-            <div class="col-md-8">
+            <div class="col-md-9">
                 <div class="card">
                     <div class="card-header">{{ __('Dashboard') }}</div>
 

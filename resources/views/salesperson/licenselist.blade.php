@@ -19,7 +19,7 @@
         </div>
         <div class="row">
         @include('partials_salesman/sidebar')
-        <div class="col-md-8" id="p">
+        <div class="col-md-9" id="p">
             <div class="card">
                 <div class="card-header">{{ __('License List') }} </div>
 

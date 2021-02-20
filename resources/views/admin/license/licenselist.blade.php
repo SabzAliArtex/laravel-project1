@@ -16,7 +16,7 @@
             @endif
         </div>
         @include('partials_admin/sidebar')
-        <div class="col-md-8">
+        <div class="col-md-9">
             <div class="card">
                 <div class="card-header"><span class="custom-card-header-span">{{ __('License List') }}</span> <a href="{{ route('createlicense') }}" class="btn btn-info btn-md button-add border border-light " >
           <i class="fas fa-plus"></i>Add License
@@ -60,9 +60,9 @@
                                                 Trial {{ '('. $license->license_type->price . ')' }}
                                             @endif
                                         </td>
-                                        <td> {{ $license->user ? $license->user->first_name : '' }} </td>
-                                        <td> {{ $license->user ? $license->user->email : '' }} </td>
-                                        <td> {{ $license->sales_person ? $license->sales_person->first_name.' '.$license->sales_person->last_name : '' }} </td>
+                                        <td> {{ $license->user ? $license->user->first_name : 'N/A' }} </td>
+                                        <td> {{ $license->user ? $license->user->email : 'N/A' }} </td>
+                                        <td> {{ $license->sales_person ? $license->sales_person->first_name.' '.$license->sales_person->last_name : 'N/A' }} </td>
                                         <td> {{ $license->trial_activated_at }} </td>
                                         <td> {{ $license->license_expiry }} </td>
 

@@ -16,7 +16,7 @@
                 @endif
             </div>
             @include('partials_admin/sidebar')
-            <div class="col-md-8">
+            <div class="col-md-9">
                 <div class="card">
                     <div class="card-header"><span class="custom-card-header-span">{{ __('Sales Person') }}</span> <a
                             href="{{ route('AddSalesPerson') }}" class="btn btn-info btn-md button-add border border-light ">
@@ -49,7 +49,7 @@
                                         <td> {{ $key+1 }} </td>
                                         <td> {{ $user->first_name.' '.$user->last_name }} </td>
                                         <td> {{ $user->email }} </td>
-                                        <td> {{ $user->commission }} </td>
+                                        <td> {{ $user->commission??'N/A' }} </td>
                                         <td> {{ $user->userrole->role }} </td>
                                         <td> {{ $user->is_active == 1 ? 'Active' : 'Inactive' }} </td>
                                         <td>

@@ -11127,6 +11127,15 @@ input[type=number] {
   background:#7a97b3;
   color:white !important;
 }
+.btn-primary, .btn-primary:active, .btn-primary:visited {
+  background-color: #7a97b3 !important;
+  border:1px solid #7a97b3 !important;
+}
+.btn-primary:hover{
+  background-color: #658baf !important;
+  border: 1px solid #658baf !important;
+}
+
 
 /*Custom Media Queries starting*/
 

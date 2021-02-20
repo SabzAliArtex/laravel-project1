@@ -20,13 +20,13 @@
                 @endif
             </div>
             @include('partials_admin/sidebar')
-            <div class="col-md-8">
+            <div class="col-md-9">
                 <div class="card">
                     <div class="card-header">{{ __('Commissions') }}</div>
                     <div class="card-body">
                         <div class="row custom_row_position">
 
-                            <div class="col-md-3">
+                            <div class="col-md-3 mr-4">
                                 @include('partials_general/searchfilter')
                             </div>
                             <div class="col-md-3 date-filter-width">@include('partials_general/datefilter')</div>
@@ -58,7 +58,7 @@
                                         <td class="ellipsis"> {{ $key+1 }} </td>
                                         <td class="ellipsis"> {{ $payment->license_id }} </td>
                                         <td class="ellipsis">{{$payment->sales_person_id}}</td>
-                                        <td class="ellipsis">{{$payment->commission}}</td>
+                                        <td class="ellipsis">{{$payment->commission??'N/A'}}</td>
 
                                         @if($payment->is_approved == 1)
                                             <td class="ellipsis ">Approved</td>

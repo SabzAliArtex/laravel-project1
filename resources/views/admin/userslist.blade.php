@@ -18,7 +18,7 @@
             </div>
             @include('partials_admin/sidebar')
 
-            <div class="col-md-8">
+            <div class="col-md-9">
                 <div class="card">
                     <div class="card-header"><span class="custom-card-header-span">{{ __('Users List') }}</span> <a
                             href="{{ route('AddUser') }}" class="btn btn-info btn-md button-add border border-light  ">

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use DB;
 use Str;
 use File;
 use Hash;
@@ -13,6 +12,7 @@ use App\License;
 use App\License_devices;
 use App\LicenseActivation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class ClientController extends Controller
@@ -40,14 +40,14 @@ class ClientController extends Controller
     public function updateprofile(Request $get)
     {
         $user = User::find($get->id);
-        $this->validate($get, [
+        $this->validate($get,[
             "first_name" => "required",
             "last_name" => "required",
         ], [
             "first_name.required" => "Please enter first name",
             "last_name.required" => "Please enter last name"
         ]);
-        $user->first_name = $get->first_name;
+        $user->first_name= $get->first_name;
         $user->last_name = $get->last_name;
         $user->save();
         $path = 'files/upload/user/';
@@ -78,8 +78,17 @@ class ClientController extends Controller
     public function alluseranddevs()
     {
 
-        $licenses = License_devices::with('deviceLicense', 'users', 'license_type')
-            ->orderByRaw('id DESC')->paginate(10);
+        // $licenses = License_devices::with('deviceLicense')->paginate(10);
+        $licenses = DB::connection()
+        ->table('license_devices as ld')
+        ->join('licenses as li', 'li.license', 'ld.license_id')
+        ->join('license_types', 'license_types.id', 'li.license_type_id')
+        ->Join('users', function ($join) {
+            $join->on('users.id', '=', 'ld.user_id');
+            $join->where('ld.is_deleted', '=', '0');
+        })->get();
+        
+            
 
 
         return view('admin.useranddevslist', compact('licenses'));
@@ -92,27 +101,33 @@ class ClientController extends Controller
         $formatCheck = 0;
         if ($query == "") {
             $formatCheck = 1;
-            $licenses = License_devices::with('deviceLicense', 'users', 'license_type')
-                ->orderByRaw('id DESC')->paginate(10);
-            return view('admin.subviews.userdevsanddevicessearchresults', [
-                'formatCheck' => $formatCheck,
-                'licenses' => $licenses,
-            ]);
+            // $licenses = License_devices::with('deviceLicense', 'users', 'license_type')
+            //     ->orderByRaw('id DESC')->paginate(10);
+             $licenses = DB::connection()
+                ->table('license_devices as ld')
+                ->join('licenses as li', 'li.license', 'ld.license_id')
+                ->join('license_types', 'license_types.id', 'li.license_type_id')
+                ->Join('users', function ($join) {
+                    $join->on('users.id', '=', 'ld.user_id');
+                    $join->where('ld.is_deleted', '=', '0');
+                })->get();
+                
+
+            return view('admin.subviews.userdevsanddevicessearchresults',compact('licenses'));
         } else {
             $formatCheck = 0;
 
             $licenses = DB::connection()
                 ->table('license_devices as ld')
-                ->join('licenses as li', 'li.id', 'ld.license_id')
-                ->join('license_types', 'license_types.id', 'ld.license_id')
+                ->join('licenses as li', 'li.license', 'ld.license_id')
+                ->join('license_types', 'license_types.id', 'li.license_type_id')
                 ->Join('users', function ($join) {
                     $join->on('users.id', '=', 'ld.user_id');
                     $join->where('ld.is_deleted', '=', '0');
                 })
                 ->where('email', 'LIKE', '%' . $query . '%')
                 ->orWhere('li.license', 'LIKE', '%' . $query . '%')
-                ->orWhere('ld.device_name', 'LIKE', '%' . $query . '%')
-                ->orWhere('ld.device_os', 'LIKE', '%' . $query . '%')
+                ->orWhere('ld.device_id', 'LIKE', '%' . $query . '%')
                 ->get();
 
 
@@ -132,6 +147,7 @@ class ClientController extends Controller
         $licenses = License_devices::with('deviceLicense', 'users', 'license_type')
             ->where([['license_id', '=', $LicenseCode->license], ['user_id', '=', Auth::user()->id], ['is_deleted', '=', 0]])->orderByRaw('id DESC')->get();
         return $licenses;
+
 
     }
 

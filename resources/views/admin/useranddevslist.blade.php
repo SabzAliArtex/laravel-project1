@@ -20,7 +20,7 @@
         </div>
         <div class="row" id="details">
             @include('partials_admin/sidebar')
-            <div class="col-md-8">
+            <div class="col-md-9">
                 <div class="card">
                     <div class="card-header">{{ __('User Devices Listing') }}</div>
                     <div class="card-body">
@@ -30,7 +30,7 @@
                                 @include('partials_general/searchbar')
                             </div>
                         </div>
-                        @if(count($licenses)>0)
+                        
                             <table id="tableListing" border="1" class="table table-striped table-responsive">
                                 <thead class="thead-dark">
                                 <tr>
@@ -39,34 +39,33 @@
                                     <th> {{ __('License Type') }} </th>
                                     <th> {{ __('User Name') }} </th>
                                     <th> {{ __('User Email') }} </th>
-                                    <th> {{ __('Device Name') }} </th>
-                                    <th> {{ __('Device OS') }} </th>
+                                    <th> {{ __('Device Id') }} </th>
                                     <th> {{ __('Status') }} </th>
                                 <!-- <th colspan="2" > {{ __('Action') }} </th> -->
 
                                 </tr>
                                 </thead>
                                 <tbody>
-
-                                @foreach($licenses as $key=> $license)
+                                        
+                                @forelse($licenses as $key=> $license)
                                     <tr>
 
                                         <td> {{ $key + 1 }} </td>
 
-                                        <td> {{ $license->deviceLicense[0]['license']}} </td>
+                                        <td> {{ $license->license}} </td>
                                         <td>
-                                            @if($license->license_type && $license->license_type->type == '1' )
-                                                Monthly {{ '('. $license->license_type->price . ')' }}
-                                            @elseif ($license->license_type &&  $license->license_type->type == '2' )
-                                                Yearly {{ '('. $license->license_type->price . ')' }}
-                                            @elseif ($license->license_type &&  $license->license_type->type == '3' )
-                                                Life time {{ '('. $license->license_type->price . ')' }}
+                                            @if($license->license_type_id == '1' )
+                                                Monthly {{ '('. $license->price . ')' }}
+                                            @elseif ( $license->license_type_id == '2' )
+                                                Yearly {{ '('. $license->price . ')' }}
+                                            @elseif ( $license->license_type_id == '3' )
+                                                Life time {{ '('. $license->price . ')' }}
                                             @endif
                                         </td>
-                                        <td> {{ $license->users ? $license->users[0]['first_name'] : '' }} </td>
-                                        <td> {{ $license->users ? $license->users[0]['email'] : '' }} </td>
-                                        <td>{{$license->device_name}}</td>
-                                        <td>{{$license->device_os}}</td>
+                                        <td> {{ $license->first_name ? $license->first_name : 'N\A' }} </td>
+                                        <td> {{ $license->email ? $license->email : 'N\A' }} </td>
+                                        <td>{{$license->device_id}}</td>
+                                        
                                         <td> @if($license->is_deleted == 1) Deleted
                                             @else
                                                 Not Deleted
@@ -78,20 +77,15 @@
                                                       <td><a @click="openDetailModal({{$license->id}})" href="#"> {{ __('Details') }}  </a></td>--}}
 
                                     </tr>
-                                @endforeach
+                                    @empty
+                                    <p> *nothing found</p>
+                                @endforelse
                                 </tbody>
                             </table>
                             @include('partials_general/searchalert')
-                            {{$licenses->render()}}
-                        @else
-                            <p> *nothing found</p>
-                    @endif
-
-
-
 
                     <!-- The Modal -->
-                        <div class="modal" id="myModal">
+                        {{-- <div class="modal" id="myModal">
                             <div class="modal-dialog">
                                 <div class="modal-content">
 
@@ -154,7 +148,7 @@
 
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -164,7 +158,7 @@
 @endsection
 
 
-<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+{{-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
@@ -216,13 +210,14 @@
         })
     }
 
-</script>
+</script> --}}
 <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function () {
         // Your jquery code
         jQuery.noConflict();
         jQuery(document).ready(function () {
             jQuery('#myInput').on('keyup', function () {
+                
                 $value = jQuery(this).val();
                 jQuery.ajax({
                     type: 'get',
