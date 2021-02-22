@@ -16,7 +16,7 @@
             @endif
         </div></div>
         <div class="row">
-            @include('partials_salesman.sidebar')
+            @include('layouts.partials_salesman.sidebar')
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">{{ __('Edit Profile') }}</div>

@@ -195,10 +195,7 @@ class LicenseController extends Controller
 
     public function DeleteLicense($id)
     {
-
-
         $License = License::find($id);
-
         $License->is_deleted = 1;
         $License->is_active = 0;
         $License->save();

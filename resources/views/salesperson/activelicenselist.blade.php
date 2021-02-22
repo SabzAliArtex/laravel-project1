@@ -15,7 +15,7 @@
                 </div>
             @endif
         </div>
-           @include('partials_salesman/sidebar')
+           @include('layouts.partials_salesman/sidebar')
         <div class="col-md-9">
             <div class="card">
                 <div class="card-header">{{ __('License List') }}</div>

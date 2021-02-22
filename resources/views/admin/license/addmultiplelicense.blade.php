@@ -19,7 +19,7 @@
         </div>
 
         <div class="row">
-            @include('partials_admin/sidebar')
+            @include('layouts.partials_admin.sidebar')
             <div class="col-md-9">
                 <div class="card">
                     <div class="card-header">{{ __('Add License') }}</div>

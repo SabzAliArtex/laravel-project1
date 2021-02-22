@@ -16,7 +16,7 @@
                 @endif
             </div>
 
-            @include('partials_admin/sidebar')
+            @include('layouts.partials_admin.sidebar')
 
             <div class="col-md-6">
                 <div class="card">

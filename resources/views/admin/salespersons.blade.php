@@ -15,7 +15,7 @@
                     </div>
                 @endif
             </div>
-            @include('partials_admin/sidebar')
+            @include('layouts.partials_admin.sidebar')
             <div class="col-md-9">
                 <div class="card">
                     <div class="card-header"><span class="custom-card-header-span">{{ __('Sales Person') }}</span> <a

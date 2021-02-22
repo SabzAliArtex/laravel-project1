@@ -18,7 +18,7 @@
         </div>
         </div>
         <div class="row">
-        @include('partials_salesman/sidebar')
+        @include('layouts.partials_salesman.sidebar')
         <div class="col-md-9" id="p">
             <div class="card">
                 <div class="card-header">{{ __('License List') }} </div>
@@ -141,31 +141,25 @@
           mounted(){
             this.get_pending_commision();
             this.getTotalCommission();
+            jQuery.noConflict();
+            jQuery(document).ready(function(){
+            jQuery('#myInput').on('keyup',function(){
+            $value=jQuery(this).val();
+            jQuery.ajax({
+            type : 'get',
+            url : '{{URL::to('salesperson')}}',
+            data:{'search':$value},
+            success:function(data){
+            $('tbody').html(data);
+            }
+            });
+            });
+            });
+ jQuery.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
+            
           }
 
 
     });
 }
-</script>
-<script type="text/javascript">
-  document.addEventListener('DOMContentLoaded', function () {
-    // Your jquery code
-     jQuery.noConflict();
-    jQuery(document).ready(function(){
- jQuery('#myInput').on('keyup',function(){
-$value=jQuery(this).val();
-jQuery.ajax({
-type : 'get',
-url : '{{URL::to('salesperson')}}',
-data:{'search':$value},
-success:function(data){
-$('tbody').html(data);
-}
-});
-});
-});
- jQuery.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
-});
-
-
 </script>

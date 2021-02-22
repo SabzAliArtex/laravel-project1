@@ -15,7 +15,7 @@
                 </div>
             @endif
         </div>
-          @include('partials_user/sidebar')
+          @include('layouts.partials_user.sidebar')
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">{{ __('Edit Profile') }}</div>

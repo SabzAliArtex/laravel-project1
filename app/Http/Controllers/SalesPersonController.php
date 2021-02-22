@@ -110,7 +110,8 @@ class SalesPersonController extends Controller
 
     public function searchResultsLicensesActivated(Request $request)
     {
-        dd(1);
+        
+        
         $formatCheck = 0;
         /* $licenses = License::with('sales_person','user')->where('sales_person_id',Auth::user()->id)->where('license_activated_at', '!=' , NULL)->orderByRaw('id DESC')->paginate(10);*/
         $query = $request['search'];
@@ -153,8 +154,7 @@ class SalesPersonController extends Controller
         $lt = License::where('sales_person_id', '=', Auth::user()->id)->first();
         $license_price = LicenseType::where('id', '=', $lt->license_type_id)->value('price');
         $actual_price = 1000;
-        $commision_percentage = $commission;
-        $commision_of_one = ($license_price) * ($commision_percentage) / 100;
+        $commision_of_one = ($license_price) * ($commission) / 100;
         $total_commision = $sales_count * $commision_of_one;
         return $total_commision;
 
@@ -164,7 +164,7 @@ class SalesPersonController extends Controller
     {
         $pending = Payment::where('sales_person_id', '=', Auth::user()->id)->first();
 
-        if ($pending->is_approved == 0) {
+        if (isset($pending->is_approved) && $pending->is_approved == 0) {
             return json_encode($pending);
         }
 
@@ -172,7 +172,9 @@ class SalesPersonController extends Controller
 
     public function total_commision()
     {
-        $licenses = License::with('sales_person', 'user', 'license_type')->where('sales_person_id', Auth::user()->id)->where('is_deleted', NULL)->orderByRaw('id DESC')->get();
+        
+        $licenses = License::with('sales_person', 'user', 'license_type')->where('sales_person_id', Auth::user()->id)->where('is_deleted', NULL)->orWhere('is_deleted','=',0)->orderByRaw('id DESC')->get();
+      
         if (Auth::user()->role == 3 && User::where('id', '=', Auth::user()->id)) {
 
             $userCommision = User::where('id', Auth::user()->id)->first();
@@ -195,7 +197,7 @@ class SalesPersonController extends Controller
             }
             $total = Payment::where('sales_person_id', '=', Auth::user()->id)->first();
 
-            if ($total->is_approved == 1) {
+            if (isset($total->is_approved) && $total->is_approved== 1) {
                 return json_encode($total);
             }
 

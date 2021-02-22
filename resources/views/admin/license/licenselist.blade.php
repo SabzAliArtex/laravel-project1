@@ -15,7 +15,7 @@
                 </div>
             @endif
         </div>
-        @include('partials_admin/sidebar')
+        @include('layouts.partials_admin.sidebar')
         <div class="col-md-9">
             <div class="card">
                 <div class="card-header"><span class="custom-card-header-span">{{ __('License List') }}</span> <a href="{{ route('createlicense') }}" class="btn btn-info btn-md button-add border border-light " >

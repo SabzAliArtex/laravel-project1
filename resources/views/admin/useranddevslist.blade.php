@@ -19,7 +19,7 @@
             </div>
         </div>
         <div class="row" id="details">
-            @include('partials_admin/sidebar')
+            @include('layouts.partials_admin.sidebar')
             <div class="col-md-9">
                 <div class="card">
                     <div class="card-header">{{ __('User Devices Listing') }}</div>

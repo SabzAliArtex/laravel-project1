@@ -94,7 +94,7 @@ class AdminController extends Controller
     {
         
 
-        $formatCheck = 0;
+        
         $query = $request->get('search');
         if ($query == "") {
 

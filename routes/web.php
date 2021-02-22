@@ -131,13 +131,7 @@ Route::get('mail', function () {
     return (new App\Notifications\VerifyAccount($user,$token))
                 ->toMail($user);
 });
-/*Route::get('trialmail', function () {
-    $user = App\User::find(42);
 
-    $token = '321456987';
-    return (new App\Notifications\TrialActivated($user,$token))
-                ->toMail($user);
-});*/
 
 Route::get('/pl',function (){
 
@@ -146,4 +140,3 @@ Route::get('/pl',function (){
 
 });
 
-Route::get('test','API\LicenseController@test');
