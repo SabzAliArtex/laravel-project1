@@ -95,12 +95,6 @@ class SalesPersonController extends Controller
             ->paginate(10);
 
 
-        /*
-$licenses = License::with('sales_person','user','license_type')
-->where('user_id','LIKE','%'.$query.'%')
-->orWhere('license','LIKE','%'.$query.'%')
-->orderByRaw('id DESC')->get();*/
-
 
         return view('salesperson.subviews.licenselistsearchresults', [
             'licenses' => $licenses,
@@ -116,6 +110,7 @@ $licenses = License::with('sales_person','user','license_type')
 
     public function searchResultsLicensesActivated(Request $request)
     {
+        dd(1);
         $formatCheck = 0;
         /* $licenses = License::with('sales_person','user')->where('sales_person_id',Auth::user()->id)->where('license_activated_at', '!=' , NULL)->orderByRaw('id DESC')->paginate(10);*/
         $query = $request['search'];
@@ -128,6 +123,7 @@ $licenses = License::with('sales_person','user','license_type')
                 'formatCheck' => $formatCheck,
             ]);
         } else {
+            
             $formatCheck = 0;
             $licenses = DB::table('licenses')
                 ->join('users as u1', 'u1.id', '=', 'licenses.sales_person_id')

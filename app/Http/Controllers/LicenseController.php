@@ -56,19 +56,18 @@ class LicenseController extends Controller
     public function licenseSearchResults(Request $request)
     {
         $query = $request['search'];
-        $formatCheck = 0;
         if ($query == "") {
-            $formatCheck = 1;
-
-            $licenses = License::with('sales_person', 'user', 'license_type')->where('is_deleted', 0)->orderByRaw('id DESC')->paginate(10);
+            
+            $licenses = License::with('sales_person', 'user', 'license_type')->where('is_deleted', 0)->orderByRaw('id DESC')->get();
+            
+            
+            
             return view('admin.license.subviews.licensesearchresults', [
                 'licenses' => $licenses,
-                'formatCheck' => $formatCheck,
+                
             ]);
-
-
         } else {
-            $formatCheck = 0;
+            
             $licenses = DB::table('licenses')
                 ->join('users as u', 'u.id', '=', 'licenses.user_id')
                 ->join('users as sp', 'sp.id', '=', 'licenses.sales_person_id')
@@ -83,7 +82,6 @@ class LicenseController extends Controller
 
             return view('admin.license.subviews.licensesearchresults', [
                 'licenses' => $licenses,
-                'formatCheck' => $formatCheck,
             ]);
         }
     }

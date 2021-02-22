@@ -92,18 +92,23 @@ class AdminController extends Controller
 
     public function salesPersonsSearch(Request $request)
     {
+        
 
         $formatCheck = 0;
         $query = $request->get('search');
         if ($query == "") {
-            $formatCheck = 1;
-            $data['formatCheck'] = $formatCheck;
-            $data['users'] = User::with('userrole')->where('is_deleted', '0')->where('role', '=', 3)->paginate(10);
+
+            $data['users'] = DB::connection()
+            ->table('users AS d1')
+            ->Join('user_roles AS t1', function ($join) {
+                $join->on('t1.id', '=', 'd1.role');
+                $join->where('t1.id', '=', '3');
+            })->select('d1.*', 't1.role')
+            ->get();
+            
             // echo '<pre>'; print_r($data); exit;
             return view('admin.subviews.salespersonsearch', $data);
         } else {
-            $formatCheck = 0;
-            $data['formatCheck'] = $formatCheck;
             $data['users'] = DB::connection()
                 ->table('users AS d1')
                 ->Join('user_roles AS t1', function ($join) {
@@ -233,20 +238,17 @@ class AdminController extends Controller
 
     public function searchUsers(Request $request)
     {
-        $formatCheck = 0;
+        
         $query = $request['search'];
-        if ($query == "") {
-            $formatCheck = 1;
-            $data['formatCheck'] = $formatCheck;
-            $data['users'] = User::with('userrole')
-                ->where('is_deleted', '0')
-                ->where('id', '<>', Auth::user()->id)
-                ->Paginate(10);
-            // echo '<pre>'; print_r($data); exit;
-            return view('admin.subviews.usersearchresults', $data);
+        if ($query == "") {        
+            $data['users'] = DB::table('users')
+            ->join('user_roles', 'user_roles.id', '=', 'users.role')
+            ->select('users.*', 'user_roles.role')
+            ->get();
+            
+            
         } else {
-            $formatCheck = 0;
-            $data['formatCheck'] = $formatCheck;
+            
             $data['users'] = DB::table('users')
                 ->join('user_roles', 'user_roles.id', '=', 'users.role')
                 ->select('users.*', 'user_roles.role')
@@ -256,10 +258,8 @@ class AdminController extends Controller
                 ->orWhere([['user_roles.role', 'LIKE', '%' . $query . '%'],['users.id','<>',Auth::user()->id]])
                 ->get();
 
-            // echo '<pre>'; print_r($data); exit;
-            return view('admin.subviews.usersearchresults', $data);
-
         }
+        return view('admin.subviews.usersearchresults', $data);
 
     }
 }

@@ -10992,6 +10992,17 @@ body > * {
     width: 128%;
     top: 6px;
 }
+.custom_warning_user{
+  position: relative;
+  left: 63%;
+  width: 128%;
+  top: 6px;
+}.custom_warning_sales{
+  position: relative;
+  left: 95%;
+  width: 128%;
+  top: 6px;
+}
 .custom_para_results{
     position: relative;
     text-align: center;
@@ -11140,6 +11151,13 @@ input[type=number] {
     left: 100%;
     width: 178%;
     top: 10px;
+}
+
+.license-search{
+  position: relative;
+  left: 178%;
+  width: 373%;
+  top: 10px;
 }
 
 /*Custom Media Queries starting*/
