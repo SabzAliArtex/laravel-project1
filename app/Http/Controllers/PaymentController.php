@@ -33,31 +33,34 @@ class PaymentController extends Controller
         $query = $request['search'];
         $formatCheck = 0;
         if ($query == "") {
-            $formatCheck = 1;
+            
 
-            $payments = Payment::with('sales_person', 'license')->orderByRaw('id DESC')->paginate(10);
+            $payments = DB::table('payments AS p1')
+            ->join('licenses', 'licenses.id', 'p1.license_id')
+            ->Join('users as t1', 't1.id', 'p1.sales_person_id')
+            ->select('p1.*','t1.first_name','t1.last_name')
+            ->get();
+            
             return view('admin.commission.subviews.commissionlistsearchresults', [
                 'payments' => $payments,
-                'formatCheck' => $formatCheck,
             ]);
 
 
         } else {
-            $formatCheck = 0;
 
             $payments = DB::table('payments AS p1')
                 ->join('licenses', 'licenses.id', 'p1.license_id')
                 ->Join('users as t1', 't1.id', 'p1.sales_person_id')
+                ->select('p1.*','t1.first_name','t1.last_name')
                 ->where('p1.is_approved', 'LIKE', '%' . $query . '%')
                 ->orWhere('t1.first_name', 'LIKE', '%' . $query . '%')
                 ->orWhere('t1.last_name', 'LIKE', '%' . $query . '%')
                 ->orWhere('p1.updated_at', 'LIKE', '%' . $query . '%')
                 ->get();
 
-
+                
             return view('admin.commission.subviews.commissionlistsearchresults', [
                 'payments' => $payments,
-                'formatCheck' => $formatCheck,
             ]);
         }
 
@@ -188,18 +191,25 @@ class PaymentController extends Controller
 
     public function pendingCommisionSearchResults(Request $request)
     {
+        
         $query = $request['search'];
-        $formatCheck = 0;
+        
         if ($query == "") {
-            // return;
-            $formatCheck = 1;
-            $payments = Payment::with('sales_person', 'license')->where('is_approved', '=', 0)->orderByRaw('id DESC')->paginate(10);
+            
+            $payments = DB::connection()
+            ->table('payments as p')
+            ->join('licenses as l', 'l.id', 'p.license_id')
+            ->Join('users as u', function ($join) {
+                $join->on('u.id', '=', 'p.sales_person_id');
+                $join->where('is_approved', '=', '0');
+            })->select('p.*', 'u.first_name', 'u.last_name')->get();
+            
             return view('admin.commission.subviews.commissionlistpendingsearchresults', [
-                'formatCheck' => $formatCheck,
+                
                 'payments' => $payments,
             ]);
         } else {
-            $formatCheck = 0;
+            
 
             $payments = DB::connection()
                 ->table('payments as p')
@@ -214,8 +224,7 @@ class PaymentController extends Controller
                 ->orWhere('u.last_name', 'LIKE', '%' . $query . '%')
                 ->get();
 
-            return view('admin.commission.subviews.commissionlistpendingsearchresults', [
-                'formatCheck' => $formatCheck,
+            return view('admin.commission.subviews.commissionlistpendingsearchresults', [                
                 'payments' => $payments,
             ]);
 

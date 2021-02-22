@@ -95,19 +95,18 @@ $responseLicense->set_license($license,$isTrial);
 }
 function error_code($code){
   if(isset($code)){
-    if($code == 500){
+    if($code == 500)
+    {
       $isTrial=false; 
-
       $responseLicense = new LicenseBooking();
+      return json_encode(array("License"=>$responseLicense,"Message"=>"Duplication not Allowed. License Already Activated for this device.","IsOK"=>false,"IsError"=>true,"IsValid"=>true,"ExpiryDate"=>""));
       
-      
-      
-       return json_encode(array("License"=>$responseLicense,"Message"=>"Duplication not Allowed. License Already Activated for this device.","IsOK"=>false,"IsError"=>true,"IsValid"=>true,"ExpiryDate"=>""));
-      
-  }else if($code == 400){
-        $response['Message'] = "Not a Registered User";
+    }
+  else if($code == 400)
+    {
+      $response['Message'] = "Not a Registered User";
     return json_encode($response);
-  }
+    }
 
   }
   }

@@ -11135,7 +11135,12 @@ input[type=number] {
   background-color: #658baf !important;
   border: 1px solid #658baf !important;
 }
-
+.payment-search{
+  position: relative;
+    left: 100%;
+    width: 178%;
+    top: 10px;
+}
 
 /*Custom Media Queries starting*/
 

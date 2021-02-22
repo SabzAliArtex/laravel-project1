@@ -49,7 +49,7 @@
                                 @foreach($payments as $key=> $payment)
                                     <tr>
 
-                                        <td class="ellipsis"> {{ $key+1 }} </td>
+                                        <td id="thn" class="ellipsis"> {{ $key+1 }} </td>
                                         <td class="ellipsis"> {{ $payment->license_id }} </td>
                                         <td class="ellipsis">{{$payment->sales_person_id}}</td>
                                         <td class="ellipsis">{{$payment->commission}}</td>
@@ -124,91 +124,91 @@ v-on:click=changeStatus({{$payment->id}},{{$payment->is_approved}})
 
 
 <script type="text/javascript">
-    window.onload = function () {
-        var v = new Vue({
-            el: '#paymentStatus',
-            data: {
+    // window.onload = function () {
+    //     var v = new Vue({
+    //         el: '#paymentStatus',
+    //         data: {
 
-                message: '',
-                payment_id: '',
-                approve: '',
-                disapprove: '',
-                current_value: '',
-                is_approve: '',
-                is_deapprove: '',
-                is_clicked: '',
-                is_clicked_a: '',
-                is_clicked_b: '',
-                is_approve_status: 'Hello VUE',
-                response_check: false,
-                is_current_result: true,
-                is_button_check: '',
+    //             message: '',
+    //             payment_id: '',
+    //             approve: '',
+    //             disapprove: '',
+    //             current_value: '',
+    //             is_approve: '',
+    //             is_deapprove: '',
+    //             is_clicked: '',
+    //             is_clicked_a: '',
+    //             is_clicked_b: '',
+    //             is_approve_status: 'Hello VUE',
+    //             response_check: false,
+    //             is_current_result: true,
+    //             is_button_check: '',
 
-            },
-            methods: {
-                changeActiveStatus: function (para) {
-                    console.log("Inside Change Active Status");
-                    var t = $('#Approved').text();
-                    if (t.match("Approve")) {
-                        if (confirm("Do you want to approve?")) {
-                            this.payment_id = para;
-                            axios.get('/paymentstatus/' + this.payment_id + '/' + t).then((res) => {
-                                if (res.data.is_approved == 1) {
-                                    this.response_check = true;
-                                    this.is_current_result = false;
-                                    this.is_approve_status = "Loading..";
-                                    Swal.fire({
-                                        confirmButtonColor: '#7a97b3',
-                                        icon: 'success',
-                                        title: 'Successful',
-                                        text: 'Payment Approved!',
+    //         },
+    //         methods: {
+    //             changeActiveStatus: function (para) {
+    //                 console.log("Inside Change Active Status");
+    //                 var t = $('#Approved').text();
+    //                 if (t.match("Approve")) {
+    //                     if (confirm("Do you want to approve?")) {
+    //                         this.payment_id = para;
+    //                         axios.get('/paymentstatus/' + this.payment_id + '/' + t).then((res) => {
+    //                             if (res.data.is_approved == 1) {
+    //                                 this.response_check = true;
+    //                                 this.is_current_result = false;
+    //                                 this.is_approve_status = "Loading..";
+    //                                 Swal.fire({
+    //                                     confirmButtonColor: '#7a97b3',
+    //                                     icon: 'success',
+    //                                     title: 'Successful',
+    //                                     text: 'Payment Approved!',
 
-                                    }).then(function () {
-                                        document.location.reload(true);
-                                    });
-
-
-                                }
-                            }).catch((error) => {
-
-                            })
-                        } else {
-                            return false;
-                        }
+    //                                 }).then(function () {
+    //                                     document.location.reload(true);
+    //                                 });
 
 
-                    } else {
-                        return false;
-                    }
+    //                             }
+    //                         }).catch((error) => {
+
+    //                         })
+    //                     } else {
+    //                         return false;
+    //                     }
 
 
-                },
-                changeDeactiveStatus: function (para) {
-                    var s = $('#Disapprove').text();
-                    if (s.match("Disapprove")) {
-                        this.payment_id = para;
-                        axios.get('/paymentstatus/' + this.payment_id + '/' + s).then((res) => {
-                            this.is_approve_status = res.data.is_approved;
-                            if (res.data.is_approved == 0) {
-                                this.is_approve_status = "Pending";
-                                this.response_check = true;
-                                this.is_current_result = false;
-                            }
-                        }).catch((error) => {
-
-                        })
-                    } else {
-                        return false;
-                    }
+    //                 } else {
+    //                     return false;
+    //                 }
 
 
-                },
+    //             },
+    //             changeDeactiveStatus: function (para) {
+    //                 var s = $('#Disapprove').text();
+    //                 if (s.match("Disapprove")) {
+    //                     this.payment_id = para;
+    //                     axios.get('/paymentstatus/' + this.payment_id + '/' + s).then((res) => {
+    //                         this.is_approve_status = res.data.is_approved;
+    //                         if (res.data.is_approved == 0) {
+    //                             this.is_approve_status = "Pending";
+    //                             this.response_check = true;
+    //                             this.is_current_result = false;
+    //                         }
+    //                     }).catch((error) => {
 
-            },
+    //                     })
+    //                 } else {
+    //                     return false;
+    //                 }
 
 
-        });
-    }
+    //             },
+
+    //         },
+
+
+    //     });
+    // }
 
 
     document.addEventListener('DOMContentLoaded', function () {
