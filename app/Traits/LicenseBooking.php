@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\User;
+use App\License;
 
 class LicenseBooking
 {
@@ -28,15 +29,19 @@ class LicenseBooking
   // Methods
   function set_license($license, $isTrial)
   {
-
-    $this->LicenseCode = $license->license_id;
-    $this->IsTrial = $isTrial;
-    $this->ActivationTime = "2021-02-10T11:05:35.07741+05:00";
-    $this->StartTrialTime = "2021-02-10T11:05:35.07741+05:00";
-    $this->ID = $license->id;
+    
+    $licenseActivation = '';
+    if(!$isTrial)
+    {
+      $licenseActivation = License::where('license','=',$license->license_id)->first();
+    }
+    $this->LicenseCode = ($isTrial) ? $license->license : $licenseActivation->license;
+    $this->ActivationTime = ($isTrial) ? $license->license_activated_at:$licenseActivation->license_activated_at;
+    $this->StartTrialTime =  ($isTrial) ? $license->trial_activated_at: $licenseActivation->trial_activated_at;
+    $this->ID =  ($isTrial) ? $license->id : $licenseActivation->id;
     $this->CreationDateTime = "2021-02-10T11:05:35.07741+05:00";
     $this->IsAvailable = false;
-    $this->IsActivated = true;
+    $this->IsActivated = ($isTrial) ? false : true ;
     $useremail = User::where('id', $license->user_id)->first();
     $this->UserEmail = $useremail->email;
     $this->UserPassword = $useremail->password;
@@ -47,30 +52,10 @@ class LicenseBooking
     $this->DeviceUniqueId = $license->device_id;
     $this->FirstStartTime = "2021-02-10T11:05:35.07741+05:00";
     $this->LastCheckTime = "2021-02-10T11:05:35.07741+05:00";
-    $this->Notes = "License Activation Process";
+    $this->Notes = ($isTrial)?"License Activation Process":"Trial Activation Process";
+   
+    
   }
 
-  function set_license_Trial($license, $isTrial)
-  {
-
-    $this->LicenseCode = $license->license;
-    $this->IsTrial = $isTrial;
-    $this->ActivationTime = $license->trial_activated_at;
-    $this->StartTrialTime = $license->trial_activated_at;
-    $this->ID = $license->id;
-    $this->CreationDateTime = "2021-02-10T11:05:35.07741+05:00";
-    $this->IsAvailable = true;
-    $this->IsActivated = false;
-    $useremail = User::where('id', $license->user_id)->first();
-    $this->UserEmail = $useremail->email;
-    $this->UserPassword = $useremail->password;
-    $this->UserFirstName = $useremail->first_name;
-    $this->UserLastName = $useremail->last_name;
-    $this->Userphone = $useremail->phone;
-    $this->DeviceInfo = 'xyz';
-    $this->DeviceUniqueId = $license->device_id;
-    $this->FirstStartTime = "2021-02-10T11:05:35.07741+05:00";
-    $this->LastCheckTime = "2021-02-10T11:05:35.07741+05:00";
-    $this->Notes = "License Trial Process";
-  }
+ 
 }

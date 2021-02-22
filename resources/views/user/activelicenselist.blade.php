@@ -74,6 +74,7 @@
                                          <td> {{ $license->user ? $license->user->email : '' }} </td>
                                         
                                         @if($license->license_type_id == '4')
+
                                              <td><a @click="openLicenseActivationModel({{ $license }})" href="javascript:void(0)"> {{ __('Purchase') }}  </a></td>
                                              {{-- <td><a @click="openDetailModal({{$license->id}})" href="javascript:void(0)"> {{ __('Details') }}  </a></td> --}}
                                         @else
@@ -243,7 +244,7 @@
                     id:'',
                     user_id:'',
                     sales_person_id:'',
-                    license_type_id:'',
+                    license_type_id:'1',
                     license:'',
                     license_duration:'',
                     license_expiry:'',
@@ -284,8 +285,14 @@
                             title: 'Congratulations',
                             text: 'You have purchased License. Activate it on your device from which you started trial',
                             
+                            }).then((result)=> {
+                              if(result.value){
+                                window.location.reload();
+                              }
+                              
                             })      
                             jQuery('#licenseModal').modal('hide');
+                            
                          })
                     
                     

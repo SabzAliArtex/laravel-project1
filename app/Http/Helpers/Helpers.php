@@ -1,11 +1,14 @@
 <?php
 use App\License;
+use App\Apiloggs;
 use Carbon\Carbon;
 use App\License_devices;
+use App\LicenseActivation;
 use Jenssegers\Agent\Agent;
 use Illuminate\Http\Request;
 use App\Traits\LicenseBooking;
 use App\Http\Middleware\Authenticate;
+use Illuminate\Support\Facades\Route;
 /**
  * Premium Checker
  * Returns true or false regarding current
@@ -75,21 +78,16 @@ function random_str($length = 8)
 
     }
     }
-function success_code($num,$license,$is_valid,$expiry_date){
+function success_code($num,$license,$is_valid,$expiry_date)
+{
 if($num == 300){
-//  $responseLicense = array([
-//     'LicenseCode'=>$license->license_id,
-//     'ActivationTime'=>$license->activation_date,
-//     'IsTrial'=>false,
-//     'StartTrialTime'=>$license->activation_date,
 
-
-//  ]);
 $isTrial=false;
 
 $responseLicense = new LicenseBooking();
 
 $responseLicense->set_license($license,$isTrial);
+
 
  return json_encode(array("License"=>$responseLicense,"Message"=>"Activated","IsOK"=>true,"IsError"=>false,"IsValid"=>$is_valid,"ExpiryDate"=>$expiry_date));
 }
@@ -98,7 +96,7 @@ $responseLicense->set_license($license,$isTrial);
 function error_code($code){
   if(isset($code)){
     if($code == 500){
-      $isTrial=false;
+      $isTrial=false; 
 
       $responseLicense = new LicenseBooking();
       
@@ -116,7 +114,7 @@ function error_code($code){
   function limit_error_code($code,$limit){
      if($code == 600){
       $isTrial=false;
-
+ 
       $responseLicense = new LicenseBooking();
       
       
@@ -131,4 +129,115 @@ function error_code($code){
     $result = str_replace(' ','',$value);
     return $result;
 }
+  function loggs($payload)
+{
+    $current_route = Route::getCurrentRoute()->uri;
+    $current_controller = Route::getCurrentRoute()->getActionName();
+    $current_payload = json_encode($payload);
 
+    $log = Apiloggs::create([
+        'current_url' => $current_route,
+        'current_controller' => $current_controller,
+        'current_payload' => $current_payload,
+    ]);
+    if ($log)
+    {
+        $response['message'] = "Loggs are being maintained";
+        return json_encode($response);
+    }
+    else
+    {
+        $response['message'] = "Failed to maintain Loggs";
+        return json_encode($response);
+    }
+}
+
+function calculateExpiry($license_data){
+    
+  
+  if ($license_data->license_type->type == 1) 
+  {
+      // / Monthlyd
+      //  valid true, expired false
+      //  $is_valid = calculateMonthExpiry($license_data->license_activated_at);
+      $next_month = strtotime('+1 month', strtotime($license_data->license_activated_at));
+
+      $license_data->license_expiry = date('Y:m:d H:i:s', $next_month);
+      $licenseValidity = ($license_data->license_activated_at >= $next_month) ? 'false' : 'true';
+      if ($licenseValidity == true)
+      {
+
+         return $expiry_date = $license_data->license_expiry;
+      }
+      else
+      {
+         return $expiry_date = $license_data->license_expiry;
+      }
+      
+  } 
+  elseif($license_data->license_type->type == 2) 
+  {
+      // Yearly
+
+      // $licenseValidity = calculateYearExpiry($license_data->license_activated_at);
+      $next_year = strtotime('+1 year', strtotime($license_data->license_activated_at));
+      $license_data->license_expiry = date('Y:m:d H:i:s', $next_year);
+      $licenseValidity = ($license_data->license_activated_at >= $next_year) ? 'false' : 'true';
+      if ($licenseValidity == true)
+      {
+          // $license_data->is_active = 1;
+        return  $expiry_date = $license_data->license_expiry;
+      }
+      else
+      {
+          // $license_data->is_active = 0;
+        return  $expiry_date = $license_data->license_expiry;
+      }
+  } 
+  elseif($license_data->license_type->type == 3)    
+  {
+      // Lifetime 
+      $licenseValidity = true;
+     return $expiry_date = $license_data->license_expiry;
+  }
+  else{
+      
+    return  $expiry_date = $license_data->license_expiry;
+
+  }
+
+
+}
+function trialActivateGeneral($licenseTrial, $startTrialTime,$existing)
+{
+
+    if (isset($licenseTrial))
+    {
+        if($existing == false){
+        $licenseTrial->trial_activated_at = $startTrialTime;
+        $licenseTrial->save();
+    }
+        LicenseActivation::updateOrCreate([
+            'license_id'=>$licenseTrial->id
+            ],[
+                "user_id"=>$licenseTrial->user_id,
+                "license_expiry"=>NULL,
+                "trial_activated_at"=>$startTrialTime,
+                "license_activated_at"=>NULL
+                
+            ]);
+        $isTrial = True;
+        $responseLicenseTrial = new LicenseBooking();
+        $responseLicenseTrial->set_license($licenseTrial, $isTrial);
+      if($existing == true)
+    {
+    return json_encode(array("License" => $responseLicenseTrial, "Message" => "Trial Already Activated purchase license for full features", "IsOK" => true, "IsError" => false,"IsTrial"=>$isTrial));
+    }
+    return json_encode(array("License" => $responseLicenseTrial, "Message" => "Trial Activated", "IsOK" => true, "IsError" => false,"IsTrial"=>$isTrial));
+    }
+    else
+    {
+        $response['Message'] = "License Key is not valid";
+        return json_encode($response);
+    }
+}
