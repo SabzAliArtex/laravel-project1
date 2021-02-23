@@ -1,8 +1,8 @@
- @if(count($licenses) >0)
+ 
 <table id="tableListing" border="1"  class="table table-striped table-responsive">
                         
                         <tbody>
-                                @foreach($licenses as $key=> $license)
+                                @forelse($licenses as $key=> $license)
                                     <tr>
 
                                         <td> {{ $key+1 }} </td>
@@ -21,11 +21,12 @@
                                         <td> {{ $license->trial_activated_at }} </td>
                                         <td> {{ $license->license_activated_at }} </td>
                                     </tr>
-                                @endforeach
+                                    @empty
+                                    <div class="alert alert-danger custom_warning_license_sp" role="alert"><p class="custom_para_results">No Results for your search*</p></div>
+                                   
+                                    @endforelse
                         </tbody>
                     </table>
                     {{$licenses->render()}}
-                    @else
-                  <div class="alert alert-danger custom_warning_license_sp" role="alert"><p class="custom_para_results">No Results for your search*</p></div>
-                    @endif
+                 
               
