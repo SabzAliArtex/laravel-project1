@@ -29,7 +29,8 @@
                     <div class="row">
                     <h6 style="font-weight: bold;">Commission Earned: </h6>
                     <h6 style="font-weight: bold;">@{{total_commission}} USD</h6></div>
-
+                    
+                    
                 </div>
                 <div class="col-lg-4">
                     <div class="row">
@@ -38,6 +39,7 @@
                 </div>
 
                 <div class="col-lg-4">
+
                     <div class="row"><h6 style="font-weight: bold;">Pending Clearanace: </h6>
                     <h6 style="font-weight: bold;">@{{pending_commision}} USD</h6></div>
 
@@ -50,7 +52,7 @@
         </div>
                     <div class="row custom_row_position ">
                         <div class="col-md-12 input-group mb-3">
-                            @include('partials_general/searchbar')
+                            @include('layouts.partials_general.searchbar')
                         </div>
                     </div>
                     @if(count($licenses) >0)
@@ -67,6 +69,7 @@
                             </tr>
                         </thead>
                         <tbody>
+                         
                                 @foreach($licenses as $key=> $license)
                                     <tr>
                                         <td> {{ $key+1 }} </td>
@@ -141,15 +144,20 @@
           mounted(){
             this.get_pending_commision();
             this.getTotalCommission();
+
             jQuery.noConflict();
             jQuery(document).ready(function(){
             jQuery('#myInput').on('keyup',function(){
+                
+                
             $value=jQuery(this).val();
             jQuery.ajax({
             type : 'get',
             url : '{{URL::to('salesperson')}}',
             data:{'search':$value},
             success:function(data){
+                
+                
             $('tbody').html(data);
             }
             });

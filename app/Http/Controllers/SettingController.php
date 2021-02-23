@@ -85,10 +85,10 @@ class SettingController extends Controller
      */
     public function update(Request $request, Setting $setting)
     {
-
+        $setting = Setting::find($request->get('id'));
 
         if ($request->get('checkName') == 1) {
-            $setting = Setting::find($request->get('id'));
+            
             $request->validate([
 
                 'app_name' => 'required',
@@ -111,7 +111,7 @@ class SettingController extends Controller
 
             }
         } else {
-            $setting = Setting::find($request->get('id'));
+            
             $request->validate([
 
                 'mail_mailer' => 'required',

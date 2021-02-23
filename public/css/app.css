@@ -10992,6 +10992,14 @@ body > * {
     width: 128%;
     top: 6px;
 }
+.center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
 .custom_warning_user{
   position: relative;
   left: 63%;

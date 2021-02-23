@@ -22,7 +22,7 @@
                 <div class="card-body">
                     <div class="row custom_row_position ">
                         <div class="col-md-12 input-group mb-3">
-                            @include('partials_general/searchbar')
+                            @include('layouts.partials_general.searchbar')
                         </div>
                     </div>
                     @if(count($licenses) >0)

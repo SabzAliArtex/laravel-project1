@@ -183,7 +183,7 @@ class PaymentController extends Controller
     {
 
         $payments = Payment::with('sales_person', 'license')->where('is_approved', '=', 0)->orderByRaw('id DESC')->paginate(10);
-        $results = $payments;
+        
         return view('admin.commission.commissionlistpending', [
             'payments' => $payments
         ]);

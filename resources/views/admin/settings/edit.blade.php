@@ -17,7 +17,7 @@
             </div>  </div>
 
         <div class="row">
-            @include('partials_admin/sidebar')
+            @include('layouts.partials_admin.sidebar')
 
             <div class="col-md-8">
                 <div class="card">

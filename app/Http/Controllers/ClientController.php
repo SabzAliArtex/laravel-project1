@@ -100,10 +100,7 @@ class ClientController extends Controller
         $query = $request['search'];
         $formatCheck = 0;
         if ($query == "") {
-            $formatCheck = 1;
-            // $licenses = License_devices::with('deviceLicense', 'users', 'license_type')
-            //     ->orderByRaw('id DESC')->paginate(10);
-             $licenses = DB::connection()
+              $licenses = DB::connection()
                 ->table('license_devices as ld')
                 ->join('licenses as li', 'li.license', 'ld.license_id')
                 ->join('license_types', 'license_types.id', 'li.license_type_id')
@@ -115,7 +112,7 @@ class ClientController extends Controller
 
             return view('admin.subviews.userdevsanddevicessearchresults',compact('licenses'));
         } else {
-            $formatCheck = 0;
+            
 
             $licenses = DB::connection()
                 ->table('license_devices as ld')
@@ -132,7 +129,7 @@ class ClientController extends Controller
 
 
             return view('admin.subviews.userdevsanddevicessearchresults', [
-                'formatCheck' => $formatCheck,
+                
                 'licenses' => $licenses,
             ]);
         }
@@ -145,7 +142,7 @@ class ClientController extends Controller
         $LicenseCode = License::find($licenseid);
         
         $licenses = License_devices::with('deviceLicense', 'users', 'license_type')
-            ->where([['license_id', '=', $LicenseCode->license], ['user_id', '=', Auth::user()->id], ['is_deleted', '=', 0]])->orderByRaw('id DESC')->get();
+        ->where([['license_id', '=', $LicenseCode->license], ['user_id', '=', Auth::user()->id], ['is_deleted', '=', 0]])->orderByRaw('id DESC')->get();
         return $licenses;
 
 
@@ -153,7 +150,7 @@ class ClientController extends Controller
 
     public function LicenseListLessDetails()
     {
-        /*$l = License::select('id')->where('user_id','=',Auth::user()->id)->get();*/
+      
 
         $licenses = License::with('sales_person', 'user', 'license_type')->
         where([['user_id', Auth::user()->id], ['is_deleted', '=', 0]])
@@ -162,8 +159,7 @@ class ClientController extends Controller
             
             
         return view('user.activelicenselist', compact('licenses'));
-        //
-        /*$licenses = License_devices::with('deviceLicense','users','license_type')-> where([['user_id', Auth::user()->id],['is_deleted', '=' , 0]])-> whereIn('license_id',$l) ->orderByRaw('id DESC') ->get(); */
+        
 
     }
     public function purchaseLicense(Request $request){
@@ -206,10 +202,6 @@ class ClientController extends Controller
 
     }
 
-    public function userLicenseList()
-    {
-        dd('here');
-    }
 
     public function deleteLicense($id)
     {
@@ -226,7 +218,6 @@ class ClientController extends Controller
     {
 
         $user_license = License_devices::where('device_id', '=', $id)->first();
-
         $user_license->is_deactive = 1;
         $user_license->save();
         Session::flash("success", "Device Deactivated");
