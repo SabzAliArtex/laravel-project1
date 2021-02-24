@@ -17,8 +17,9 @@ use Illuminate\Support\Facades\Auth;
 class BasicAuthController extends Controller
 {
     public function __construct()
-    {
-
+    {   
+        
+       
     }
 
     public function login()

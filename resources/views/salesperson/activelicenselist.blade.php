@@ -67,7 +67,7 @@
                     <p> *nothing found</p>
                     @endif
 
-                    @include('partials_general/searchalert')
+                    @include('layouts.partials_general.searchalert')
                 </div>
             </div>
         </div>

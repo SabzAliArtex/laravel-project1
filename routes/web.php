@@ -21,11 +21,13 @@ Route::get('/', function () {
 Auth::routes();
 Auth::routes(['verify'=>true]);
 
-Route::get('/login', 'BasicAuthController@login')->name('login');
+
+Route::get('/login', 'BasicAuthController@login')->middleware('guest')->name('login');
 // Route::get('/verify', 'BasicAuthController@verify')->name('verify');
 // Route::post('/verify', 'BasicAuthController@verifyPost')->name('verify');
 // Route::post('/register', 'BasicAuthController@registerpost')->name('register');
 Route::post('/login', 'BasicAuthController@loginpost')->name('login');
+
 
 
 
