@@ -111,7 +111,7 @@ v-on:click=changeStatus({{$payment->id}},{{$payment->is_approved}})
 
                                 </tbody>
                             </table>
-                            @include('partials_general/searchalert')
+                            @include('layouts.partials_general.searchalert')
                             {{$payments->render()}}
                             <div></div>
                         @else

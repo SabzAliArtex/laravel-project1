@@ -82,7 +82,7 @@
                                 @endforelse
                                 </tbody>
                             </table>
-                            @include('partials_general/searchalert')
+                            @include('layouts.partials_general.searchalert')
 
                     <!-- The Modal -->
                         {{-- <div class="modal" id="myModal">

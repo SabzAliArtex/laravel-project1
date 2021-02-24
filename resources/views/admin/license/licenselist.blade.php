@@ -81,7 +81,7 @@
                         </tbody>
                     </table>
                     {{$licenses->render()}}
-                    @include('partials_general/searchalert')
+                    @include('layouts.partials_general.searchalert')
                     @else
                     <p> *nothing found</p>
                     @endif

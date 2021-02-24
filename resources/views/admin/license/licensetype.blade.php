@@ -77,7 +77,7 @@
                                     </tr>
                                 @endforeach
                                 </tbody>
-                            </table>@include('partials_general/searchalert')
+                            </table>@include('layouts.partials_general.searchalert')
                             {{$license_types->render()}}
                         @else
                             <p> *nothing found</p>

@@ -64,7 +64,7 @@
                             <tr></tr>
                             </tbody>
                         </table>
-                        @include('partials_general/searchalert')
+                        @include('layouts.partials_general.searchalert')
                         <?php echo $users->render(); ?>
                     </div>
                 </div>
