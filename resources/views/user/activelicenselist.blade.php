@@ -204,30 +204,7 @@
 @endsection
 
 
-<script type="text/javascript">
-    document.addEventListener('DOMContentLoaded', function () {
-        // Your jquery code
-        jQuery.noConflict();
-        jQuery(document).ready(function(){
-            jQuery('#myInput').on('keyup',function(){
-                $value=jQuery(this).val();
-                console.log($value);
 
-                jQuery.ajax({
-                    type : 'get',
-                    url : '{{URL::to('user')}}',
-                    data:{'search':$value},
-                    success:function(data){
-                        $('tbody').html(data);
-                    }
-                });
-            });
-        });
-        jQuery.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
-    });
-
-
-</script>
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
@@ -278,7 +255,7 @@
                 console.log(this.purchase);
           
                    
-                        axios.post('/purchase/license',this.purchase).then((res)=>{
+                        axios.post('purchase/license',this.purchase).then((res)=>{
 
                             Swal.fire({
                             icon: 'success',
@@ -299,9 +276,8 @@
                 
             },
             openDetailModal:function(licenseid){
-                axios.get('/user/getuserdetails/'+licenseid).then((res)=>{
+                axios.get('getuserdetails/'+licenseid).then((res)=>{
                 this.licid = licenseid;
-                console.log(this.licid);
                 this.alldata = res.data;
                 
 
@@ -315,7 +291,7 @@
             deleterecordandfetchagain:function(id){
               if(confirm("Are you sure? Your data will be deleted")){
                 console.log(this.licid);
-                   axios.get('/user/deletelicense/'+id)
+                   axios.get('deletelicense/'+id)
                     .then((res)=> {
                         this.openDetailModal(this.licid);
 
@@ -331,7 +307,7 @@
              deactivedeviceandfetchagain:function(id){
               if(confirm("Do you want to deactivate this device?")){
                 console.log(this.licid);
-                   axios.get('/user/deactivatedevice/'+id)
+                   axios.get('deactivatedevice/'+id)
                     .then((res)=> {
 
 
@@ -349,7 +325,7 @@
             activatedeviceandfetchagain:function(id){
                if(confirm("Do you want to Activate this device?")){
                 console.log(this.licid);
-                   axios.get('/user/activatedevice/'+id)
+                   axios.get('activatedevice/'+id)
                     .then((res)=> {
 
 
@@ -370,7 +346,26 @@
 
         },
         mounted(){
+          
+        // Your jquery code
+        jQuery.noConflict();
+        jQuery(document).ready(function(){
+            jQuery('#myInput').on('keyup',function(){
+                $value=jQuery(this).val();
+                console.log($value);
 
+                jQuery.ajax({
+                    type : 'get',
+                    url : '{{URL::to('user')}}',
+                    data:{'search':$value},
+                    success:function(data){
+                        $('tbody').html(data);
+                    }
+                });
+            });
+        });
+        jQuery.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
+    
 
         }
 

@@ -2,6 +2,7 @@
 use App\License;
 use App\Apiloggs;
 use Carbon\Carbon;
+use App\LicenseHistory;
 use App\License_devices;
 use App\LicenseActivation;
 use Jenssegers\Agent\Agent;
@@ -216,7 +217,7 @@ function trialActivateGeneral($licenseTrial, $startTrialTime,$existing)
         $licenseTrial->trial_activated_at = $startTrialTime;
         $licenseTrial->save();
     }
-        LicenseActivation::updateOrCreate([
+        LicenseHistory::updateOrCreate([
             'license_id'=>$licenseTrial->id
             ],[
                 "user_id"=>$licenseTrial->user_id,

@@ -23,20 +23,12 @@ Auth::routes(['verify'=>true]);
 
 
 Route::get('/login', 'BasicAuthController@login')->middleware('guest')->name('login');
-// Route::get('/verify', 'BasicAuthController@verify')->name('verify');
-// Route::post('/verify', 'BasicAuthController@verifyPost')->name('verify');
-// Route::post('/register', 'BasicAuthController@registerpost')->name('register');
 Route::post('/login', 'BasicAuthController@loginpost')->name('login');
-
-
-
-
-// Admin Routes
+										// Admin Routes
 Route::group(['middleware' => ['admin','verified']], function () {
 	Route::get('/home', 'HomeController@index')->name('admin.home');
 	Route::get('/profile', 'AdminController@manageprofile')->name('profile');
 	Route::post('/profile', 'AdminController@updateprofile')->name('updateprofile');
-
 	// users
 	Route::get('/users', 'AdminController@Users')->name('userslist');
 	Route::get('/users-search-results', 'AdminController@searchUsers')->name('usersSearchedlist');
@@ -76,25 +68,30 @@ Route::group(['middleware' => ['admin','verified']], function () {
 	Route::get('/licenseactivation','LicenseController@licenseActivation')->name('licenseactivation');
 	Route::get('/license/multiple','LicenseController@multipleLicenses')->name('license.multiple');
 	Route::post('/license/multiple/create','LicenseController@store')->name('license.multiple.add');
+	Route::get('/user/getuseranddevices', 'ClientController@alluseranddevs')->name('a');
+	Route::get('/getuseranddevices-search-results', 'ClientController@alluseranddevssearch')->name('getusersearchedresults');
+		/*Settings Routes*/
+	Route::get('setting','SettingController@index')->name('settings');
+	Route::get('edit/setting/{id}','SettingController@edit')->name('editsettings');
+	Route::post('editappsettings','SettingController@update')->name('editappsettings');
 
 });
-// Users Routes
-Route::group(['middleware' => ['user','auth']], function () {
-	Route::get('/user/home', 'ClientController@userHome')->name('user.home');
-	Route::get('/user/profile', 'ClientController@manageprofile')->name('user.profile');
-	Route::post('/user/profile', 'ClientController@updateprofile')->name('user.updateprofile');
- 	Route::get('/user/license', 'ClientController@LicenseListLessDetails')->name('user.activelicense');
- 	Route::get('/user', 'ClientController@searchResults')->name('user.searchresults');
- 	Route::get('/user/deletelicense/{id}', 'ClientController@deleteLicense')->name('user.deleteuserlicense');
- 	Route::get('/user/deactivatedevice/{id}', 'ClientController@deactivateDevice')->name('user.deactivateuserdevice');
- 	Route::get('/user/activatedevice/{id}', 'ClientController@activateDevice')->name('user.activateuserdevice');
- 	Route::get('/user/getuserdetails/{id}', 'ClientController@LicensesActivated')->name('user.licenselistcomplete');
- 	Route::post('/purchase/license', 'ClientController@purchaseLicense')->name('user.purchase');
+											// Users Routes
+Route::group(['middleware' => ['user','auth'], 'prefix'=>'user'], function () {
+	Route::get('/home', 'ClientController@userHome')->name('user.home');
+	Route::get('/profile', 'ClientController@manageprofile')->name('user.profile');
+	Route::post('/profile', 'ClientController@updateprofile')->name('user.updateprofile');
+ 	Route::get('/license', 'ClientController@LicenseListLessDetails')->name('user.activelicense');
+ 	Route::get('', 'ClientController@searchResults')->name('user.searchresults');
+ 	Route::get('/deletelicense/{id}', 'ClientController@deleteLicense')->name('user.deleteuserlicense');
+ 	Route::get('/deactivatedevice/{id}', 'ClientController@deactivateDevice')->name('user.deactivateuserdevice');
+ 	Route::get('/activatedevice/{id}', 'ClientController@activateDevice')->name('user.activateuserdevice');
+ 	Route::get('/getuserdetails/{id}', 'ClientController@LicensesActivated')->name('user.licenselistcomplete');
+ 	Route::post('/purchase/license', 'ClientController@purchaseLicense')->name('user.purchase'); 
+	
 });
-Route::get('/user/getuseranddevices', 'ClientController@alluseranddevs')->name('a');
-Route::get('/getuseranddevices-search-results', 'ClientController@alluseranddevssearch')->name('getusersearchedresults');
 
-// Sales Person Routes
+											// Sales Person Routes
 Route::group(['middleware' => ['salesperson', 'auth']], function () {
 	Route::get('/salesperson/home', 'SalesPersonController@userHome')->name('salesperson.home');
 	Route::get('/salesperson/profile', 'SalesPersonController@manageprofile')->name('salesperson.profile');
@@ -108,25 +105,12 @@ Route::group(['middleware' => ['salesperson', 'auth']], function () {
 
 
 });
-
-
-
 //License and trial Activation Routes
 
 Route::post('api/license/activate','API\LicenseController@licenseActivation');
-/*Route::post('api/license/activate/{user_id}/{license_key}/{dev_id}/{dev_os}/{dev_name}','API\LicenseController@licenseActivation');*/
 Route::post('api/license/trial','API\LicenseController@trialActivation')->name('trialactivated');
-/*Route::post('api/license/trial/{loggeduserid}/{license_key}','API\LicenseController@trialActivation')->name('trialactivated');*/
 Route::get('api/license/check/{code}','API\LicenseController@checkLicenseExists')->name('is_LicenseExists');
-Route::get('trialdateexpiry/{license_key}','LicenseController@userTrialExpire')->name('trialactivateddate');
-Route::get('create_license_user','LicenseController@createLicenseUser')->name('createuserlicense');
-/*Settings Routes*/
-Route::get('setting','SettingController@index')->name('settings');
-Route::get('edit/setting/{id}','SettingController@edit')->name('editsettings');
-Route::post('editappsettings','SettingController@update')->name('editappsettings');
-
 /*License Activation Routes End*/
-
 Route::get('mail', function () {
     $user = App\User::find(1);
     $token = '321456987';
@@ -134,11 +118,4 @@ Route::get('mail', function () {
                 ->toMail($user);
 });
 
-
-Route::get('/pl',function (){
-
-     return view('postlicense');
-
-
-});
 

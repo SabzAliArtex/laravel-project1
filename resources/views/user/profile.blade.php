@@ -15,6 +15,8 @@
                 </div>
             @endif
         </div>
+        
+        
           @include('layouts.partials_user.sidebar')
         <div class="col-md-6">
             <div class="card">

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\User;
 use App\License;
 use App\Apiloggs;
+use App\LicenseHistory;
 use App\License_devices;
 use App\LicenseActivation;
 use Illuminate\Http\Request;
@@ -74,7 +75,7 @@ class LicenseController extends Controller
             $license_data->license_activated_at = date("Y-m-d H:i:s");
             $license_data->is_active = 1;
             $expiry_date = calculateExpiry($license_data);
-            LicenseActivation::updateOrCreate([
+            LicenseHistory::updateOrCreate([
             'license_id'=>$license_data->id
             ],[
                 "user_id"=>$license_data->user_id,

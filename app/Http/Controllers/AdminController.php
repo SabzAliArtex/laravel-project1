@@ -19,7 +19,7 @@ class AdminController extends Controller
 {
 
     public function manageprofile()
-    {
+    {   
         return view('admin.profile');
     }
 
