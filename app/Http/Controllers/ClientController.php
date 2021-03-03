@@ -10,6 +10,7 @@ use Session;
 use App\User;
 use App\License;
 use App\License_devices;
+use App\PurchaseHistory;
 use App\LicenseActivation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -236,6 +237,14 @@ class ClientController extends Controller
         Session::flash("success", "Device Activated");
         return back();
 
+
+    }
+    public function purchaseHistory()
+    {
+        $response = PurchaseHistory::where('email','=',Auth::user()->email)->get();
+        return view('user.purchasehistory',[
+            'history'=>$response,
+        ]);
 
     }
 }

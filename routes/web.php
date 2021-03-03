@@ -88,6 +88,7 @@ Route::group(['middleware' => ['user','auth'], 'prefix'=>'user'], function () {
  	Route::get('/activatedevice/{id}', 'ClientController@activateDevice')->name('user.activateuserdevice');
  	Route::get('/getuserdetails/{id}', 'ClientController@LicensesActivated')->name('user.licenselistcomplete');
  	Route::post('/purchase/license', 'ClientController@purchaseLicense')->name('user.purchase'); 
+ 	Route::get('/purchase/history', 'ClientController@purchaseHistory')->name('user.purchasehistory'); 
 	
 });
 
@@ -119,3 +120,4 @@ Route::get('mail', function () {
 });
 
 
+Route::post('/orders/create','PaymentController@orderCreation');

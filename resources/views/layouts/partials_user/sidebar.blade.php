@@ -10,6 +10,9 @@
                     <li> 
                         <a href="{{ route('user.activelicense') }}"> {{ __('License List') }} </a>
                     </li>
+                    <li> 
+                        <a href="{{ route('user.purchasehistory') }}"> {{ __('Purchase History') }} </a>
+                    </li>
                     
                 </div> 
             </div>       

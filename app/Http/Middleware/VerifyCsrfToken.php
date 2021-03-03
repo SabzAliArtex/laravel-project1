@@ -18,6 +18,8 @@ class VerifyCsrfToken extends Middleware
       
         'api/license/trial',
        
-       'api/license/check',
+        'api/license/check',
+        
+        '/orders/create',
     ];
 }

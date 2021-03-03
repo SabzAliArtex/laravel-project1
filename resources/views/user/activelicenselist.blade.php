@@ -252,8 +252,22 @@
 
             },
             purchaseLicense:function(){
-                console.log(this.purchase);
-          
+              if(this.purchase.license_type_id == 1)
+              {
+                window.location.href =" https://wdtcv.myshopify.com/collections/license-collection/products/license?variant=39277635862712";
+
+              }
+              else if(this.purchase.license_type_id == 2)
+              {
+                window.location.href = "https://wdtcv.myshopify.com/collections/license-collection/products/license?variant=39277635895480";
+              }
+              else if(this.purchase.license_type_id ==3)
+              {
+                window.location.href = "https://wdtcv.myshopify.com/collections/license-collection/products/license?variant=39277635928248";
+              }
+              return;
+              
+           
                    
                         axios.post('purchase/license',this.purchase).then((res)=>{
 
