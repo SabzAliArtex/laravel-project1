@@ -9,22 +9,21 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class TrialActivated extends Notification
+class LicensePurchased extends Notification
 {
     use Queueable;
-    public $user;
     public $license;
+    public $user;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($user , $token, $license)
+    public function __construct($user,$license)
     {
-        $this->user = $user??'';
-        $this->token = $token??'';
-        $this->license = $license??'';
-
+        //
+        $this->license = $license;
+        $this->user = $user;
     }
 
     /**
@@ -46,17 +45,18 @@ class TrialActivated extends Notification
      */
     public function toMail($notifiable)
     {
-
+        
         $user = $this->user;
-        $token = $this->token;
         $license = $this->license;
-        $url = URL::temporarySignedRoute('user.activelicense', now()->addDays(0), ['user' => $this->user]);
-        $emaillayout = EmailLayout::where('name','=','TrialActivated')->first();
-        return (new MailMessage)->view('emails.trialactivated', compact("user" ,'token', "url","license","emaillayout"))->subject('Trial Activation');
+        $token = rand();
+        $url = URL::temporarySignedRoute('user.createpassword', now()->addMinutes(30), ['user' => $this->user->email]);
+        
+        $emaillayout = EmailLayout::where('name','=','LicensePurchased')->first();
+        return (new MailMessage)->view("emails.trialActivated", compact("user" ,'token', "url", "license","emaillayout"))->subject('License Purchased');
+        // return (new MailMessage)->view("emails.licensepurchased",['user'=>$this->user,'license'=>$this->license,'url'=>$url])->subject('License Purchased');
         
             
         
-       
 
     }
 
@@ -69,7 +69,7 @@ class TrialActivated extends Notification
     public function toArray($notifiable)
     {
         return [
-            // 
+            //
         ];
     }
 }

@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Str;
 use File;
-use Hash;
 use Image;
 use Session;
 use App\User;
@@ -15,6 +14,10 @@ use App\LicenseActivation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use App\Notifications\LicenseRenewal;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Notification;
 
 class ClientController extends Controller
 {
@@ -185,16 +188,16 @@ class ClientController extends Controller
         $query = $request->get('search');
         if ($query == "") {
 
-            $licenses = License::with('sales_person', 'user', 'license_type')->
-            where([['user_id', Auth::user()->id], ['is_deleted', '=', 0]])
-                ->orderByRaw('id DESC')
-                ->paginate(10);
+            $licenses = License::with('sales_person', 'user', 'license_type')
+            ->where([['user_id', Auth::user()->id], ['is_deleted', '=', 0]])
+            ->orderByRaw('id DESC')
+            ->paginate(10);
 
         } else {
-            $licenses = License::with('sales_person', 'user', 'license_type')->
-            where('license', 'LIKE', '%' . $query . '%')
-                ->orderByRaw('id DESC')
-                ->paginate(10);
+            $licenses = License::with('sales_person', 'user', 'license_type')
+            ->where([['license', 'LIKE', '%' . $query . '%'],['user_id', Auth::user()->id], ['is_deleted', '=', 0]])
+            ->orderByRaw('id DESC')
+            ->paginate(10);
         }
 
 
@@ -247,4 +250,30 @@ class ClientController extends Controller
         ]);
 
     }
+    public function setNewPassword(Request $request){
+       
+
+            $data = $request->all();
+
+            $user = User::where('email','=',$data['user'])->first();
+            return view('user.userpasswordcreate',[
+                'user'=>$user,
+            ]);
+    }
+    public function passwordUpdated(Request $request)
+    {
+         $this->validate($request, [
+            
+            'password' => 'min:8|required_with:password_confirmation|same:password_confirmation',
+            'password_confirmation' => 'min:8'
+            ]);
+            
+            $data = $request->all();
+            $user = User::where('email','=',$data['email'])->first();
+            $user->password = Hash::make($data['password']);
+            $user->save();
+            
+            return view('user.subviews.redirectsubview');
+    }
+   
 }

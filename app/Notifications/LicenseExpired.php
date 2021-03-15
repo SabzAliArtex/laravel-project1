@@ -2,11 +2,12 @@
 
 namespace App\Notifications;
 
+use App\EmailLayout;
 use Illuminate\Bus\Queueable;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Notification;
-use Illuminate\Support\Facades\URL;
 
 class LicenseExpired extends Notification
 {
@@ -50,8 +51,9 @@ class LicenseExpired extends Notification
 
         $url = URL::temporarySignedRoute('user.activelicense', now()->addDays(0), ['user' => $this->user]);
         
-        
-        return (new MailMessage)->view("emails.licenseexpired", compact("user" ,'token', "url"))->subject('Trial Expired');
+        $emaillayout = EmailLayout::where('name','=','LicenseExpired')->first();
+        return (new MailMessage)->view("emails.trialActivated", compact("user" ,'token', "url", "license","emaillayout"))->subject('Trial Expired');
+        // return (new MailMessage)->view("emails.licenseexpired", compact("user" ,'token', "url"))->subject('Trial Expired');
         
             
         

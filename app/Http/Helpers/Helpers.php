@@ -1,4 +1,5 @@
 <?php
+use App\User;
 use App\License;
 use App\Apiloggs;
 use Carbon\Carbon;
@@ -8,8 +9,13 @@ use App\LicenseActivation;
 use Jenssegers\Agent\Agent;
 use Illuminate\Http\Request;
 use App\Traits\LicenseBooking;
+use Illuminate\Support\Facades\Hash;
 use App\Http\Middleware\Authenticate;
 use Illuminate\Support\Facades\Route;
+use App\Notifications\LicensePurchased;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Notification;
+
 /**
  * Premium Checker
  * Returns true or false regarding current
@@ -18,6 +24,7 @@ use Illuminate\Support\Facades\Route;
  * @param type $permissionName
  * @return boolean
  */ 
+
   
 function generate_license_key(){
    $rendom_string =  config('app.License_prefix').random_str(16);
@@ -73,6 +80,7 @@ function random_str($length = 8)
           $license_devices->activation_date = date("Y-m-d H:i:s");
           $license_devices->save();
           
+          
       return success_code(300,$license_devices,$is_valid,$expiry_date);
     }else{
       return limit_error_code(600,$license_device_limit);
@@ -89,7 +97,7 @@ $responseLicense = new LicenseBooking();
 
 $responseLicense->set_license($license,$isTrial);
 
-
+  
  return json_encode(array("License"=>$responseLicense,"Message"=>"Activated","IsOK"=>true,"IsError"=>false,"IsValid"=>$is_valid,"ExpiryDate"=>$expiry_date));
 }
 
@@ -234,10 +242,106 @@ function trialActivateGeneral($licenseTrial, $startTrialTime,$existing)
     return json_encode(array("License" => $responseLicenseTrial, "Message" => "Trial Already Activated purchase license for full features", "IsOK" => true, "IsError" => false,"IsTrial"=>$isTrial));
     }
     return json_encode(array("License" => $responseLicenseTrial, "Message" => "Trial Activated", "IsOK" => true, "IsError" => false,"IsTrial"=>$isTrial));
+    
     }
     else
     {
         $response['Message'] = "License Key is not valid";
         return json_encode($response);
     }
+}
+function findUser($user)
+{
+  $userPerson = User::where('email', '=', $user['email'])->first();
+  
+  
+  if ($userPerson == NULL) 
+  {
+      $newuser = new User();
+      $newuser->email =  $user['email'];
+      $newuser->role =  2;
+      $newuser->first_name = $user['billing_address']['first_name'];
+      $newuser->last_name = $user['billing_address']['last_name'];
+      $newuser->phone = $user['billing_address']['phone']??"231321321";
+      $newuser->password = Hash::make('ccvtwagonner');
+      $newuser->is_active = 1;
+      $newuser->is_deleted = 0;
+      $newuser->save();
+      
+      Storage::put('usercreate.txt', json_encode($newuser));   
+      
+  }else
+  {
+    Storage::put('usercreate.txt', json_encode($userPerson));
+    
+  }
+
+}
+  function findLicense($data)
+{   
+   
+  $user = User::where('email','=',$data['email'])->first();
+  $checkUserFromWebApp = License::where('user_id','=',$user->id)->first();
+   if(isset($checkUserFromWebApp->license)){
+     echo json_encode('inside if fidn license');
+    Storage::put('licensecheck.txt', json_encode($checkUserFromWebApp));
+    foreach($data['line_items'] as $row){
+      
+      
+      echo json_encode($row['variant_id']);
+      if($row['variant_id'] == '39277635862712')
+      { 
+             $checkUserFromWebApp->license_type_id = 1;
+      }
+      else if($row['variant_id'] == '39277635895480')
+      {
+       $checkUserFromWebApp->license_type_id = 2;
+      }else if($row['variant_id'] == '39277635928248')
+      {
+       $checkUserFromWebApp->license_type_id = 3;
+      }
+      else
+      {
+          
+          $checkUserFromWebApp->license_type_id = 4;
+       }
+ 
+      
+      
+      
+      $checkUserFromWebApp->save();
+     }
+    Notification::send($user,new LicensePurchased($user, $checkUserFromWebApp));
+   }else{
+   
+    echo json_encode('inside else i n license');
+    foreach($data['line_items'] as $row){
+     $newLicense = new License();
+     $newLicense->user_id = $user->id;
+     echo json_encode($row['variant_id']);
+     if($row['variant_id'] == '39277635862712')
+     { 
+            $newLicense->license_type_id = 1;
+     }
+     else if($row['variant_id'] == '39277635895480')
+     {
+      $newLicense->license_type_id = 2;
+     }else if($row['variant_id'] == '39277635928248')
+     {
+      $newLicense->license_type_id = 3;
+     }
+     else
+     {
+         
+         $newLicense->license_type_id = 4;
+      }
+
+     $newLicense->license = generate_license_key();
+     $newLicense->no_of_devices_allowed=1;
+     $newLicense->is_active = 0;
+     $newLicense->save();
+    }
+    Storage::put('licensecheck.txt', json_encode($newLicense));
+    Notification::send($user,new LicensePurchased($user, $newLicense));
+  }
 }

@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use DB;
 use App\User;
+use App\License;
 use App\Payment;
 use App\PurchaseHistory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\LicenseRenewal;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Notification;
 
 class PaymentController extends Controller
 {
@@ -112,7 +115,6 @@ class PaymentController extends Controller
         $payments = Payment::find($id);
         $word = "Approve";
         $word2 = "Pending";
-
         if (strpos($status, $word) !== false) {
             $payments->is_approved = 1;
             $payments->save();
@@ -124,11 +126,6 @@ class PaymentController extends Controller
             $payments->save();
             return $payments;
         }
-
-
-        # code...
-
-
     }
 
     public function editSearched(Request $request)
@@ -151,11 +148,6 @@ class PaymentController extends Controller
             $payments->save();
             return $payments;
         }
-
-
-        # code...
-
-
     }
 
     /**
@@ -211,8 +203,6 @@ class PaymentController extends Controller
                 'payments' => $payments,
             ]);
         } else {
-            
-
             $payments = DB::connection()
                 ->table('payments as p')
                 ->join('licenses as l', 'l.id', 'p.license_id')
@@ -234,71 +224,135 @@ class PaymentController extends Controller
 
     }
     public function orderCreation(Request $request)
-    { Storage::put('attempt1.txt',json_encode( $request->all()));
-        $data = $request->all();
+    {  
+         $data = $request->all();
+         $trigger=false;
+       
+        Storage::put('attempt1.txt',json_encode( $data));
+        
+        
+             foreach($data['line_items'] as $row)
+         {
+             if(isset($row['properties'])){
+                
+                foreach($row['properties'] as $license)
+                {
+                     
+                    if($license['value'] == NULL){
+                            $trigger= true;
+                            
+                        }
+                    if($license['name'] && $license['value'])
+                    {
+                      
+                        $this->licenseRenew($data,$license['value'],$row['variant_id']);
+                        
+                        
+                    }
+                }
+            }else
+            {
+                $trigger = true;
+            
+            }
+         }
+         
+         
+        if($trigger == true)
+        {
+           echo json_encode('inside trigger true');
+     
+        findUser($data);
+        echo json_encode('inside trigger true');
+        findLicense($data);
+        echo json_encode('inside trigger true');
         $purchaseHistory = new PurchaseHistory();
+        try {
         foreach($data['line_items'] as $row){
             
-        $purchaseHistory->email = $request->get('email');
-        $purchaseHistory->license = $row['title'];
-        if($row['variant_id'] == '39277635862712'){
-            $purchaseHistory->license_type_id = 1;
-        }else if($row['variant_id'] == '39277635895480')
-        {
-            $purchaseHistory->license_type_id = 2;
-        }
-        else if($row['variant_id'] == '39277635928248')
-        {
-            $purchaseHistory->license_type_id = 3;
+            $purchaseHistory->email = $request->get('email');
+            
+            // $purchaseHistory->license = $row['title'];
+            if(isset($row['properties'])){
+                
+                foreach($row['properties'] as $license)
+                {
+                    if($license['value'] == NULL){
+                        $purchaseHistory->license = $license['value'];
+                        }
+                    // if($license['name'] && $license['value'])
+                    // {
+                    //
+                    //     $this->licenseRenew($data,$license['value'],$row['variant_id']);
+                    //    
+                    //    
+                    // }
+                }
+            }
+        
+            if($row['variant_id'] == '39277635862712')
+            {
+                $purchaseHistory->license_type_id = 1;
+            }
+           else if($row['variant_id'] == '39277635895480')
+            {
+                $purchaseHistory->license_type_id = 2;
+            }
+            else if($row['variant_id'] == '39277635928248')
+            {
+                $purchaseHistory->license_type_id = 3;
 
-        }
-        else{
+             }
+        else
+        {
             $purchaseHistory->license_type_id = 4;
-        }
+         }
         
-        $purchaseHistory->purchase_date =date("Y-m-d H:i:s");
-        $purchaseHistory->activation_date = date("Y-m-d H:i:s");
-        $purchaseHistory->status = 1; 
-       $purchaseHistory->save();
-
-        }
-    // Approach first working    
-    // $data = $request->all();
-    //     $purchaseHistory = new PurchaseHistory();
-    //     $purchaseHistory->email = $request->get('email');
-    //     $purchaseHistory->license = $data[0]['line_items']->get('title');
-    //     $purchaseHistory->license_type_id = $data[0]['variant_id']->get('variant_id');
-        
-     
-    //     $purchaseHistory->purchase_date =date("Y-m-d H:i:s");
-    //     $purchaseHistory->activation_date = date("Y-m-d H:i:s");
-    //     $purchaseHistory->status = 1; 
-    //    $purchaseHistory->save();
-        
-    //     try {
-    //         $attemptToWriteObject = User::where('is_active', 0)->get();
-
-    //         if($request->all()){
-    //         $response = $request->all();
-            
-    //         $test_ids = array(
-	// 			'39277635862712' => '1',
-	// 			'39277635895480' => '2',
-	// 			'39277635928248' => '3'
-				
-	// 		);
-          
-    //         // Storage::put('attempt1.txt',json_encode($lineitems->title));
-            
-            
-          
-    //     }else{
-    //         Storage::put('attempt1.txt', $attemptToWriteObject);
-    //     }
-            
+            $purchaseHistory->purchase_date =  date("Y-m-d H:i:s");
+            $purchaseHistory->activation_date = date("Y-m-d H:i:s");
+            $purchaseHistory->status = 1; 
+            $purchaseHistory->save();
            
-    //    } catch (\Exception $e) {
-    //         dd($e);
-    //    }
+        }
+    }
+        catch(\Exception $e){
+            Storage::put('customerror.txt',json_encode($e));
+        }
+
+        }
+
+    
+    }
+    public function licenseRenew($request,$key,$variant)
+    {
+        Storage::put('licenserenewal.txt',json_encode($request));
+        
+        $data = $request;
+       
+        $user = User::where('email','=',$data['email'])->first();
+        //  echo json_encode($user);
+        // return;
+        
+        $license = License::where('license','=',$key)->first();
+        if($variant == '39277635862712')
+        {
+            $license->license_expiry = now()->addMonths(1);
+
+        }
+        else if($variant='39277635895480')
+        {
+            $license->license_expiry =  now()->addYears(1);
+        }else if($variant == '39277635928248')
+        {
+
+            $license->license_expiry =  now()->addYears(100);
+        }
+       
+
+        
+        $license->save();
+        Notification::send($user,new LicenseRenewal($user,$license));
+      
+
     }
 }

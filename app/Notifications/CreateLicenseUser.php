@@ -2,11 +2,12 @@
 
 namespace App\Notifications;
 
+use App\EmailLayout;
 use Illuminate\Bus\Queueable;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Notification;
-use Illuminate\Support\Facades\URL;
 
 class CreateLicenseUser extends Notification
 {
@@ -50,8 +51,13 @@ class CreateLicenseUser extends Notification
 
         $url = URL::temporarySignedRoute('user.activelicense', now()->addDays(0), ['user' => $this->user]);
         
-        
-        return (new MailMessage)->view("emails.licensecreated", compact("user" ,'license_key','url'))->subject('License Created');
+        $emaillayout = EmailLayout::where('name','=','CreateLicenseUser')->first();
+        return (new MailMessage)->view("emails.trialActivated", [
+            "user"=>$user ,
+             "url"=>$url,
+              "license"=>$license_key,
+              "emaillayout"=>$emaillayout])->subject('License Created');
+        // return (new MailMessage)->view("emails.licensecreated", compact("user" ,'license_key','url'))->subject('License Created');
         
     }
 

@@ -16,9 +16,11 @@
  </tr>
     
 </table>
-    <p>License Created Successfully<br /><br />
+    <p>License Purchased Successfully<br /><br />
     User Information is below:<br />
     <br /><br /><br />
+    Activate given below License code on Your device <br>
+    <br><br><br>
     
     
     First Name: {{$user['first_name']??''}} <br />
@@ -30,7 +32,11 @@
    State: {{ $user['state']??'' }} <br />
    Country: {{ $user['country']??'' }} <br />
    Company: {{ $user['phone']??'' }} <br />
-   License:  {{ $license_key??'' }} <br />
+   License:  {{ $license->license??'' }} <br />
+    </p>
+     <p>
+        
+        <a href="{{ $url??'' }}"> Verify </a>
     </p>
 </body>
 </html>

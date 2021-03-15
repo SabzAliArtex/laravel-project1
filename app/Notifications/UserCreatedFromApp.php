@@ -9,22 +9,24 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class TrialActivated extends Notification
+class UserCreatedFromApp extends Notification
 {
     use Queueable;
     public $user;
+    public $token;
     public $license;
+
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($user , $token, $license)
+    public function __construct($user,$token,$license)
     {
-        $this->user = $user??'';
-        $this->token = $token??'';
-        $this->license = $license??'';
-
+        //
+        $this->user = $user;
+        $this->token = $token;
+        $this->license = $license;
     }
 
     /**
@@ -46,17 +48,15 @@ class TrialActivated extends Notification
      */
     public function toMail($notifiable)
     {
-
+        
         $user = $this->user;
         $token = $this->token;
         $license = $this->license;
-        $url = URL::temporarySignedRoute('user.activelicense', now()->addDays(0), ['user' => $this->user]);
-        $emaillayout = EmailLayout::where('name','=','TrialActivated')->first();
-        return (new MailMessage)->view('emails.trialactivated', compact("user" ,'token', "url","license","emaillayout"))->subject('Trial Activation');
+        $url = URL::temporarySignedRoute('user.home', now()->addMinutes(10), ['user' => $this->user]);
         
-            
-        
-       
+        $emaillayout = EmailLayout::where('name','=','UserCreatedFromApp')->first();
+        return (new MailMessage)->view("emails.trialActivated", compact("user" ,'token', "url", "license","emaillayout"))->subject('Welcome');
+        // return (new MailMessage)->view("emails.newuser", compact("user" ,'token', "url", "license"))->subject('Welcome');
 
     }
 
@@ -69,7 +69,7 @@ class TrialActivated extends Notification
     public function toArray($notifiable)
     {
         return [
-            // 
+            //
         ];
     }
 }

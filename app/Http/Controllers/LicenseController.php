@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\License;
+use Auth;
+use Session;
 use App\User;
+use App\License;
+use App\Payment;
+use Notification;
+use Carbon\Carbon;
 use App\LicenseType;
 use App\License_devices;
-use App\Payment;
-use Session;
-use Carbon\Carbon;
-use Auth;
-use DB;
-use Notification;
-use App\Notifications\TrialActivated;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Notifications\LicenseExpired;
+use App\Notifications\TrialActivated;
 use App\Notifications\CreateLicenseUser;
 
 class LicenseController extends Controller
@@ -27,29 +27,19 @@ class LicenseController extends Controller
     public function index()
     {
         $licenses = License::with('sales_person', 'user', 'license_type')->where('is_deleted', 0)->orderByRaw('id DESC')->paginate(10);
-
-
         // echo '<pre>'; print_r($licenses); exit;
         if (Auth::user()->userrole->role == 'User') {
-
-
             return view('user.license.licenselist', [
                 'licenses' => $licenses,
-
             ]);
-
         }
 
         if (Auth::user()->userrole->role == 'Admin') {
-
             return view('admin.license.licenselist', compact('licenses'));
-
         }
 
         if (Auth::user()->userrole->role == 'Sales Person') {
-
             return view('salesPerson.license.licenselist', compact('licenses'));
-
         }
     }
 
@@ -59,8 +49,6 @@ class LicenseController extends Controller
         if ($query == "") {
             
             $licenses = License::with('sales_person', 'user', 'license_type')->where('is_deleted', 0)->orderByRaw('id DESC')->get();
-            
-            
             
             return view('admin.license.subviews.licensesearchresults', [
                 'licenses' => $licenses,
@@ -86,7 +74,6 @@ class LicenseController extends Controller
         }
     }
 
-
     /**
      * Show the form for creating a new resource.
      *
@@ -94,7 +81,6 @@ class LicenseController extends Controller
      */
     public function create()
     {
-
         $sales_persons = User::where([['is_active', '1'], ['role', '3'], ['is_deleted', '0']])->get();
         $Licensetypes = LicenseType::where('is_active', '1')->get();
         return view('admin.license.addlicense', compact('sales_persons', 'Licensetypes'));
@@ -114,7 +100,6 @@ class LicenseController extends Controller
             if ($request['numberoflicenses']>20){
 
                 return back()->with("error","Enter value less than or equal to 20");
-
             }
 
             $this->validate($request, [
@@ -126,7 +111,6 @@ class LicenseController extends Controller
 
             ]);
 
-
             for ($i=1;$i<=$request->get('numberoflicenses');$i++){
                     $license = new License();
                     $license->license = generate_license_key();
@@ -135,10 +119,7 @@ class LicenseController extends Controller
                     $license->license_type_id = $request['license_type'];
                     $license->save();
             }
-
-
-
-
+            
             Session::flash("success", "License added successfully!");
             return redirect('license');
         } else {

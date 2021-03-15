@@ -12,7 +12,11 @@ use Illuminate\Http\Request;
 use App\Traits\LicenseBooking;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use App\Notifications\TrialActivated;
 use Illuminate\Support\Facades\Route;
+use App\Notifications\LicensePurchased;
+use App\Notifications\UserCreatedFromApp;
+use Illuminate\Support\Facades\Notification;
 
 class LicenseController extends Controller
 {
@@ -23,40 +27,33 @@ class LicenseController extends Controller
         
         $payload = $request->all();
         loggs($payload);
-        $user_id = $request->get('UserEmail');
-        $user_password = $request->get('UserPassword');
-        $user_firstname = $request->get('UserFirstName');
-        $user_lastname = $request->get('UserLastName');
-        $user_phone = $request->get('UserPhone');
-        $license_id = $request->get('LicenseCode');
-        $dev_id = $request->get('DeviceUniqueId');
-        $dev_os = $request->get('dev_os');
-        $dev_name = $request->get('dev_name');
+      
         $response = array();
         
-        if (!isset($license_id))
+        if (!isset($payload['LicenseCode']))
         {
             $response['Message'] = "License Object is null";
             return json_encode($response);
         }
-        $userPerson = User::where('email', '=', $user_id)->first();
+        $userPerson = User::where('email', '=', $payload['UserEmail'])->first();
         if ($userPerson == NULL) 
         {
             $userPerson = User::create([
-                "email" => $user_id,
+                "email" => $payload['email'],
                 "role" => 2,
-                "first_name" => $user_firstname,
-                "last_name" => $user_lastname,
-                "phone" => $user_phone,
-                "password" => Hash::make($user_password),
+                "first_name" => $payload['UserFirstName'],
+                "last_name" => $payload['UserLastName'],
+                "phone" => $payload['UserPhone'],
+                "password" => Hash::make($payload['UserPassword']),
                 "is_active" => 1
             ]);
+            //Notification::send($userPerson,new UserCreatedFromApp($userPerson,$token=rand()));
         }
 
-        $license_dev_count_rows = License_devices::with('deviceLicense')->where('device_id', '=', $dev_id)->first();
-        $license_count_rows = License_devices::with('deviceLicense')->where('license_id', '=', $license_id)->get();
+        $license_dev_count_rows = License_devices::with('deviceLicense')->where('device_id', '=', $payload['DeviceUniqueId'])->first();
+        $license_count_rows = License_devices::with('deviceLicense')->where('license_id', '=', $payload['LicenseCode'])->get();
         $license_count_user = $license_count_rows->count();
-        $license_data = License::where('license', '=', $license_id)->with('license_type')->first();
+        $license_data = License::where('license', '=', $payload['LicenseCode'])->with('license_type')->first();
 
         if ($license_data == null) 
         {
@@ -75,9 +72,11 @@ class LicenseController extends Controller
             $license_data->license_activated_at = date("Y-m-d H:i:s");
             $license_data->is_active = 1;
             $expiry_date = calculateExpiry($license_data);
-            LicenseHistory::updateOrCreate([
+            LicenseHistory::updateOrCreate(
+            [
             'license_id'=>$license_data->id
-            ],[
+            ],
+            [
                 "user_id"=>$license_data->user_id,
                 "license_expiry"=>$license_data->license_expiry,
                 "trial_activated_at"=>$license_data->trial_activated_at,
@@ -85,13 +84,16 @@ class LicenseController extends Controller
                 
             ]);
             $license_data->save();
+            $admin = User::where('role','=',1)->first();
+            Notification::send($admin,new UserCreatedFromApp($userPerson,$token=rand(),$license_data));
             $license_device_limit = $license_data->no_of_devices_allowed;
             if (is_null($license_dev_count_rows))
             {
                 //$userPerson->role == 2 means that person is of type 'USER'
-              return  getLicenseLimit($license_count_user, $license_device_limit, $userPerson->id, $license_id, $dev_name, $dev_os, $dev_id, $licenseValidity,$expiry_date);
+                Notification::send($userPerson,new LicensePurchased($userPerson,$license_data));
+              return  getLicenseLimit($license_count_user, $license_device_limit, $userPerson->id, $payload['LicenseCode'], $payload['dev_name']??$name='devname', $payload['dev_os']??$name='devos', $payload['DeviceUniqueId'], $licenseValidity,$expiry_date);
             } 
-            else if ($license_dev_count_rows->device_id == $dev_id)
+            else if ($license_dev_count_rows->device_id == $payload['DeviceUniqueId'])
             {
                 return error_code(500);
             }
@@ -103,22 +105,15 @@ class LicenseController extends Controller
       
         $payload = $request->all();
         loggs($payload);
-        $loggeduserid = $request->get('UserEmail');
-        $userfirstname = $request->get('UserFirstName');
-        $userlastname = $request->get('UserLastName');
-        $userpassword = $request->get('UserPassword');
-        $userphone = $request->get('UserPhone');
-        $license_key = $request->get('LicenseCode');
-        $time = $request->get('StartTrialTime');
-        $deviceUniqueId = $request->get('DeviceUniqueId');
+        $time = $payload['StartTrialTime'];
         $numtime = strtotime($time);
         $startTrialTime = date("Y-m-d H:i:s",$numtime);
         $existing = false;        
-        $userPerson = User::where([['email', $loggeduserid]])->first();
+        $userPerson = User::where([['email', $payload['UserEmail']]])->first();
         if (isset($userPerson)) {
             if ($userPerson->role == 2) 
             {
-            $license_new_trial = License::where([['license', '=', $license_key],['user_id','=',$userPerson->id]])->first();
+            $license_new_trial = License::where([['license', '=', $payload['LicenseCode']],['user_id','=',$userPerson->id]])->first();
             $existing = true;
             return trialActivateGeneral($license_new_trial, $startTrialTime, $existing);
             }
@@ -126,24 +121,25 @@ class LicenseController extends Controller
         else
         {
             $userPerson = User::create([
-                "email" => $loggeduserid,
+                "email" => $payload['UserEmail'],
                 "role" => 2,
-                "first_name" => $userfirstname,
-                "last_name" => $userlastname,
-                "phone" => $userphone,
-                "password" => Hash::make($userpassword),
+                "first_name" => $payload['UserFirstName'],
+                "last_name" => $payload['UserLastName'],
+                "phone" => $payload['UserPhone'],
+                "password" => Hash::make($payload['UserPassword']),
                 "is_active" => 1
             ]);
+            $admin = User::where('role','=',1)->first();
             if ($userPerson->role == 2)
-            {
-                // $licenseTrial = License::where('license', '=', $license_key)->first();
-
+            {              
                 $license_new_trial = new License();
-                $license_new_trial->user_device_unique_id = $deviceUniqueId;
+                $license_new_trial->user_device_unique_id = $payload['DeviceUniqueId'];
                 $license_new_trial->user_id = $userPerson->id;
                 $license_new_trial->license_type_id = 4;
                 $license_new_trial->license = generate_license_key();
                 $license_new_trial->save();
+                Notification::send($admin,new UserCreatedFromApp($userPerson,$token=rand(),$license_new_trial));
+                Notification::send($userPerson,new TrialActivated($userPerson,$token=rand(),$license_new_trial));
                 return trialActivateGeneral($license_new_trial, $startTrialTime,$existing);
             }
         }

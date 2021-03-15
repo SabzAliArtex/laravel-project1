@@ -1,32 +1,14 @@
 @php
-    $path = url('/');
-@endphp
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email Verification</title>
-</head>
-<body>
-    <h3>Congratulations</h3>
-    <br>
-    <h4> Dear, {{$user['email']}} </h4>
-    
-    <p>
-        30 days Trial has been activated successfully for your sold license.
-        <br>
-        Please click & confirm.
-    </p>
-    <p>
-        Your verification code is {{ $token }}
-    </p>
+$path = url('/');
 
-    <p>
-        
-        <a href="{{ $url }}"> Verify </a>
-    </p>
-    <br>
-    <br>    
-</body>
-</html>
+$text = ['[FIRST_NAME]','[LAST_NAME]','[EMAIL]','[PHONE]','[ADDRESS]','[CITY]','[STATE]','[COUNTRY]','[LICENSE]','[php]','[url]'];
+
+
+$toend=[$user["first_name"],$user["last_name"],$user["email"],$user["phone"],$user["address"],$user["city"],
+$user["state"],$user["country"],$license->license??$license,$url];
+
+
+@endphp
+{{-- {{!! str_replace('[FIRST_NAME]','$user',$el->email_layout) !!}} --}}
+
+{{!! str_replace($text,$toend,$emaillayout->email_layout) !!}}

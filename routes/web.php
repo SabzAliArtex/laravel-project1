@@ -1,5 +1,6 @@
 <?php
 
+use App\EmailLayout;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -89,8 +90,12 @@ Route::group(['middleware' => ['user','auth'], 'prefix'=>'user'], function () {
  	Route::get('/getuserdetails/{id}', 'ClientController@LicensesActivated')->name('user.licenselistcomplete');
  	Route::post('/purchase/license', 'ClientController@purchaseLicense')->name('user.purchase'); 
  	Route::get('/purchase/history', 'ClientController@purchaseHistory')->name('user.purchasehistory'); 
+	 Route::get('/profile/complete', 'ClientController@LicenseListLessDetails')->name('user.completeprofile');
 	
 });
+Route::get('/license/renewal','ClientController@licenseRenew')->name('user.licenserenewal');
+Route::get('/new/password','ClientController@setNewPassword')->name('user.createpassword');
+Route::post('/update/password','ClientController@passwordUpdated')->name('update.password');
 
 											// Sales Person Routes
 Route::group(['middleware' => ['salesperson', 'auth']], function () {
@@ -121,3 +126,10 @@ Route::get('mail', function () {
 
 
 Route::post('/orders/create','PaymentController@orderCreation');
+Route::get('/renew',function(){
+	$em = EmailLayout::latest()->first();
+	
+	return view($em->email_layout);
+});
+Route::get('/lc','HomeController@cool');
+Route::get('/cl','HomeController@checklayout');

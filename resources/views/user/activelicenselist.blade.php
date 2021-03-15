@@ -50,16 +50,18 @@
                         </thead>
                         <tbody>
                             
-                                
                                 @foreach($licenses as $key=> $license)
+                                
                                     <tr>
                                         
 
                                         <td> {{ $key + 1 }} </td>
 
                                       <td> {{ $license->license}} </td>
+                                      
                                      <td>
                                             @if($license->license_type && $license->license_type->type == '1' )
+                                            {{  $license->license_type->type }}
                                                 Monthly {{ '('. $license->license_type->price . ')' }}
                                             @elseif ($license->license_type &&  $license->license_type->type == '2' )
                                                 Yearly {{ '('. $license->license_type->price . ')' }}
@@ -67,7 +69,6 @@
                                                 Life time {{ '('. $license->license_type->price . ')' }}
                                             @else
                                                 Trial
-                                           
                                             @endif
                                         </td>
                                        <td> {{ $license->user ? $license->user->first_name : '' }} </td>
@@ -75,11 +76,17 @@
                                         
                                         @if($license->license_type_id == '4')
 
-                                             <td><a @click="openLicenseActivationModel({{ $license }})" href="javascript:void(0)"> {{ __('Purchase') }}  </a></td>
-                                             {{-- <td><a @click="openDetailModal({{$license->id}})" href="javascript:void(0)"> {{ __('Details') }}  </a></td> --}}
+                                            <td><a @click="openLicenseActivationModel({{ $license }},{{ $check = 1 }})" href="javascript:void(0)"> {{ __('Purchase') }}  </a></td> 
+                                        
+                                        @elseif($license->license_expiry && (strtotime($license->license_expiry) < strtotime(date('Y-m-d H:i:s') )))
+                                        
+                                           <td><a @click="openLicenseActivationModel({{ $license }},{{ $check = 0 }})" href="javascript:void(0)"> {{ __('Renew') }}  </a></td>
+                                      
                                         @else
-                                            <td><a href="{{ route('user.deleteuserlicense',['id'=>$license->id]) }}" onclick="return confirm('Are you sure.')"> {{ __('Delete') }}  </a></td>
-                                             <td><a @click="openDetailModal({{$license->id}})" href="javascript:void(0)"> {{ __('Details') }}  </a></td>
+
+                                            {{-- <td><a href="{{ route('user.deleteuserlicense',['id'=>$license->id]) }}" onclick="return confirm('Are you sure.')"> {{ __('Delete') }}  </a></td> --}}
+                                            <td><a @click="openDetailModal({{$license->id}})" href="javascript:void(0)"> {{ __('Details') }}  </a></td>
+
                                         @endif 
 
                                     </tr>
@@ -87,7 +94,7 @@
                         </tbody>
                     </table>
 
- 
+
 
     <div class="modal fade" id="licenseModal" tabindex="-1" role="dialog" aria-labelledby="LicenseModalLabel" aria-hidden="true">
 
@@ -125,7 +132,8 @@
                               </div>
                               <hr/>
                               <div class="modal-footer border-top-0 d-flex justify-content-center">
-                                <button type="button" @click="purchaseLicense()" class="btn btn-license">Purchase</button>
+                                <button v-show ="purchase.check==1" type="button" @click="purchaseLicense(purchase.check)" class="btn btn-license">Purchase</button>
+                                <button v-show ="purchase.check==0" type="button" @click="purchaseLicense(purchase.check)" class="btn btn-license">Purchase</button>
                               </div>
                             </form>
                           </div>
@@ -216,54 +224,103 @@
         el:'#details',
         data:{
             alldata:{},
-            purchase:{
+            purchase:
+            {
 
-                    id:'',
-                    user_id:'',
-                    sales_person_id:'',
-                    license_type_id:'1',
-                    license:'',
-                    license_duration:'',
-                    license_expiry:'',
-                    allowed_test:'',
-                    no_of_devices_allowed:'',
-                    is_deleted:'',
-                    trial_activated_at:'',
-                    license_activated_at:'',
-                    user_device_unique_id:'',
-                    is_active:'',
+                  id:'',
+                  user_id:'',
+                  sales_person_id:'',
+                  license_type_id:'1',
+                  license:'',
+                  license_duration:'',
+                  license_expiry:'',
+                  allowed_test:'',
+                  no_of_devices_allowed:'',
+                  is_deleted:'',
+                  trial_activated_at:'',
+                  license_activated_at:'',
+                  user_device_unique_id:'',
+                  is_active:'',
                     
                                                                                                                                   
 
             },
-            licid:'',
-            message:'Hello vue',
-            myInput:'',
+                  licid:'',
+                  message:'Hello vue',
+                  myInput:'',
 
         },
         methods:{
-            openLicenseActivationModel:function(license){
+            openLicenseActivationModel:function(license,check){
+                
                this.purchase = license;
-               $("#monthlypackage").prop("checked", true);
-                   
+               this.purchase.check = check;
                
-                               
+               $("#monthlypackage").prop("checked", true);   
+                                            
                     jQuery('#licenseModal').modal('show');
 
             },
-            purchaseLicense:function(){
+            purchaseLicense:function(check){
+              
               if(this.purchase.license_type_id == 1)
               {
-                window.location.href =" https://wdtcv.myshopify.com/collections/license-collection/products/license?variant=39277635862712";
-
+                // window.location.href =" https://wdtcv.myshopify.com/collections/license-collection/products/license?variant=39277635862712&license="+this.purchase.license+"";
+                if(check != 1){
+                   window.open
+                (
+                  " https://wdtcv.myshopify.com/collections/license-collection/products/license?variant=39277635862712",
+                  '_blank' 
+              );
+}else{
+  window.open
+   (
+                  " https://wdtcv.myshopify.com/collections/license-collection/products/license?variant=39277635862712&license="+this.purchase.license+"",
+                  '_blank' 
+              );
+}
+               
               }
               else if(this.purchase.license_type_id == 2)
               {
-                window.location.href = "https://wdtcv.myshopify.com/collections/license-collection/products/license?variant=39277635895480";
+                if(check == 1)
+                {
+                   window.open
+                (
+                  " https://wdtcv.myshopify.com/collections/license-collection/products/license?variant=39277635895480",
+                  '_blank'
+            );
+                }
+                else{
+                  window.open
+                    (
+                  " https://wdtcv.myshopify.com/collections/license-collection/products/license?variant=39277635895480&license="+this.purchase.license+"",
+                  '_blank'
+            );
+                }
+                // window.location.href = "https://wdtcv.myshopify.com/collections/license-collection/products/license?variant=39277635895480&license="+this.purchase.license+"";
+               
+                
               }
               else if(this.purchase.license_type_id ==3)
               {
-                window.location.href = "https://wdtcv.myshopify.com/collections/license-collection/products/license?variant=39277635928248";
+                // window.location.href = "https://wdtcv.myshopify.com/collections/license-collection/products/license?variant=39277635928248&license="+this.purchase.license+"";
+                if(check == 1)
+                {
+                   window.open
+                  (
+                    "https://wdtcv.myshopify.com/collections/license-collection/products/license?variant=39277635928248",
+                    '_blank'
+                  );
+                }else
+                {
+                  window.open
+                  (
+                    "https://wdtcv.myshopify.com/collections/license-collection/products/license?variant=39277635928248&license="+this.purchase.license+"",
+                    '_blank'
+                  );
+                }
+                 
               }
               return;
               

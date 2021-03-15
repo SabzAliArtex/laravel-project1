@@ -29,7 +29,7 @@
                             <div class="col-md-3 mr-4">
                                 @include('layouts.partials_general.searchfilter')
                             </div>
-                            <div class="col-md-3 date-filter-width">@include('partials_general/datefilter')</div>
+                            <div class="col-md-3 date-filter-width">@include('layouts.partials_general/datefilter')</div>
                             <div class="col-md-6 input-group custom_serachbar_position">
                                 {{--@include('partials_general/searchbar')--}}
                             </div>
