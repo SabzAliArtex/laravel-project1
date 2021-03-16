@@ -131,5 +131,3 @@ Route::get('/renew',function(){
 	
 	return view($em->email_layout);
 });
-Route::get('/lc','HomeController@cool');
-Route::get('/cl','HomeController@checklayout');

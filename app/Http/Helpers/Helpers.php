@@ -283,7 +283,7 @@ function findUser($user)
   $user = User::where('email','=',$data['email'])->first();
   $checkUserFromWebApp = License::where('user_id','=',$user->id)->first();
    if(isset($checkUserFromWebApp->license)){
-     echo json_encode('inside if fidn license');
+     echo json_encode('inside if find license');
     Storage::put('licensecheck.txt', json_encode($checkUserFromWebApp));
     foreach($data['line_items'] as $row){
       

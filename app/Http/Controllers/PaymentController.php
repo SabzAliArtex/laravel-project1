@@ -242,7 +242,7 @@ class PaymentController extends Controller
                             $trigger= true;
                             
                         }
-                    if($license['name'] && $license['value'])
+                    if(isset($license['name']) && isset($license['value']))
                     {
                       
                         $this->licenseRenew($data,$license['value'],$row['variant_id']);

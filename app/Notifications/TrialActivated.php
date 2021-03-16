@@ -51,7 +51,8 @@ class TrialActivated extends Notification
         $token = $this->token;
         $license = $this->license;
         $url = URL::temporarySignedRoute('user.activelicense', now()->addDays(0), ['user' => $this->user]);
-        $emaillayout = EmailLayout::where('name','=','TrialActivated')->first();
+        $emaillayou = EmailLayout::where('name','=','trial_activated')->first();
+        $emaillayout = json_decode($emaillayou);
         return (new MailMessage)->view('emails.trialactivated', compact("user" ,'token', "url","license","emaillayout"))->subject('Trial Activation');
         
             

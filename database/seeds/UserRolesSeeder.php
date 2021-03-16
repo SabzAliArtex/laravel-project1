@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class UserRolesSeeder extends Seeder
 {
@@ -18,15 +19,15 @@ class UserRolesSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
             'updated_at' => date("Y-m-d H:i:s"),
             
-        ]);
-        DB::table('user_roles')->insert([
+        ],
+        [
             'role' => 'User',
             'is_active' => 1,
             'created_at' => date("Y-m-d H:i:s"),
             'updated_at' => date("Y-m-d H:i:s"),
             
-        ]);
-         DB::table('user_roles')->insert([
+        ],
+        [
             'role' => 'Sales Person',
             'is_active' => 1,
             'created_at' => date("Y-m-d H:i:s"),
@@ -34,5 +35,6 @@ class UserRolesSeeder extends Seeder
 
             
         ]);
+    
     }
 }
