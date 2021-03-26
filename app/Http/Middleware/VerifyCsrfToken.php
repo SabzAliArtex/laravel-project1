@@ -21,5 +21,11 @@ class VerifyCsrfToken extends Middleware
         'api/license/check',
         
         '/orders/create',
+        
+        '/orders/payment',
+        
+        '/orders/cancel',
+
+        'orders/payment-check'
     ];
 }

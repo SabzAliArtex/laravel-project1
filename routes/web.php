@@ -126,8 +126,15 @@ Route::get('mail', function () {
 
 
 Route::post('/orders/create','PaymentController@orderCreation');
+Route::post('/orders/payment','PaymentController@orderSubscription');
+Route::post('/orders/cancel','PaymentController@orderCancel');
+Route::post('/orders/payment-check','PaymentController@paymentcheck');
 Route::get('/renew',function(){
 	$em = EmailLayout::latest()->first();
 	
 	return view($em->email_layout);
+});
+Route::post('subscription_billing_attempts/failure','PaymentController@testFail');
+Route::get('subscription_billing_attempts/success', function ($id) {
+	
 });
