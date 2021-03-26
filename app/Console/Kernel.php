@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         //
+        Commands\subscriptionalert::class
     ];
 
     /**
@@ -24,7 +25,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+         $schedule->command('subscription:alert')->monthly();
+         $schedule->command('subscription:yearly')->yearly();
+         
+
     }
 
     /**

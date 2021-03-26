@@ -6,6 +6,7 @@ use App\User;
 use App\License;
 use App\Payment;
 use App\PurchaseHistory;
+use App\UserSubscription;
 use Illuminate\Http\Request;
 use App\Events\PaymentFailure;
 use Illuminate\Support\Facades\DB;
@@ -228,16 +229,25 @@ class PaymentController extends Controller
     public function orderCreation(Request $request)
     {  
         $data = $request->all();
-        if($data == NULL)
-            {
-            //Do Payment Failed functioning
-            //How this function will be triggered if the payment is getting failed
-            //because this function will not be hit from webhook response url 
-            //echo 'no payload but there should be one payload as operations depend upon that data';
-            //How can i send notification if i am not getting the user to send to
-            // Notification::send($data['email'],new PaymentFailed($data));
-            }   
-        
+        //Subcription starts
+        foreach($data['line_items'] as $row)
+        {
+            if(isset($row['properties'])){
+
+                foreach($row['properties'] as $license)
+                {
+                    if(isset($license['name']) && isset($license['value']) && $license['name']=='subs')
+                    {
+                      
+                        $this->subscriptionAlert($data,$license['value'],$row['variant_id']);
+                        
+                        
+                    }
+                    
+                }
+            }
+        }
+        //Subcription ends
         $trigger = false;
        
             Storage::put('attempt1.txt',json_encode( $data));
@@ -333,18 +343,20 @@ class PaymentController extends Controller
 
     
     }
-    public function paymentcheck(Request $request)
-    {
-        Storage::put('paymentcheck.txt',json_encode($request));
-    }
-    public function orderSubscription(Request $request)
-    {
-        Storage::put('subscriber.txt',json_encode($request->all()));
-    }
-    public function orderCancel(Request $request)
-    {
-        Storage::put('cancel.txt',json_encode($request->all()));
-    }
+  public function subscriptionAlert($request,$key,$variant)
+  {
+      $usersubs = new UserSubscription();
+      $usersubs->email = $request['email'];
+      $usersubs->type = $key;
+      $usersubs->save();
+
+      
+      
+      //2 Annually subscription
+      //3 Lifetime subscription
+
+    
+  }
     public function licenseRenew($request,$key,$variant)
     {
         Storage::put('licenserenewal.txt',json_encode($request));
