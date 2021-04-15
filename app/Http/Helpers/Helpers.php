@@ -289,6 +289,7 @@ function findUser($user)
       
       
       echo json_encode($row['variant_id']);
+
       if($row['variant_id'] == '39277635862712')
       { 
              $checkUserFromWebApp->license_type_id = 1;
@@ -314,7 +315,7 @@ function findUser($user)
     Notification::send($user,new LicensePurchased($user, $checkUserFromWebApp));
    }else{
    
-    echo json_encode('inside else i n license');
+    echo json_encode('inside else in license');
     foreach($data['line_items'] as $row){
      $newLicense = new License();
      $newLicense->user_id = $user->id;

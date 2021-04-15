@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use App\Notifications\PaymentFailed;
 use Illuminate\Support\Facades\Auth;
 use App\Notifications\LicenseRenewal;
+use App\Notifications\LicensePurchased;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Notification;
 
@@ -248,6 +249,7 @@ class PaymentController extends Controller
             }
         }
         //Subcription ends
+        //User renewing license
         $trigger = false;
        
             Storage::put('attempt1.txt',json_encode( $data));
@@ -273,7 +275,7 @@ class PaymentController extends Controller
                     }
                 }
             }else
-            {
+            {   //check if user is coming direct from shopify store
                 $trigger = true;
             
             }
@@ -282,7 +284,9 @@ class PaymentController extends Controller
          
         if($trigger == true)
         {
-     
+        
+        
+        
         findUser($data);
         findLicense($data);
         $purchaseHistory = new PurchaseHistory();
@@ -371,21 +375,25 @@ class PaymentController extends Controller
         if($variant == '39277635862712')
         {
             $license->license_expiry = now()->addMonths(1);
+            $license->license_type_id = 1;
 
         }
         else if($variant='39277635895480')
         {
             $license->license_expiry =  now()->addYears(1);
+            $license->license_type_id = 2;
         }else if($variant == '39277635928248')
         {
 
             $license->license_expiry =  now()->addYears(100);
+            $license->license_type_id = 3;
         }
        
 
         
         $license->save();
         Notification::send($user,new LicenseRenewal($user,$license));
+        Notification::send($user,new LicensePurchased($user, $license));
       
 
     }
