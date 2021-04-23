@@ -230,6 +230,14 @@ class PaymentController extends Controller
     public function orderCreation(Request $request)
     {  
         $data = $request->all();
+        $payload['data'] = $data;
+        $payload['type'] = 'order_meta';
+
+        loggs($payload);
+        $file_name = 'attempt1'.time().'.txt';
+        
+        Storage::put($file_name,json_encode( $data));
+        exit;
         //Subcription starts
         foreach($data['line_items'] as $row)
         {
@@ -251,8 +259,8 @@ class PaymentController extends Controller
         //Subcription ends
         //User renewing license
         $trigger = false;
-       
-            Storage::put('attempt1.txt',json_encode( $data));
+            $file_name = 'attempt1'.time().'.txt';
+            Storage::put($file_name,json_encode( $data));
         
         
              foreach($data['line_items'] as $row)
@@ -263,7 +271,7 @@ class PaymentController extends Controller
                 {
                      
                     if($license['value'] == NULL){
-                            $trigger= true;
+                            $trigger = true;
                             
                         }
                     if(isset($license['name']) && isset($license['value']))

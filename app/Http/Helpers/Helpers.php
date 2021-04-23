@@ -142,12 +142,12 @@ function error_code($code){
     $current_route = Route::getCurrentRoute()->uri;
     $current_controller = Route::getCurrentRoute()->getActionName();
     $current_payload = json_encode($payload);
-
-    $log = Apiloggs::create([
-        'current_url' => $current_route,
-        'current_controller' => $current_controller,
-        'current_payload' => $current_payload,
-    ]);
+    $log = new Apiloggs(); 
+    $log->current_url = $current_route;
+    $log->current_controller = $current_controller;
+    $log->current_payload = $current_payload;
+    $log->current_payload_type = $payload['type']??null;
+    $log->save();
     if ($log)
     {
         $response['message'] = "Loggs are being maintained";

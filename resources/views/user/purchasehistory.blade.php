@@ -35,7 +35,7 @@
                                    <th> {{ __('Sr no') }} </th>
                                    <th> {{ __('License Key') }} </th>
                                    <th id="thn"> {{ __('License Type') }} </th>
-                                   
+                    
                                    <th> {{ __('User Email') }} </th>
                                    <th colspan="2"> {{ __('Action') }} </th>
    

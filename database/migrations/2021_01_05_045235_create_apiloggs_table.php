@@ -18,6 +18,7 @@ class CreateApiloggsTable extends Migration
             $table->longText('current_url');
             $table->longText('current_controller');
             $table->longText('current_payload');
+            $table->string('current_payload_type')->nullable();
             $table->timestamps();
         });
     }
