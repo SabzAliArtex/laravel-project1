@@ -237,7 +237,7 @@ class PaymentController extends Controller
         $file_name = 'attempt1'.time().'.txt';
         
         Storage::put($file_name,json_encode( $data));
-        exit;
+        
         //Subcription starts
         foreach($data['line_items'] as $row)
         {
