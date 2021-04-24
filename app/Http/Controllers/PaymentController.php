@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use App\Notifications\PaymentFailed;
 use Illuminate\Support\Facades\Auth;
 use App\Notifications\LicenseRenewal;
+use Illuminate\Support\Facades\Config;
 use App\Notifications\LicensePurchased;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Notification;
@@ -322,15 +323,15 @@ class PaymentController extends Controller
                 }
             }
         
-            if($row['variant_id'] == '39277635862712')
+            if($row['variant_id'] == Config::get('constants.VARIANT_ID.MONTHLY'))
             {
                 $purchaseHistory->license_type_id = 1;
             }
-           else if($row['variant_id'] == '39277635895480')
+           else if($row['variant_id'] == Config::get('constants.VARIANT_ID.YEARLY'))
             {
                 $purchaseHistory->license_type_id = 2;
             }
-            else if($row['variant_id'] == '39277635928248')
+            else if($row['variant_id'] == Config::get('constants.VARIANT_ID.LIFETIME'))
             {
                 $purchaseHistory->license_type_id = 3;
 
@@ -380,17 +381,17 @@ class PaymentController extends Controller
         // return;
         
         $license = License::where('license','=',$key)->first();
-        if($variant == '39277635862712')
+        if($variant == Config::get('constants.VARIANT_ID.MONTHLY'))
         {
             $license->license_expiry = now()->addMonths(1);
             $license->license_type_id = 1;
 
         }
-        else if($variant='39277635895480')
+        else if($variant == Config::get('constants.VARIANT_ID.YEARLY'))
         {
             $license->license_expiry =  now()->addYears(1);
             $license->license_type_id = 2;
-        }else if($variant == '39277635928248')
+        }else if($variant ==  Config::get('constants.VARIANT_ID.MONTHLY'))
         {
 
             $license->license_expiry =  now()->addYears(100);

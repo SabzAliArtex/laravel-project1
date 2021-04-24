@@ -269,13 +269,13 @@
                 if(check != 1){
                    window.open
                 (
-                  " https://wdtcv.myshopify.com/collections/license-collection/products/license?variant=39277635862712",
+                  " https://wdtcv.myshopify.com/collections/license-collection/products/license?variant="+{{ Config::get('constants.VARIANT_ID.MONTHLY') }},
                   '_blank' 
               );
 }else{
   window.open
    (
-                  " https://wdtcv.myshopify.com/collections/license-collection/products/license?variant=39277635862712&license="+this.purchase.license+"",
+                  " https://wdtcv.myshopify.com/collections/license-collection/products/license?variant="+{{ Config::get('constants.VARIANT_ID.MONTHLY') }}+"&license="+this.purchase.license+"",
                   '_blank' 
               );
 }
@@ -287,14 +287,14 @@
                 {
                    window.open
                 (
-                  " https://wdtcv.myshopify.com/collections/license-collection/products/license?variant=39277635895480",
+                  " https://wdtcv.myshopify.com/collections/license-collection/products/license?variant="+{{ Config::get('constants.VARIANT_ID.YEARLY') }},
                   '_blank'
             );
                 }
                 else{
                   window.open
                     (
-                  " https://wdtcv.myshopify.com/collections/license-collection/products/license?variant=39277635895480&license="+this.purchase.license+"",
+                  " https://wdtcv.myshopify.com/collections/license-collection/products/license?variant="+{{ Config::get('constants.VARIANT_ID.YEARLY') }}+"&license="+this.purchase.license+"",
                   '_blank'
             );
                 }
@@ -309,14 +309,14 @@
                 {
                    window.open
                   (
-                    "https://wdtcv.myshopify.com/collections/license-collection/products/license?variant=39277635928248",
+                    "https://wdtcv.myshopify.com/collections/license-collection/products/license?variant="+{{ Config::get('constants.VARIANT_ID.LIFETIME') }},
                     '_blank'
                   );
                 }else
                 {
                   window.open
                   (
-                    "https://wdtcv.myshopify.com/collections/license-collection/products/license?variant=39277635928248&license="+this.purchase.license+"",
+                    "https://wdtcv.myshopify.com/collections/license-collection/products/license?variant="+{{ Config::get('constants.VARIANT_ID.LIFETIME') }}+"&license="+this.purchase.license+"",
                     '_blank'
                   );
                 }
