@@ -51,19 +51,30 @@
                                     <tr>
 
                                         <td> {{ $key + 1 }} </td>
-
-                                        <td> {{ $license->license}} </td>
+                                        @foreach ($license->deviceLicense as $devicelicense)
+                                        <td> {{ $devicelicense->license }} </td>
                                         <td>
-                                            @if($license->license_type_id == '1' )
-                                                Monthly {{ '('. $license->price . ')' }}
-                                            @elseif ( $license->license_type_id == '2' )
-                                                Yearly {{ '('. $license->price . ')' }}
-                                            @elseif ( $license->license_type_id == '3' )
-                                                Life time {{ '('. $license->price . ')' }}
+                                            @if($devicelicense->license_type_id == '1' )
+                                          
+                                                Monthly {{
+                                                 '('. $licensetype->price . ')' }}
+                                            @elseif ( $devicelicense->license_type_id == '2' )
+                                                Yearly {{ '('. $licensetype->price . ')' }}
+                                            @elseif ( $devicelicense->license_type_id == '3' )
+                                                Life time {{ '('. $licensetype->price . ')' }}
                                             @endif
                                         </td>
-                                        <td> {{ $license->first_name ? $license->first_name : 'N\A' }} </td>
-                                        <td> {{ $license->email ? $license->email : 'N\A' }} </td>
+                                         
+                                        @endforeach
+                                        @foreach ($license->users as  $user)
+                                        <td> {{ $user->first_name ? $user->first_name : 'N\A' }} </td>
+                                        <td> {{ $user->email ? $user->email : 'N\A' }} </td>
+                                            
+                                        @endforeach
+
+                                        
+                                      
+                                     
                                         <td>{{$license->device_id}}</td>
                                         
                                         <td> @if($license->is_deleted == 1) Deleted

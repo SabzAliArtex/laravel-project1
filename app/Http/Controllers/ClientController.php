@@ -8,6 +8,7 @@ use Image;
 use Session;
 use App\User;
 use App\License;
+use App\LicenseType;
 use App\License_devices;
 use App\PurchaseHistory;
 use App\LicenseActivation;
@@ -83,19 +84,32 @@ class ClientController extends Controller
     {
 
         // $licenses = License_devices::with('deviceLicense')->paginate(10);
-        $licenses = DB::connection()
-        ->table('license_devices as ld')
-        ->join('licenses as li', 'li.license', 'ld.license_id')
-        ->join('license_types', 'license_types.id', 'li.license_type_id')
-        ->Join('users', function ($join) {
-            $join->on('users.id', '=', 'ld.user_id');
-            $join->where('ld.is_deleted', '=', '0');
-        })->get();
+        // $licenses = DB::connection()
+        // ->table('license_devices as ld')
+        // ->join('licenses as li', 'li.license', 'ld.license_id')
+        // ->join('license_types', 'license_types.id', 'li.license_type_id')
+        // ->Join('users', function ($join) {
+        //     $join->on('users.id', '=', 'ld.user_id');
+        //     $join->where('ld.is_deleted', '=', '0');
+        // })->get();
+        //pausing 9.56 am wednesday 4/28/2021 
+        //$license = License_devices::with('deviceLicense','license_type','users')->get();
+        $licenses = License_devices::with('license_type','users','deviceLicense')->get();
+        foreach($licenses as $license)
+        { 
+            foreach($license->deviceLicense as $licensetype)
+            {
+                
+                $licensetype = LicenseType::where('type','=',$licensetype->license_type_id)->first();
+                
+            }
+        }
         
+        //pausing 9.56 am wednesday 4/28/2021 
             
 
 
-        return view('admin.useranddevslist', compact('licenses'));
+        return view('admin.useranddevslist', compact('licenses','licensetype'));
 
     }
 
@@ -130,6 +144,14 @@ class ClientController extends Controller
                 ->orWhere('li.license', 'LIKE', '%' . $query . '%')
                 ->orWhere('ld.device_id', 'LIKE', '%' . $query . '%')
                 ->get();
+            
+                
+
+
+
+
+
+
 
 
             return view('admin.subviews.userdevsanddevicessearchresults', [
@@ -186,6 +208,7 @@ class ClientController extends Controller
     public function searchResults(Request $request)
     {
         $query = $request->get('search');
+        
         if ($query == "") {
 
             $licenses = License::with('sales_person', 'user', 'license_type')
@@ -275,5 +298,20 @@ class ClientController extends Controller
             
             return view('user.subviews.redirectsubview');
     }
-   
+   public function purchaseHistorySearch(Request $request)
+   {
+    $query = $request->get('search');
+        
+    if ($query == "") {
+
+        $history = PurchaseHistory::where('email','=',Auth::user()->email)->get();
+
+    } else {
+        $history = PurchaseHistory::where('email','LIKE','%'.$query.'%')->get();
+    }
+
+
+    return view('user.subviews.purchase_history_search', compact('history'));
+
+   }
 }

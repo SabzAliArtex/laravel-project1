@@ -46,6 +46,8 @@ class LicenseController extends Controller
     public function licenseSearchResults(Request $request)
     {
         $query = $request['search'];
+        
+        
         if ($query == "") {
             
             $licenses = License::with('sales_person', 'user', 'license_type')->where('is_deleted', 0)->orderByRaw('id DESC')->get();
@@ -55,18 +57,33 @@ class LicenseController extends Controller
                 
             ]);
         } else {
-            
-            $licenses = DB::table('licenses')
-                ->join('users as u', 'u.id', '=', 'licenses.user_id')
-                ->join('users as sp', 'sp.id', '=', 'licenses.sales_person_id')
-                ->join('license_types', 'license_types.id', '=', 'licenses.license_type_id')
-                ->select('licenses.*', 'license_types.*', 'u.first_name', 'u.last_name', 'u.email', 'sp.first_name as fname', 'sp.last_name as lname')
-                ->where('u.first_name', 'LIKE', '%' . $query . '%')
-                ->orWhere('u.last_name', 'LIKE', '%' . $query . '%')
-                ->orWhere('u.email', 'LIKE', '%' . $query . '%')
-                ->orWhere('sp.first_name', 'LIKE', '%' . $query . '%')
-                ->orWhere('sp.last_name', 'LIKE', '%' . $query . '%')
-                ->get();
+            //Following query in raw works perfect can be used later
+            // $licenses = DB::table('licenses')
+            //     ->join('users as u', 'u.id', '=', 'licenses.user_id')
+            //     ->join('users as sp', 'sp.id', '=', 'licenses.sales_person_id')
+            //     ->join('license_types', 'license_types.id', '=', 'licenses.license_type_id')
+            //     ->select('licenses.*', 'license_types.*', 'u.first_name', 'u.last_name', 'u.email', 'sp.first_name as fname', 'sp.last_name as lname')
+            //     ->where('u.first_name', 'LIKE', '%' . $query . '%')
+            //     ->orWhere('u.last_name', 'LIKE', '%' . $query . '%')
+            //     ->orWhere('u.email', 'LIKE', '%' . $query . '%')
+            //     ->orWhere('sp.first_name', 'LIKE', '%' . $query . '%')
+            //     ->orWhere('sp.last_name', 'LIKE', '%' . $query . '%')
+            //     ->get();
+                $licenses = License::with(['license_type', 'user', 'sales_person'])
+
+            ->whereHas('user', function ($q) use ($query) {
+             $q->where('first_name', 'LIKE', '%' . $query . '%')
+            ->orWhere('last_name', 'LIKE', '%' . $query . '%')
+            ->orWhere('email', 'LIKE', '%' . $query . '%');
+             })
+            ->whereHas('sales_person', function ($q) use ($query) {
+            $q->where('first_name', 'LIKE', '%' . $query . '%')
+            ->orWhere('last_name', 'LIKE', '%' . $query . '%')
+            ->orWhere('email', 'LIKE', '%' . $query . '%');
+            })->get();
+                
+                // echo json_encode($licenses);
+                // exit;
 
             return view('admin.license.subviews.licensesearchresults', [
                 'licenses' => $licenses,

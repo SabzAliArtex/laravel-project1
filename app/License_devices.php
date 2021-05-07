@@ -17,7 +17,9 @@ class License_devices extends Model
     }
     public function license_type()
 	{
-   		return $this->hasOne('App\LicenseType','id','license_id');
+   		return $this->hasOne('App\LicenseType','id','App\License.license_type_id');
+           
 	}
+    
 }
  

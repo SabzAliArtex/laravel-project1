@@ -1,0 +1,13 @@
+Example 3: Laravel Eloquent Join() with Multiple Conditions
+In this example, get data using laravel eloquent join with multiple where conditions, you can see the following example:
+
+$users = User::join('posts', 'posts.user_id', '=', 'users.id')
+            ->where('users.status', 'active')
+            ->where('posts.status','active')
+            ->get(['users.*', 'posts.descrption']);
+When you dump the above-given laravel eloquent join with multiple conditions query, you will get the following SQL query:
+
+select `users`.*, `posts`.`descrption` from `users` 
+inner join `posts` on `posts`.`user_id` = `users`.`id` 
+where `users`.`status` = active and `posts`.`status` = active
+In another option instead of join laravel, you can use laravel relationship, once you created laravel relationship it will work like join.

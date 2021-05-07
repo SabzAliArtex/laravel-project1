@@ -93,6 +93,7 @@ Route::group(['middleware' => ['user','auth'], 'prefix'=>'user'], function () {
  	Route::post('/purchase/license', 'ClientController@purchaseLicense')->name('user.purchase'); 
  	Route::get('/purchase/history', 'ClientController@purchaseHistory')->name('user.purchasehistory'); 
 	 Route::get('/profile/complete', 'ClientController@LicenseListLessDetails')->name('user.completeprofile');
+	 Route::get('/purchase-history', 'ClientController@purchaseHistorySearch')->name('user.purchasehistorysearch');
 	
 });
 Route::get('/license/renewal','ClientController@licenseRenew')->name('user.licenserenewal');

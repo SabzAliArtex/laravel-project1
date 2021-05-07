@@ -30,7 +30,7 @@
                                 @include('layouts.partials_general.searchbar')
                             </div>
                         </div>
-                        @if(count($license_types) >0)
+                        
                             <table id="tableListing" border="1" style="width:100%"
                                    class="table table-striped table-responsive">
                                 <thead class="thead-dark">
@@ -45,7 +45,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($license_types as $key=> $license_type)
+                                @forelse($license_types as $key=> $license_type)
                                     <tr>
                                         <td> {{ $key+1 }} </td>
                                         <td> {{ $license_type->title }} </td>
@@ -75,13 +75,13 @@
                                                onclick="return confirm('Are you sure.')"> {{ __('Delete') }}  </a>
                                         </td>
                                     </tr>
-                                @endforeach
+                                    @empty
+                                     <p> *nothing found</p>
+                                @endforelse
                                 </tbody>
                             </table>@include('layouts.partials_general.searchalert')
                             {{$license_types->render()}}
-                        @else
-                            <p> *nothing found</p>
-                        @endif
+                        
                     </div>
                 </div>
             </div>

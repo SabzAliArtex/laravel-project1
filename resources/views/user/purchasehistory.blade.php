@@ -92,4 +92,25 @@
            </div>
         
 </div>
+<script>
+        
+        // Your jquery code
+        jQuery.noConflict();
+        jQuery(document).ready(function(){
+            jQuery('#myInput').on('keyup',function(){
+                $value=jQuery(this).val();
+                console.log($value);
+
+                jQuery.ajax({
+                    type : 'get',
+                    url : '{{URL::to('user/purchase-history')}}',
+                    data:{'search':$value},
+                    success:function(data){
+                        $('tbody').html(data);
+                    }
+                });
+            });
+        });
+        jQuery.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
+</script>
 @endsection

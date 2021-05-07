@@ -362,24 +362,14 @@ class PaymentController extends Controller
       $usersubs->email = $request['email'];
       $usersubs->type = $key;
       $usersubs->save();
-
-      
-      
       //2 Annually subscription
       //3 Lifetime subscription
-
-    
   }
     public function licenseRenew($request,$key,$variant)
     {
         Storage::put('licenserenewal.txt',json_encode($request));
-        
         $data = $request;
-       
         $user = User::where('email','=',$data['email'])->first();
-        //  echo json_encode($user);
-        // return;
-        
         $license = License::where('license','=',$key)->first();
         if($variant == Config::get('constants.VARIANT_ID.MONTHLY'))
         {
