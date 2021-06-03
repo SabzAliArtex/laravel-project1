@@ -17,7 +17,7 @@ class License extends Model
 	public function user()	
 	{
    		return $this->hasOne('App\User','id','user_id');
-	}
+	} 
 	public function license_type()
 	{	
    		return $this->hasOne('App\LicenseType','id','license_type_id');
