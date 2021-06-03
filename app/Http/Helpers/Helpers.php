@@ -289,15 +289,16 @@ function findUser($user)
       
       
       echo json_encode($row['variant_id']);
-
-      if($row['variant_id'] == '39277635862712')
+      foreach($row['properties'] as $license)
+                {
+                    if($license['value'] == 'Daily')
       { 
              $checkUserFromWebApp->license_type_id = 1;
       }
-      else if($row['variant_id'] == '39277635895480')
+      else if($license['variant_id'] == 'Weekly')
       {
        $checkUserFromWebApp->license_type_id = 2;
-      }else if($row['variant_id'] == '39277635928248')
+      }else if($license['variant_id'] == 'Monthly')
       {
        $checkUserFromWebApp->license_type_id = 3;
       }
@@ -311,6 +312,9 @@ function findUser($user)
       
       
       $checkUserFromWebApp->save();
+                }
+
+     
      }
     Notification::send($user,new LicensePurchased($user, $checkUserFromWebApp));
    }else{
@@ -320,14 +324,16 @@ function findUser($user)
      $newLicense = new License();
      $newLicense->user_id = $user->id;
      echo json_encode($row['variant_id']);
-     if($row['variant_id'] == '39277635862712')
+     foreach($row['properties'] as $license)
+                {
+                    if($license['value'] == 'Daily')
      { 
             $newLicense->license_type_id = 1;
      }
-     else if($row['variant_id'] == '39277635895480')
+     else if($license['value'] == 'Weekly')
      {
       $newLicense->license_type_id = 2;
-     }else if($row['variant_id'] == '39277635928248')
+     }else if($license['value'] == 'Monthly')
      {
       $newLicense->license_type_id = 3;
      }
@@ -336,6 +342,9 @@ function findUser($user)
          
          $newLicense->license_type_id = 4;
       }
+                   
+                }
+   
 
      $newLicense->license = generate_license_key();
      $newLicense->no_of_devices_allowed=1;

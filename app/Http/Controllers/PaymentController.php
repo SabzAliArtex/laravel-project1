@@ -246,7 +246,7 @@ class PaymentController extends Controller
 
                 foreach($row['properties'] as $license)
                 {
-                    if(isset($license['name']) && isset($license['value']) && $license['name']=='subs')
+                    if(isset($license['name']) && isset($license['value']) && $license['name']=='payment-interval')
                     {
                       
                         $this->subscriptionAlert($data,$license['value'],$row['variant_id']);
@@ -271,16 +271,17 @@ class PaymentController extends Controller
                 foreach($row['properties'] as $license)
                 {
                      
-                    if($license['value'] == NULL){
+                    if($license['value'] == NULL)
+                    {
                             $trigger = true;
                             
-                        }
+                    }
                     if(isset($license['name']) && isset($license['value']))
                     {
-                      
+                       
                         $this->licenseRenew($data,$license['value'],$row['variant_id']);
                         
-                        
+                         
                     }
                 }
             }else
@@ -322,16 +323,16 @@ class PaymentController extends Controller
                     // }
                 }
             }
-        
-            if($row['variant_id'] == Config::get('constants.VARIANT_ID.MONTHLY'))
+            
+            if($license['value'] == Config::get('constants.VARIANT_ID.MONTHLY'))
             {
                 $purchaseHistory->license_type_id = 1;
             }
-           else if($row['variant_id'] == Config::get('constants.VARIANT_ID.YEARLY'))
+           else if($license['value'] == Config::get('constants.VARIANT_ID.YEARLY'))
             {
                 $purchaseHistory->license_type_id = 2;
             }
-            else if($row['variant_id'] == Config::get('constants.VARIANT_ID.LIFETIME'))
+            else if($license['value'] == Config::get('constants.VARIANT_ID.LIFETIME'))
             {
                 $purchaseHistory->license_type_id = 3;
 
@@ -371,17 +372,17 @@ class PaymentController extends Controller
         $data = $request;
         $user = User::where('email','=',$data['email'])->first();
         $license = License::where('license','=',$key)->first();
-        if($variant == Config::get('constants.VARIANT_ID.MONTHLY'))
+        if($key == Config::get('constants.VARIANT_ID.MONTHLY'))
         {
             $license->license_expiry = now()->addMonths(1);
             $license->license_type_id = 1;
 
         }
-        else if($variant == Config::get('constants.VARIANT_ID.YEARLY'))
+        else if($key == Config::get('constants.VARIANT_ID.YEARLY'))
         {
             $license->license_expiry =  now()->addYears(1);
             $license->license_type_id = 2;
-        }else if($variant ==  Config::get('constants.VARIANT_ID.MONTHLY'))
+        }else if($key ==  Config::get('constants.VARIANT_ID.MONTHLY'))
         {
 
             $license->license_expiry =  now()->addYears(100);
