@@ -17,8 +17,12 @@ class CreateLicenseType extends Migration
             $table->id();
             $table->string('title');
             $table->string('price');
+            $table->integer('type');
+            
+            
             $table->timestamps();
         });
+        
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\LicenseType;
+use App\Test;
 use Illuminate\Http\Request;
 use Session;
 
@@ -15,23 +16,43 @@ class LicenseTypeController extends Controller
      */
     public function index()
     {
-        $data['license_types'] = LicenseType::where('is_deleted','=', NULL)->get();
-        return view('admin.license.licensetype',$data);
+        $data['license_types'] = LicenseType::where('is_deleted', '=', NULL)->orWhere('is_deleted', '=', 0)->paginate(10);
+        return view('admin.license.licensetype', $data);
+    }
+
+    public function searchLicenseType(Request $request)
+    {
+        
+        $query = $request['search'];
+        if ($query == "") {
+            $data['license_types'] = LicenseType::where('is_deleted', '=', NULL)->orWhere('is_deleted', '=', 0)->paginate(10);
+            
+        } else {
+            $data['license_types'] = LicenseType::where('title', 'LIKE', '%' . $query . '%')
+            ->orWhere('price', 'LIKE', '%' . $query . '%')
+            ->orWhere('is_active', 'LIKE', '%' . $query . '%')
+            ->get();
+        }
+        return view('admin.license.subviews.licensetypesearch', $data);
     }
 
     public function AddLicenseType()
     {
-        
-        return view('admin.license.addlicensetype');
+        $tests = Test::where('is_active', '=', 1)->get();
+
+        return view('admin.license.addlicensetype', [
+            'tests' => $tests,
+        ]);
     }
+
     public function AddLicenseTypePost(Request $get)
     {
-        
+
         $this->validate($get, [
             "title" => "required",
             "price" => "required|numeric|min:2|max:9999",
             "type" => "required",
-        ],[
+        ], [
             "title.required" => "Please enter license type.",
             "price.required" => "Please enter price.",
             "price.numeric" => 'Please enter valid number.',
@@ -39,8 +60,8 @@ class LicenseTypeController extends Controller
             "price.max" => 'Price should be less then 1000. ',
             "type.required" => 'Please select license type.',
         ]);
-        
-        $licenseType =  LicenseType::create([
+
+        $licenseType = LicenseType::create([
             'title' => $get['title'],
             'price' => $get['price'],
             'type' => $get['type'],
@@ -54,14 +75,19 @@ class LicenseTypeController extends Controller
     public function EditLicenseType($id)
     {
         $data['licensetype'] = LicenseType::find($id);
-        return view('admin.license.editLicensetype',$data);
+        $data['tests'] = Test::latest()->get();
+
+
+        return view('admin.license.editlicensetype', $data);
     }
+
     public function EditLicenseTypePost(Request $get)
     {
+
         $this->validate($get, [
             "title" => "required",
             "price" => "required|numeric|min:2|max:9999",
-        ],[
+        ], [
             "title.required" => "Please enter license type",
             "price.required" => "Please enter price",
             "price.numeric" => 'Please enter valid number',
@@ -69,7 +95,7 @@ class LicenseTypeController extends Controller
             "price.max" => 'Price should be less then 1000 ',
         ]);
 
-        $LicenseType = LicenseType::find($get->id);
+        $LicenseType = LicenseType::find($get->get('id'));
         $LicenseType->title = $get['title'];
         $LicenseType->price = $get['price'];
         $LicenseType->type = $get['type'];
@@ -80,14 +106,18 @@ class LicenseTypeController extends Controller
         Session::flash("success", "License type updated successfully");
         return redirect('/licensetypes');
     }
-    public function deleteLicenseType($id){
+
+    public function deleteLicenseType($id)
+    {
+
         $user = LicenseType::find($id);
-        
         $user->is_deleted = 1;
+        $user->is_active = 0;
         $user->save();
         Session::flash("success", "Deleted successfully");
         return back();
     }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -101,7 +131,7 @@ class LicenseTypeController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -112,7 +142,7 @@ class LicenseTypeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\LicenseType  $licenseType
+     * @param \App\LicenseType $licenseType
      * @return \Illuminate\Http\Response
      */
     public function show(LicenseType $licenseType)
@@ -123,7 +153,7 @@ class LicenseTypeController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\LicenseType  $licenseType
+     * @param \App\LicenseType $licenseType
      * @return \Illuminate\Http\Response
      */
     public function edit(LicenseType $licenseType)
@@ -134,8 +164,8 @@ class LicenseTypeController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\LicenseType  $licenseType
+     * @param \Illuminate\Http\Request $request
+     * @param \App\LicenseType $licenseType
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, LicenseType $licenseType)
@@ -146,7 +176,7 @@ class LicenseTypeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\LicenseType  $licenseType
+     * @param \App\LicenseType $licenseType
      * @return \Illuminate\Http\Response
      */
     public function destroy(LicenseType $licenseType)

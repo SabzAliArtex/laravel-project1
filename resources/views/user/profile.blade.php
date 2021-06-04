@@ -14,8 +14,11 @@
                     {{ session('error') }}
                 </div>
             @endif
-        </div>    
-        <div class="col-md-8">
+        </div>
+        
+        
+          @include('layouts.partials_user.sidebar')
+        <div class="col-md-6">
             <div class="card">
                 <div class="card-header">{{ __('Edit Profile') }}</div>
                 <div class="card-body">
@@ -92,7 +95,7 @@
                             </div>
                         </div>
 
-                        
+
 
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
@@ -106,7 +109,7 @@
             </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card">
                 <div class="card-header">{{ __('Picture') }}</div>
 
@@ -116,9 +119,9 @@
                             @if(Auth::user()->thumb)
                             <img src="{{ asset(Auth::user()->thumb) }}" style="height: 100px;">
                             @else
-                            <img src="{{ asset('files/upload/user/user.jpg') }}" style="height: 100px;">
+                            <img src="{{ asset('files/upload/user/user.png') }}" style="height: 100px;">
                             @endif
-                        </div>    
+                        </div>
                     </div>
                 </div>
             </div>

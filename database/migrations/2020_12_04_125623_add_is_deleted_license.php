@@ -14,7 +14,7 @@ class AddIsDeletedLicense extends Migration
     public function up()
     {
         Schema::table('licenses', function (Blueprint $table) {
-            $table->tinyInteger('is_deleted')->after('is_active')->nullable();
+          
         });
     }
 

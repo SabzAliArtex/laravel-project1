@@ -68,7 +68,19 @@
             @if (Route::has('login'))
                 <div class="top-right links">
                     @auth
-                        <a href="{{ url('/home') }}">Home</a>
+                        @if(Auth::user()->role == 1)
+                        <a class="dropdown-item" href="{{ route('admin.home') }}">
+                            {{ __('Home') }}
+                        </a>
+                        @elseif (Auth::user()->role == 2)
+                        <a class="dropdown-item" href="{{ url('/user/home') }}">
+                            {{ __('Home') }}
+                        </a>
+                        @else
+                        <a class="dropdown-item" href="{{ url('/salesperson/home') }}">
+                            {{ __('Home') }}
+                        </a>
+                        @endif
                     @else
                         <a href="{{ route('login') }}">Login</a>
 

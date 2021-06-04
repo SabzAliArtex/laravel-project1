@@ -14,13 +14,22 @@ class License extends Model
 	{
    		return $this->hasOne('App\User','id','sales_person_id');
 	}
-	public function user()
+	public function user()	
 	{
    		return $this->hasOne('App\User','id','user_id');
-	}
+	} 
 	public function license_type()
-	{
+	{	
    		return $this->hasOne('App\LicenseType','id','license_type_id');
 	}
+	
+	public function license_type_search()
+	{	
+   		return $this->belongsTo('App\LicenseType','license_type_id','id');
+	}
+	public function license_activation(){
+		return $this->hasmany('App\LicenseActivation','license_id','id');
+	}
+	
 }
 
