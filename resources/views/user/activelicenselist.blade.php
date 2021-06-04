@@ -351,6 +351,7 @@
                 this.licid = licenseid;
                 this.alldata = res.data;
                 
+                
 
                     jQuery('#myModal').modal('show');
                 }).catch((error)=>{
@@ -423,14 +424,14 @@
         jQuery(document).ready(function(){
             jQuery('#myInput').on('keyup',function(){
                 $value=jQuery(this).val();
-                console.log($value);
+                
 
                 jQuery.ajax({
                     type : 'get',
                     url : '{{URL::to('user')}}',
                     data:{'search':$value},
                     success:function(data){
-                        $('tbody').html(data);
+                        $('table').html(data);
                     }
                 });
             });

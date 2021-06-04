@@ -173,6 +173,18 @@ class ClientController extends Controller
 
 
     }
+    public function LicensesActivatedSub(Request $licenseid)
+
+    {
+        
+        $LicenseCode = License::find($licenseid['search']);
+        
+        $licenses = License_devices::with('deviceLicense', 'users', 'license_type')
+        ->where([['license_id', '=', $LicenseCode->license], ['user_id', '=', Auth::user()->id], ['is_deleted', '=', 0]])->orderByRaw('id DESC')->get();
+        return $licenses;
+
+
+    }
 
     public function LicenseListLessDetails()
     {
@@ -215,9 +227,11 @@ class ClientController extends Controller
             ->where([['user_id', Auth::user()->id], ['is_deleted', '=', 0]])
             ->orderByRaw('id DESC')
             ->paginate(10);
+            
 
         } else {
-            $licenses = License::with('sales_person', 'user', 'license_type')
+           
+            $licenses = License::with('sales_person', 'user', 'license_type_search')
             ->where([['license', 'LIKE', '%' . $query . '%'],['user_id', Auth::user()->id], ['is_deleted', '=', 0]])
             ->orderByRaw('id DESC')
             ->paginate(10);
@@ -230,9 +244,24 @@ class ClientController extends Controller
     }
 
 
-    public function deleteLicense($id)
+    public function deleteLicense( $id)
     {
+        
+
+        
         $user_license = License_devices::find($id);
+        $user_license->is_deleted = 1;
+        $user_license->save();
+        Session::flash("success", "Deleted successfully");
+        return back();
+
+
+    }
+    
+    public function deleteLicensesub(Request $id)
+    {
+       
+        $user_license = License_devices::find($id['search']);
         $user_license->is_deleted = 1;
         $user_license->save();
         Session::flash("success", "Deleted successfully");
@@ -252,11 +281,35 @@ class ClientController extends Controller
 
 
     }
+    public function deactivateDevicesub(Request $id)
+    {
+            
+        $user_license = License_devices::where('device_id', '=', $id['search'])->first();
+        $user_license->is_deactive = 1;
+        $user_license->save();
+        Session::flash("success", "Device Deactivated");
+        return back();
 
+
+    }
     public function activateDevice($id)
     {
 
         $user_license = License_devices::where('device_id', '=', $id)->first();
+
+        $user_license->is_deactive = 0;
+        $user_license->save();
+        Session::flash("success", "Device Activated");
+        return back();
+
+
+    }
+    
+    public function activateDevicesub(Request $id)
+    {
+
+            
+        $user_license = License_devices::where('device_id', '=', $id['search'])->first();
 
         $user_license->is_deactive = 0;
         $user_license->save();

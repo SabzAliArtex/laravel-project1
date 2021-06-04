@@ -87,9 +87,13 @@ Route::group(['middleware' => ['user','auth'], 'prefix'=>'user'], function () {
  	Route::get('/license', 'ClientController@LicenseListLessDetails')->name('user.activelicense');
  	Route::get('', 'ClientController@searchResults')->name('user.searchresults');
  	Route::get('/deletelicense/{id}', 'ClientController@deleteLicense')->name('user.deleteuserlicense');
+ 	Route::get('/deletelicensesearch', 'ClientController@deleteLicensesub')->name('user.deleteuserlicensesearch');
  	Route::get('/deactivatedevice/{id}', 'ClientController@deactivateDevice')->name('user.deactivateuserdevice');
+ 	Route::get('/deactivatedevice', 'ClientController@deactivateDevicesub')->name('user.deactivateuserdevicesub');
  	Route::get('/activatedevice/{id}', 'ClientController@activateDevice')->name('user.activateuserdevice');
+ 	Route::get('/activatedevice', 'ClientController@activateDevicesub')->name('user.activateuserdevicesub');
  	Route::get('/getuserdetails/{id}', 'ClientController@LicensesActivated')->name('user.licenselistcomplete');
+ 	Route::get('/getuserdetailssub', 'ClientController@LicensesActivatedSub')->name('user.licenselistcompletesub');
  	Route::post('/purchase/license', 'ClientController@purchaseLicense')->name('user.purchase'); 
  	Route::get('/purchase/history', 'ClientController@purchaseHistory')->name('user.purchasehistory'); 
 	 Route::get('/profile/complete', 'ClientController@LicenseListLessDetails')->name('user.completeprofile');
