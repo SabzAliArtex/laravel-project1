@@ -36,7 +36,7 @@
                                 <tr>
                                     <th> {{ __('Sr no') }} </th>
                                     <th> {{ __('License Key') }} </th>
-                                    <th> {{ __('License Type') }} </th>
+                                    
                                     <th id="thn"> {{ __('User Name') }} </th>
                                     <th> {{ __('User Email') }} </th>
                                     <th> {{ __('Device Id') }} </th>
@@ -51,7 +51,7 @@
                                     <tr>
 
                                         <td> {{ $key + 1 }} </td>
-                                        @foreach ($license->deviceLicense as $devicelicense)
+                                        {{-- @foreach ($license->deviceLicense as $devicelicense)
                                         <td> {{ $devicelicense->license }} </td>
                                         <td>
                                             @if($devicelicense->license_type_id == '1' )
@@ -65,7 +65,7 @@
                                             @endif
                                         </td>
                                          
-                                        @endforeach
+                                        @endforeach --}}
                                         @foreach ($license->users as  $user)
                                         <td> {{ $user->first_name ? $user->first_name : 'N\A' }} </td>
                                         <td> {{ $user->email ? $user->email : 'N\A' }} </td>

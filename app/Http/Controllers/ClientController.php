@@ -109,7 +109,7 @@ class ClientController extends Controller
             
 
 
-        return view('admin.useranddevslist', compact('licenses','licensetype'));
+        return view('admin.useranddevslist', compact('licenses'));
 
     }
 
