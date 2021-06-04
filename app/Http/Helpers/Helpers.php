@@ -283,36 +283,55 @@ function findUser($user)
   $user = User::where('email','=',$data['email'])->first();
   $checkUserFromWebApp = License::where('user_id','=',$user->id)->first();
    if(isset($checkUserFromWebApp->license)){
-     echo json_encode('inside if find license');
+     
     Storage::put('licensecheck.txt', json_encode($checkUserFromWebApp));
     foreach($data['line_items'] as $row){
       
       
-      echo json_encode($row['variant_id']);
-      foreach($row['properties'] as $license)
-                {
-                    if($license['value'] == 'Daily')
-      { 
-             $checkUserFromWebApp->license_type_id = 1;
+      
+      if($row['properties'][1]['value'] == 'Daily')
+      {
+         $checkUserFromWebApp->license_type_id = 1;
       }
-      else if($license['variant_id'] == 'Weekly')
+      else if($row['properties'][1]['value'] == 'Weekly')
       {
-       $checkUserFromWebApp->license_type_id = 2;
-      }else if($license['variant_id'] == 'Monthly')
+          $checkUserFromWebApp->license_type_id = 2;
+
+      }
+      else if($row['properties'][1]['value'] == 'Monthly')
       {
-       $checkUserFromWebApp->license_type_id = 3;
+          $checkUserFromWebApp->license_type_id = 3;
+
       }
       else
       {
+             $checkUserFromWebApp->license_type_id = 4;
+      }
+       $checkUserFromWebApp->save();
+      // foreach($row['properties'] as $license)
+      //           {
+      //               if($license['value'] == 'Daily')
+      // { 
+      //       
+      // }
+      // else if($license['variant_id'] == 'Weekly')
+      // {
+      
+      // }else if($license['variant_id'] == 'Monthly')
+      // {
+      
+      // }
+      // else
+      // {
           
-          $checkUserFromWebApp->license_type_id = 4;
-       }
+      //     $checkUserFromWebApp->license_type_id = 4;
+      //  }
  
       
       
       
-      $checkUserFromWebApp->save();
-                }
+      
+      //           }
 
      
      }

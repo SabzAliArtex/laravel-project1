@@ -275,7 +275,7 @@
 }else{
   window.open
    (
-                  " https://waggonerdiagnostics.com/collections/license-collection/products/license?variant="+{{ Config::get('constants.VARIANT_ID.MONTHLY') }}+"&license="+this.purchase.license+"",
+                  "https://waggonerdiagnostics.com/products/license-subscription?licenseCode="+this.purchase.license,
                   '_blank' 
               );
 }
@@ -294,7 +294,8 @@
                 else{
                   window.open
                     (
-                  " https://waggonerdiagnostics.com/collections/license-collection/products/license?variant="+{{ Config::get('constants.VARIANT_ID.YEARLY') }}+"&license="+this.purchase.license+"",
+                  // " https://waggonerdiagnostics.com/collections/license-collection/products/license?variant="+{{ Config::get('constants.VARIANT_ID.YEARLY') }}+"&license="+this.purchase.license+"",
+                  "https://waggonerdiagnostics.com/products/license-subscription?licenseCode="+this.purchase.license,
                   '_blank'
             );
                 }
@@ -309,14 +310,14 @@
                 {
                    window.open
                   (
-                    "https://waggonerdiagnostics.com/collections/license-collection/products/license?variant="+{{ Config::get('constants.VARIANT_ID.LIFETIME') }},
+                    "https://waggonerdiagnostics.com/products/license-subscription?licenseCode="+this.purchase.license",
                     '_blank'
                   );
                 }else
                 {
                   window.open
                   (
-                    "https://waggonerdiagnostics.com/collections/license-collection/products/license?variant="+{{ Config::get('constants.VARIANT_ID.LIFETIME') }}+"&license="+this.purchase.license+"",
+                    "https://waggonerdiagnostics.com/products/license-subscription?licenseCode="+this.purchase.license,,
                     '_blank'
                   );
                 }

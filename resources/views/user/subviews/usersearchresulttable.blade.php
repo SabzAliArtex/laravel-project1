@@ -36,14 +36,27 @@
                                          <td> {{ $license->user ? $license->user->email : '' }} </td>
                                            
                                          {{-- <td><a href="{{ route('user.deleteuserlicense',['id'=>$license->id]) }}" onclick="return confirm('Are you sure.')"> {{ __('Delete') }}  </a></td> --}}
-                                             <td><a onclick="openDetailModal({{$license->id}})" id="detailsModal" href="javascript:void(0)"> {{ __('Details') }}  </a></td>
+                                         @if($license->license_type_id == '4')
+
+                                         <td><a onclick="openLicenseActivationModel({{ $license }},{{ $check = 1 }})" href="javascript:void(0)"> {{ __('Purchase') }}  </a></td> 
+                                     
+                                     @elseif($license->license_expiry && (strtotime($license->license_expiry) < strtotime(date('Y-m-d H:i:s') )))
+                                     
+                                        <td><a onclick="openLicenseActivationModel({{ $license }},{{ $check = 0 }})" href="javascript:void(0)"> {{ __('Renew') }}  </a></td>
+                                   
+                                     @else
+
+                                         {{-- <td><a href="{{ route('user.deleteuserlicense',['id'=>$license->id]) }}" onclick="return confirm('Are you sure.')"> {{ __('Delete') }}  </a></td> --}}
+                                         <td><a onclick="openDetailModal({{$license->id}})" href="javascript:void(0)"> {{ __('Details') }}  </a></td>
+
+                                     @endif 
                                              
                                        
                                     </tr>
                                 @endforeach
                         </tbody>
                         @else
-                     <div class="alert alert-danger custom_warning_user" role="alert"><p class="custom_para_results">No Results for your search*</p>
+                     <div class="alert alert-danger  new-warning" role="alert"><p class="custom_para_results">No Results for your search*</p>
                                     
                         
 </div>
@@ -61,7 +74,9 @@
           <h4 class="modal-title">All Licenses</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
+  {{-- licensemodal --}}
   
+ 
         <!-- Modal body -->
         <div class="modal-body">
             
@@ -119,6 +134,14 @@
 <script>
 
    var $value;
+   function openLicenseActivationModel(license,check)
+   {
+          
+    jQuery("#monthlypackage").prop("checked", true);   
+                                            
+    jQuery('#licenseModal').modal('show');
+
+   }
     function openDetailModal(id)
     {
             

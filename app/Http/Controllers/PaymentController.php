@@ -230,7 +230,9 @@ class PaymentController extends Controller
     }
     public function orderCreation(Request $request)
     {  
-        $data = $request->all();
+        $data = $request->get('data');
+      
+            
         $payload['data'] = $data;
         $payload['type'] = 'order_meta';
 
@@ -240,8 +242,12 @@ class PaymentController extends Controller
         Storage::put($file_name,json_encode( $data));
         
         //Subcription starts
+        
+        
         foreach($data['line_items'] as $row)
         {
+           
+        
             if(isset($row['properties'])){
 
                 foreach($row['properties'] as $license)
@@ -257,6 +263,7 @@ class PaymentController extends Controller
                 }
             }
         }
+        
         //Subcription ends
         //User renewing license
         $trigger = false;
@@ -268,22 +275,32 @@ class PaymentController extends Controller
             {
              if(isset($row['properties'])){
                 
-                foreach($row['properties'] as $license)
-                {
-                     
-                    if($license['value'] == NULL)
-                    {
-                            $trigger = true;
+               
+                // foreach($row['properties'] as $license)
+                // {
+                    
+                    
+                //     if($license['value'] == NULL)
+                //     {
+                        
+
+                //             $trigger = true;
                             
-                    }
-                    if(isset($license['name']) && isset($license['value']))
+                //     }
+                    
+                    if(isset($row['properties'][0]['name']) && $row['properties'][0]['value'])
                     {
+                      
+                            
+                                $this->licenseRenew($data,$row['properties'][0]['value'],$row['properties'][1]['value']);
+
+                            
                        
-                        $this->licenseRenew($data,$license['value'],$row['variant_id']);
+                     
                         
                          
-                    }
-                }
+                //     }
+                // }
             }else
             {   //check if user is coming direct from shopify store
                 $trigger = true;
@@ -292,13 +309,17 @@ class PaymentController extends Controller
          }
          
          
+         
         if($trigger == true)
         {
-        
+          
         
         
         findUser($data);
+        
         findLicense($data);
+        
+        
         $purchaseHistory = new PurchaseHistory();
         try {
         foreach($data['line_items'] as $row){
@@ -308,12 +329,11 @@ class PaymentController extends Controller
             // $purchaseHistory->license = $row['title'];
             if(isset($row['properties'])){
                 
-                foreach($row['properties'] as $license)
-                {
-                    if($license['value'] == NULL)
-                    {
-                        $purchaseHistory->license = $license['value'];
-                    }
+                
+                
+                    
+                        $purchaseHistory->license = $row['properties'][0]['value']??'';
+                    
                     // if($license['name'] && $license['value'])
                     // {
                     //
@@ -321,18 +341,18 @@ class PaymentController extends Controller
                     //    
                     //    
                     // }
-                }
+                
             }
             
-            if($license['value'] == Config::get('constants.VARIANT_ID.MONTHLY'))
+            if($row['properties'][1]['value'] == Config::get('constants.VARIANT_ID.MONTHLY'))
             {
                 $purchaseHistory->license_type_id = 1;
             }
-           else if($license['value'] == Config::get('constants.VARIANT_ID.YEARLY'))
+           else if($row['properties'][1]['value'] == Config::get('constants.VARIANT_ID.YEARLY'))
             {
                 $purchaseHistory->license_type_id = 2;
             }
-            else if($license['value'] == Config::get('constants.VARIANT_ID.LIFETIME'))
+            else if($row['properties'][1]['value'] == Config::get('constants.VARIANT_ID.LIFETIME'))
             {
                 $purchaseHistory->license_type_id = 3;
 
@@ -357,6 +377,9 @@ class PaymentController extends Controller
 
     
     }
+    echo 'end';
+    exit();
+}
   public function subscriptionAlert($request,$key,$variant)
   {
       $usersubs = new UserSubscription();
@@ -368,21 +391,22 @@ class PaymentController extends Controller
   }
     public function licenseRenew($request,$key,$variant)
     {
+
         Storage::put('licenserenewal.txt',json_encode($request));
         $data = $request;
         $user = User::where('email','=',$data['email'])->first();
         $license = License::where('license','=',$key)->first();
-        if($key == Config::get('constants.VARIANT_ID.MONTHLY'))
+        if($variant == Config::get('constants.VARIANT_ID.MONTHLY'))
         {
             $license->license_expiry = now()->addMonths(1);
             $license->license_type_id = 1;
 
         }
-        else if($key == Config::get('constants.VARIANT_ID.YEARLY'))
+        else if($variant == Config::get('constants.VARIANT_ID.YEARLY'))
         {
             $license->license_expiry =  now()->addYears(1);
             $license->license_type_id = 2;
-        }else if($key ==  Config::get('constants.VARIANT_ID.MONTHLY'))
+        }else if($variant ==  Config::get('constants.VARIANT_ID.MONTHLY'))
         {
 
             $license->license_expiry =  now()->addYears(100);
@@ -390,7 +414,7 @@ class PaymentController extends Controller
         }
        
 
-        
+       
         $license->save();
         Notification::send($user,new LicenseRenewal($user,$license));
         Notification::send($user,new LicensePurchased($user, $license));

@@ -10978,6 +10978,13 @@ body > * {
 {
   margin-right: 56px;
 }
+.new-warning
+{
+  position: relative;
+    left: 8%;
+    width: 87%;
+    top: 6px;
+}
 .custom_search_border:focus{
     border-color:#7A97B3;
     box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset, 0px 0px 8px rgba(122, 151, 179, 0.5);
