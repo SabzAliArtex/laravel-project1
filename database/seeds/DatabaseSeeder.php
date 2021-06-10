@@ -17,6 +17,6 @@ class DatabaseSeeder extends Seeder
         $this->call(PaymentSeeder::class);
         $this->call(AllowedTestsSeeder::class);
         $this->call(SettingsSeeder::class);
-       $this->call(EmailLayoutSeeder::class);
+        $this->call(EmaiLayouts::class);
     }
 }

@@ -159,6 +159,25 @@ function error_code($code){
         return json_encode($response);
     }
 }
+function order_meta_loggs($payload , $type)
+{
+    $log = new Apiloggs(); 
+    $log->current_url = Route::getCurrentRoute()->uri;
+    $log->current_controller = Route::getCurrentRoute()->getActionName();
+    $log->current_payload = $payload;
+    $log->current_payload_type = $type;
+    $log->save();
+    if ($log)
+    {
+        $response['message'] = "Loggs are being maintained";
+        return json_encode($response);
+    }
+    else
+    {
+        $response['message'] = "Failed to maintain Loggs";
+        return json_encode($response);
+    }
+}
 
 function calculateExpiry($license_data){
     
@@ -279,16 +298,13 @@ function findUser($user)
 }
   function findLicense($data)
 {   
-   
   $user = User::where('email','=',$data['email'])->first();
   $checkUserFromWebApp = License::where('user_id','=',$user->id)->first();
    if(isset($checkUserFromWebApp->license)){
      
     Storage::put('licensecheck.txt', json_encode($checkUserFromWebApp));
     foreach($data['line_items'] as $row){
-      
-      
-      
+
       if($row['properties'][1]['value'] == 'Daily')
       {
          $checkUserFromWebApp->license_type_id = 1;
@@ -307,68 +323,36 @@ function findUser($user)
       {
              $checkUserFromWebApp->license_type_id = 4;
       }
-       $checkUserFromWebApp->save();
-      // foreach($row['properties'] as $license)
-      //           {
-      //               if($license['value'] == 'Daily')
-      // { 
-      //       
-      // }
-      // else if($license['variant_id'] == 'Weekly')
-      // {
-      
-      // }else if($license['variant_id'] == 'Monthly')
-      // {
-      
-      // }
-      // else
-      // {
-          
-      //     $checkUserFromWebApp->license_type_id = 4;
-      //  }
- 
-      
-      
-      
-      
-      //           }
-
-     
+       $checkUserFromWebApp->save();   
      }
     Notification::send($user,new LicensePurchased($user, $checkUserFromWebApp));
    }else{
-   
-    echo json_encode('inside else in license');
     foreach($data['line_items'] as $row){
-     $newLicense = new License();
-     $newLicense->user_id = $user->id;
-     echo json_encode($row['variant_id']);
-     foreach($row['properties'] as $license)
-                {
-                    if($license['value'] == 'Daily')
-     { 
-            $newLicense->license_type_id = 1;
-     }
-     else if($license['value'] == 'Weekly')
-     {
-      $newLicense->license_type_id = 2;
-     }else if($license['value'] == 'Monthly')
-     {
-      $newLicense->license_type_id = 3;
-     }
-     else
-     {
-         
-         $newLicense->license_type_id = 4;
+      $newLicense = new License();
+      $newLicense->user_id = $user->id;
+      echo json_encode($row['variant_id']);
+      foreach($row['properties'] as $license)
+      {
+        if($license['value'] == 'Daily')
+        { 
+          $newLicense->license_type_id = 1;
+        }
+        else if($license['value'] == 'Weekly')
+        {
+          $newLicense->license_type_id = 2;
+        }else if($license['value'] == 'Monthly')
+        {
+          $newLicense->license_type_id = 3;
+        }
+        else
+        {
+          $newLicense->license_type_id = 4;
+        }           
       }
-                   
-                }
-   
-
-     $newLicense->license = generate_license_key();
-     $newLicense->no_of_devices_allowed=1;
-     $newLicense->is_active = 0;
-     $newLicense->save();
+      $newLicense->license = generate_license_key();
+      $newLicense->no_of_devices_allowed=1;
+      $newLicense->is_active = 0;
+      $newLicense->save();
     }
     Storage::put('licensecheck.txt', json_encode($newLicense));
     Notification::send($user,new LicensePurchased($user, $newLicense));

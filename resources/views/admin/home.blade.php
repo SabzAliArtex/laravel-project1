@@ -53,7 +53,7 @@
                             <div class="col-lg-4 col-md-3 col-sm-6 col-xs-6">
                                 <div class="thumb">
                                     Total Users
-                                    <p> {{ App\User::count() }} </p>
+                                    <p> {{ App\User::where('is_deleted', 0)->count() }} </p>
                                 </div>
                             </div>
 

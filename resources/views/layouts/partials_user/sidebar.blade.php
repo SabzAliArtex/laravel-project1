@@ -1,6 +1,6 @@
 <div class="col-md-3">
             <div class="card">
-                <div class="card-header">{{ __('Side Bar') }}</div>
+                <div class="card-header">{{ config('app.name') }}</div>
                 <div class="card-body">
                     <li> 
                         <a href="{{ route('user.profile') }}"> {{ __('Profile') }} </a>

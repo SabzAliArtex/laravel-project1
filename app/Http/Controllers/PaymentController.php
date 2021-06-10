@@ -27,24 +27,16 @@ class PaymentController extends Controller
      */
     public function index()
     {
-        //
-
         $data['payments'] = Payment::with('sales_person', 'license')->orderByRaw('id DESC')->paginate(10);
         $data['users_sales'] = User::where('role', '=', 3)->where('is_deleted', '0')->where('id', '<>', Auth::user()->id)->Paginate('10');
-
         return view('admin.commission.commissionlist', $data);
-
     }
 
     public function paymentSearch(Request $request)
     {
-
-
         $query = $request['search'];
         $formatCheck = 0;
         if ($query == "") {
-            
-
             $payments = DB::table('payments AS p1')
             ->join('licenses', 'licenses.id', 'p1.license_id')
             ->Join('users as t1', 't1.id', 'p1.sales_person_id')
@@ -54,10 +46,7 @@ class PaymentController extends Controller
             return view('admin.commission.subviews.commissionlistsearchresults', [
                 'payments' => $payments,
             ]);
-
-
         } else {
-
             $payments = DB::table('payments AS p1')
                 ->join('licenses', 'licenses.id', 'p1.license_id')
                 ->Join('users as t1', 't1.id', 'p1.sales_person_id')
@@ -68,14 +57,11 @@ class PaymentController extends Controller
                 ->orWhere('p1.updated_at', 'LIKE', '%' . $query . '%')
                 ->get();
 
-                
             return view('admin.commission.subviews.commissionlistsearchresults', [
                 'payments' => $payments,
             ]);
         }
-
     }
-
 
     /**
      * Show the form for creating a new resource.
@@ -124,7 +110,6 @@ class PaymentController extends Controller
             $payments->is_approved = 1;
             $payments->save();
             return $payments;
-
         }
         if (strpos($status, $word2) !== false) {
             $payments->is_approved = 0;
@@ -134,7 +119,6 @@ class PaymentController extends Controller
     }
 
     public function editSearched(Request $request)
-
     {
         $id = $request->get('id');
         $status = $request->get('status');
@@ -146,7 +130,6 @@ class PaymentController extends Controller
             $payments->is_approved = 1;
             $payments->save();
             return $payments;
-
         }
         if (strpos($status, $word2) !== false) {
             $payments->is_approved = 0;
@@ -180,9 +163,7 @@ class PaymentController extends Controller
 
     public function pendingCommision()
     {
-
         $payments = Payment::with('sales_person', 'license')->where('is_approved', '=', 0)->orderByRaw('id DESC')->paginate(10);
-        
         return view('admin.commission.commissionlistpending', [
             'payments' => $payments
         ]);
@@ -190,9 +171,7 @@ class PaymentController extends Controller
 
     public function pendingCommisionSearchResults(Request $request)
     {
-        
         $query = $request['search'];
-        
         if ($query == "") {
             
             $payments = DB::connection()
@@ -204,7 +183,6 @@ class PaymentController extends Controller
             })->select('p.*', 'u.first_name', 'u.last_name')->get();
             
             return view('admin.commission.subviews.commissionlistpendingsearchresults', [
-                
                 'payments' => $payments,
             ]);
         } else {
@@ -224,171 +202,100 @@ class PaymentController extends Controller
             return view('admin.commission.subviews.commissionlistpendingsearchresults', [                
                 'payments' => $payments,
             ]);
-
         }
-
     }
     public function orderCreation(Request $request)
     {  
-        $data = $request->get('data');
-      
-            
-        $payload['data'] = $data;
-        $payload['type'] = 'order_meta';
-
-        loggs($payload);
+        $data = file_get_contents('php://input');
+        //logging order meta
+        order_meta_loggs($data , 'order_meta');
         $file_name = 'attempt1'.time().'.txt';
-        
-        Storage::put($file_name,json_encode( $data));
-        
+        Storage::put($file_name, $data); 
+        $data = json_decode($data , true);
         //Subcription starts
-        
-        
         foreach($data['line_items'] as $row)
         {
-           
-        
             if(isset($row['properties'])){
-
                 foreach($row['properties'] as $license)
                 {
                     if(isset($license['name']) && isset($license['value']) && $license['name']=='payment-interval')
                     {
-                      
                         $this->subscriptionAlert($data,$license['value'],$row['variant_id']);
-                        
-                        
                     }
                     
                 }
             }
         }
-        
         //Subcription ends
         //User renewing license
         $trigger = false;
-            $file_name = 'attempt1'.time().'.txt';
-            Storage::put($file_name,json_encode( $data));
+        $file_name = 'attempt1'.time().'.txt';
+        Storage::put($file_name,json_encode($data));
         
-        
-             foreach($data['line_items'] as $row)
-            {
-             if(isset($row['properties'])){
-                
-               
-                // foreach($row['properties'] as $license)
-                // {
-                    
-                    
-                //     if($license['value'] == NULL)
-                //     {
-                        
-
-                //             $trigger = true;
-                            
-                //     }
-                    
-                    if(isset($row['properties'][0]['name']) && $row['properties'][0]['value'])
-                    {
-                      
-                            
-                                $this->licenseRenew($data,$row['properties'][0]['value'],$row['properties'][1]['value']);
-
-                            
-                       
-                     
-                        
-                         
-                //     }
-                // }
-            }else
-            {   //check if user is coming direct from shopify store
-                $trigger = true;
-            
-            }
-         }
-         
-         
-         
-        if($trigger == true)
+        foreach($data['line_items'] as $row)
         {
-          
-        
-        
-        findUser($data);
-        
-        findLicense($data);
-        
-        
-        $purchaseHistory = new PurchaseHistory();
-        try {
-        foreach($data['line_items'] as $row){
-            
-            $purchaseHistory->email = $request->get('email');
-            
-            // $purchaseHistory->license = $row['title'];
             if(isset($row['properties'])){
                 
-                
-                
+                if(isset($row['properties'][0]['name']) && $row['properties'][0]['value'])
+                {
+                    $this->licenseRenew($data,$row['properties'][0]['value'],$row['properties'][1]['value']);
+                }else
+                {   //check if user is coming direct from shopify store
+                    $trigger = true;
+                }
+            }
+
+            if($trigger == true)
+            {        
+                findUser($data);
+                findLicense($data);
+                $purchaseHistory = new PurchaseHistory();
+                try {
+                    foreach($data['line_items'] as $row)
+                    {    
+                        $purchaseHistory->email = $request->get('email');
+                        if(isset($row['properties'])){
+                            $purchaseHistory->license = $row['properties'][0]['value']??'';          
+                        }
+                        // 
+                        if($row['properties'][1]['value'] == Config::get('constants.VARIANT_ID.MONTHLY'))
+                        {
+                            $purchaseHistory->license_type_id = 1;
+                        }else if($row['properties'][1]['value'] == Config::get('constants.VARIANT_ID.YEARLY'))
+                        {
+                            $purchaseHistory->license_type_id = 2;
+                        }else if($row['properties'][1]['value'] == Config::get('constants.VARIANT_ID.LIFETIME'))
+                        {
+                            $purchaseHistory->license_type_id = 3;
+                        }
+                        else
+                        {
+                            $purchaseHistory->license_type_id = 4;
+                        }
                     
-                        $purchaseHistory->license = $row['properties'][0]['value']??'';
-                    
-                    // if($license['name'] && $license['value'])
-                    // {
-                    //
-                    //     $this->licenseRenew($data,$license['value'],$row['variant_id']);
-                    //    
-                    //    
-                    // }
-                
+                        $purchaseHistory->purchase_date =  date("Y-m-d H:i:s");
+                        $purchaseHistory->activation_date = date("Y-m-d H:i:s");
+                        $purchaseHistory->status = 1; 
+                        $purchaseHistory->save();
+                    }
+                }
+                catch(\Exception $e){
+                    Storage::put('Error'.$file_name,json_encode($e));
+                }
             }
-            
-            if($row['properties'][1]['value'] == Config::get('constants.VARIANT_ID.MONTHLY'))
-            {
-                $purchaseHistory->license_type_id = 1;
-            }
-           else if($row['properties'][1]['value'] == Config::get('constants.VARIANT_ID.YEARLY'))
-            {
-                $purchaseHistory->license_type_id = 2;
-            }
-            else if($row['properties'][1]['value'] == Config::get('constants.VARIANT_ID.LIFETIME'))
-            {
-                $purchaseHistory->license_type_id = 3;
-
-             }
-        else
-        {
-            $purchaseHistory->license_type_id = 4;
-         }
-        
-            $purchaseHistory->purchase_date =  date("Y-m-d H:i:s");
-            $purchaseHistory->activation_date = date("Y-m-d H:i:s");
-            $purchaseHistory->status = 1; 
-            $purchaseHistory->save();
-           
         }
+        echo 'end';
+        exit();
     }
-        catch(\Exception $e){
-            Storage::put('customerror.txt',json_encode($e));
-        }
-
-        }
-
-    
+    public function subscriptionAlert($request,$key,$variant)
+    {
+        $usersubs = new UserSubscription();
+        $usersubs->email = $request['email'];
+        $usersubs->type = $key;
+        $usersubs->save();
+        //2 Annually subscription
+        //3 Lifetime subscription
     }
-    echo 'end';
-    exit();
-}
-  public function subscriptionAlert($request,$key,$variant)
-  {
-      $usersubs = new UserSubscription();
-      $usersubs->email = $request['email'];
-      $usersubs->type = $key;
-      $usersubs->save();
-      //2 Annually subscription
-      //3 Lifetime subscription
-  }
     public function licenseRenew($request,$key,$variant)
     {
 
@@ -400,7 +307,6 @@ class PaymentController extends Controller
         {
             $license->license_expiry = now()->addMonths(1);
             $license->license_type_id = 1;
-
         }
         else if($variant == Config::get('constants.VARIANT_ID.YEARLY'))
         {
@@ -408,17 +314,12 @@ class PaymentController extends Controller
             $license->license_type_id = 2;
         }else if($variant ==  Config::get('constants.VARIANT_ID.MONTHLY'))
         {
-
             $license->license_expiry =  now()->addYears(100);
             $license->license_type_id = 3;
         }
-       
-
-       
+        
         $license->save();
         Notification::send($user,new LicenseRenewal($user,$license));
         Notification::send($user,new LicensePurchased($user, $license));
-      
-
     }
 }

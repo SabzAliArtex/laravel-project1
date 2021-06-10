@@ -309,15 +309,14 @@
                 if(check == 1)
                 {
                    window.open
-                  (
-                    "https://waggonerdiagnostics.com/products/license-subscription?licenseCode="+this.purchase.license",
-                    '_blank'
-                  );
+                (
+                  "https://waggonerdiagnostics.com/products/license-subscription?licenseCode="+this.purchase.license,'_blank'
+                );
                 }else
                 {
                   window.open
                   (
-                    "https://waggonerdiagnostics.com/products/license-subscription?licenseCode="+this.purchase.license,,
+                    "https://waggonerdiagnostics.com/products/license-subscription?licenseCode="+this.purchase.license,
                     '_blank'
                   );
                 }
