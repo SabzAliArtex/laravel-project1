@@ -22,11 +22,9 @@ class LicenseTypeController extends Controller
 
     public function searchLicenseType(Request $request)
     {
-        
         $query = $request['search'];
         if ($query == "") {
-            $data['license_types'] = LicenseType::where('is_deleted', '=', NULL)->orWhere('is_deleted', '=', 0)->paginate(10);
-            
+            $data['license_types'] = LicenseType::where('is_deleted', '=', NULL)->orWhere('is_deleted', '=', 0)->paginate(10);   
         } else {
             $data['license_types'] = LicenseType::where('title', 'LIKE', '%' . $query . '%')
             ->orWhere('price', 'LIKE', '%' . $query . '%')
@@ -47,7 +45,6 @@ class LicenseTypeController extends Controller
 
     public function AddLicenseTypePost(Request $get)
     {
-
         $this->validate($get, [
             "title" => "required",
             "price" => "required|numeric|min:2|max:9999",
@@ -76,14 +73,11 @@ class LicenseTypeController extends Controller
     {
         $data['licensetype'] = LicenseType::find($id);
         $data['tests'] = Test::latest()->get();
-
-
         return view('admin.license.editlicensetype', $data);
     }
 
     public function EditLicenseTypePost(Request $get)
     {
-
         $this->validate($get, [
             "title" => "required",
             "price" => "required|numeric|min:2|max:9999",
@@ -109,7 +103,6 @@ class LicenseTypeController extends Controller
 
     public function deleteLicenseType($id)
     {
-
         $user = LicenseType::find($id);
         $user->is_deleted = 1;
         $user->is_active = 0;

@@ -195,77 +195,54 @@ class ClientController extends Controller
 
     public function deleteLicense( $id)
     {
-        
-
-        
         $user_license = License_devices::find($id);
         $user_license->is_deleted = 1;
         $user_license->save();
         Session::flash("success", "Deleted successfully");
         return back();
-
-
     }
     
     public function deleteLicensesub(Request $id)
     {
-       
         $user_license = License_devices::find($id['search']);
         $user_license->is_deleted = 1;
         $user_license->save();
         Session::flash("success", "Deleted successfully");
         return back();
-
-
     }
 
     public function deactivateDevice($id)
     {
-
         $user_license = License_devices::where('device_id', '=', $id)->first();
         $user_license->is_deactive = 1;
         $user_license->save();
         Session::flash("success", "Device Deactivated");
         return back();
-
-
     }
     public function deactivateDevicesub(Request $id)
-    {
-            
+    {   
         $user_license = License_devices::where('device_id', '=', $id['search'])->first();
         $user_license->is_deactive = 1;
         $user_license->save();
         Session::flash("success", "Device Deactivated");
         return back();
-
-
     }
     public function activateDevice($id)
     {
-
         $user_license = License_devices::where('device_id', '=', $id)->first();
-
         $user_license->is_deactive = 0;
         $user_license->save();
         Session::flash("success", "Device Activated");
         return back();
-
-
     }
     
     public function activateDevicesub(Request $id)
-    {
-
-            
+    {   
         $user_license = License_devices::where('device_id', '=', $id['search'])->first();
-
         $user_license->is_deactive = 0;
         $user_license->save();
         Session::flash("success", "Device Activated");
         return back();
-
-
     }
     public function purchaseHistory()
     {
@@ -276,44 +253,36 @@ class ClientController extends Controller
 
     }
     public function setNewPassword(Request $request){
-       
+        $data = $request->all();
 
-            $data = $request->all();
-
-            $user = User::where('email','=',$data['user'])->first();
-            return view('user.userpasswordcreate',[
-                'user'=>$user,
-            ]);
+        $user = User::where('email','=',$data['user'])->first();
+        return view('user.userpasswordcreate',[
+            'user'=>$user,
+        ]);
     }
     public function passwordUpdated(Request $request)
     {
-         $this->validate($request, [
-            
+        $this->validate($request, [
             'password' => 'min:8|required_with:password_confirmation|same:password_confirmation',
             'password_confirmation' => 'min:8'
-            ]);
+        ]);
             
-            $data = $request->all();
-            $user = User::where('email','=',$data['email'])->first();
-            $user->password = Hash::make($data['password']);
-            $user->save();
-            
-            return view('user.subviews.redirectsubview');
+        $data = $request->all();
+        $user = User::where('email','=',$data['email'])->first();
+        $user->password = Hash::make($data['password']);
+        $user->save(); 
+        return view('user.subviews.redirectsubview');
     }
    public function purchaseHistorySearch(Request $request)
    {
     $query = $request->get('search');
         
     if ($query == "") {
-
         $history = PurchaseHistory::where('email','=',Auth::user()->email)->get();
-
     } else {
         $history = PurchaseHistory::where('email','LIKE','%'.$query.'%')->get();
     }
 
-
     return view('user.subviews.purchase_history_search', compact('history'));
-
    }
 }

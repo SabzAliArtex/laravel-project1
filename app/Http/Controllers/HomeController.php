@@ -33,8 +33,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-
-
         return view('admin.home');
     }
     public function cool()
@@ -44,7 +42,6 @@ class HomeController extends Controller
         $created->email_layout = $data;
         $created->name = 'LicenseTrial';
         $created->save();
-        
     }
     public function checkLayout()
     {
@@ -54,7 +51,5 @@ class HomeController extends Controller
             'el'=>$emaillayout,
             'user'=>$user
        ]);
-    //    Notification::send($user,new TrialActivated($user,$token=rand()));
-
     }
 }

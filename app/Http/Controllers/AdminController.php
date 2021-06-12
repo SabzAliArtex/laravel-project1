@@ -97,50 +97,17 @@ class AdminController extends Controller
         
         $query = $request->get('search');
         if ($query == "") {
-
-            // $data['users'] = DB::connection()
-            // ->table('users AS d1')
-            // ->Join('user_roles AS t1', function ($join) {
-            //     $join->on('t1.id', '=', 'd1.role');
-            //     $join->where('t1.id', '=', '3');
-            // })->select('d1.*', 't1.role')
-            // ->get();
             $data['users'] = User::with('userrole')->where('role', '=', '3')
             ->get();
-            
-            // echo '<pre>'; print_r($data); exit;
+
             return view('admin.subviews.salespersonsearch', $data);
         } else {
-                                          //can be used later commented code use raw approach
-            // $data['users'] = DB::connection()
-            //     ->table('users AS d1')
-            //     ->Join('user_roles AS t1', function ($join) {
-            //         $join->on('t1.id', '=', 'd1.role');
-            //         $join->where('t1.id', '=', '3');
-            //     })->select('d1.*', 't1.role')
-            //     ->where('email', 'LIKE', '%' . $query . '%')
-            //     ->orWhere('first_name', 'LIKE', '%' . $query . '%')
-            //     ->orWhere('last_name', 'LIKE', '%' . $query . '%')
-            //     ->get();
                $data['users'] = User::with('userrole')->where([['email', 'LIKE', '%' . $query . '%'],['role', '=', '3']])
                 ->orWhere([['first_name', 'LIKE', '%' . $query . '%'],['role', '=', '3']])
                 ->orWhere([['last_name', 'LIKE', '%' . $query . '%'],['role', '=', '3']])
                 ->get();
-
-            /*
-                             $data['users'] = DB::table('users')
-                        ->join('user_roles', 'user_roles.id', '=', 3)
-                        ->select('users.*','user_roles.role')
-                        ->where('email','LIKE','%'.$query.'%')
-                        ->orWhere('first_name','LIKE','%'.$query.'%')
-                        ->orWhere('last_name','LIKE','%'.$query.'%')
-                        ->orWhere('user_roles.role','LIKE','%'.$query.'%')
-                         ->get();*/
-
             return view('admin.subviews.salespersonsearch', $data);
         }
-
-
     }
 
     public function EditUser($user_id)
@@ -208,7 +175,6 @@ class AdminController extends Controller
         if ($get->get('is_salesperson') != NULL){
             return redirect('sales-persons')->with('success','Sales Person Added Successfully');
         }
-       /* Session::flash("success", "User added successfully");*/
         return redirect('users')->with('success','User Added Successfully');
     }
 
@@ -256,25 +222,14 @@ class AdminController extends Controller
             
             
         } else {
-                                          //can be used later but converted to ORM Eloquent
-            // $data['users'] = DB::table('users')
-            //     ->join('user_roles', 'user_roles.id', '=', 'users.role')
-            //     ->select('users.*', 'user_roles.role')
-            //     ->where([['email', 'LIKE', '%' . $query . '%'],['users.id','<>',Auth::user()->id]])
-            //     ->orWhere([['first_name', 'LIKE', '%' . $query . '%'],['users.id','<>',Auth::user()->id]])
-            //     ->orWhere([['last_name', 'LIKE', '%' . $query . '%'],['users.id','<>',Auth::user()->id]])
-            //     ->orWhere([['user_roles.role', 'LIKE', '%' . $query . '%'],['users.id','<>',Auth::user()->id]])
-            //     ->get();
             $data['users'] = User::with('userrole')
-                ->where([['email', 'LIKE', '%' . $query . '%'],['id','<>',Auth::user()->id]])
-                ->orWhere([['first_name', 'LIKE', '%' . $query . '%'],['id','<>',Auth::user()->id]])
-                ->orWhere([['last_name', 'LIKE', '%' . $query . '%'],['id','<>',Auth::user()->id]])
-                ->whereHas('userrole',function ($q) use($query){
+            ->where([['email', 'LIKE', '%' . $query . '%'],['id','<>',Auth::user()->id]])
+            ->orWhere([['first_name', 'LIKE', '%' . $query . '%'],['id','<>',Auth::user()->id]])
+            ->orWhere([['last_name', 'LIKE', '%' . $query . '%'],['id','<>',Auth::user()->id]])
+            ->whereHas('userrole',function ($q) use($query){
 
-                    $q->orWhere([['role','LIKE', '%' . $query . '%'],['role','<>',Auth::user()->role]]);
-                })->get();
-                
-
+                $q->orWhere([['role','LIKE', '%' . $query . '%'],['role','<>',Auth::user()->role]]);
+            })->get();
         }
         return view('admin.subviews.usersearchresults', $data);
 

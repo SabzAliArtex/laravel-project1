@@ -25,10 +25,7 @@ class SettingController extends Controller
         /*config(['database.connections.mysql.host' => '127.0.0.1']);*/
         /*To get this data use config():*/
         $data['settings'] = Setting::first();
-
-
         return view('admin.settings.index', $data);
-
     }
 
     /**
@@ -73,7 +70,6 @@ class SettingController extends Controller
     {
         $data['settings'] = Setting::find($id);
         return view('admin.settings.edit', $data);
-        //
     }
 
     /**
@@ -92,8 +88,6 @@ class SettingController extends Controller
             $request->validate([
 
                 'app_name' => 'required',
-
-
             ]);
             $setting->app_name = $request->get('app_name');
             $settings_updated = $setting->save();
@@ -103,17 +97,12 @@ class SettingController extends Controller
                 $env = new DotenvEditor();
                 $env->changeEnv([
                     'APP_NAME' => $app_name,
-
-
                 ]);
 
                 return back()->with('success', 'Updated Successfully');
-
             }
         } else {
-            
             $request->validate([
-
                 'mail_mailer' => 'required',
                 'mail_host' => 'required',
                 'mail_port' => 'required',
@@ -121,7 +110,6 @@ class SettingController extends Controller
                 'mail_enc' => 'required',
                 'mail_fromAddress' => 'required',
                 'mailFromUsername' => 'required',
-
             ]);
             $setting->mail_mailer = $request->get('mail_mailer');
             $setting->mail_host = $request->get('mail_host');
@@ -134,8 +122,6 @@ class SettingController extends Controller
             $setting->updated_at = date("Y-m-d H:i:s");
             $settings_updated = $setting->save();
             if (isset($settings_updated)) {
-
-
                 $mail_mailer = removeSpace($request->get('mail_mailer'));
                 $mail_host = removeSpace($request->get('mail_host'));
                 $mail_port = removeSpace($request->get('mail_port'));
@@ -157,11 +143,8 @@ class SettingController extends Controller
                 ]);
 
                 return back()->with('success', 'Updated Successfully');
-
             }
         }
-
-
     }
 
     /**

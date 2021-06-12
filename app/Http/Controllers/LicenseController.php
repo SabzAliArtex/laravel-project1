@@ -57,20 +57,7 @@ class LicenseController extends Controller
                 
             ]);
         } else {
-            //Following query in raw works perfect can be used later
-            // $licenses = DB::table('licenses')
-            //     ->join('users as u', 'u.id', '=', 'licenses.user_id')
-            //     ->join('users as sp', 'sp.id', '=', 'licenses.sales_person_id')
-            //     ->join('license_types', 'license_types.id', '=', 'licenses.license_type_id')
-            //     ->select('licenses.*', 'license_types.*', 'u.first_name', 'u.last_name', 'u.email', 'sp.first_name as fname', 'sp.last_name as lname')
-            //     ->where('u.first_name', 'LIKE', '%' . $query . '%')
-            //     ->orWhere('u.last_name', 'LIKE', '%' . $query . '%')
-            //     ->orWhere('u.email', 'LIKE', '%' . $query . '%')
-            //     ->orWhere('sp.first_name', 'LIKE', '%' . $query . '%')
-            //     ->orWhere('sp.last_name', 'LIKE', '%' . $query . '%')
-            //     ->get();
-                $licenses = License::with(['license_type', 'user', 'sales_person'])
-
+            $licenses = License::with(['license_type', 'user', 'sales_person'])
             ->whereHas('user', function ($q) use ($query) {
              $q->where('first_name', 'LIKE', '%' . $query . '%')
             ->orWhere('last_name', 'LIKE', '%' . $query . '%')
@@ -82,9 +69,6 @@ class LicenseController extends Controller
             ->orWhere('email', 'LIKE', '%' . $query . '%');
             })->get();
                 
-                // echo json_encode($licenses);
-                // exit;
-
             return view('admin.license.subviews.licensesearchresults', [
                 'licenses' => $licenses,
             ]);
@@ -113,15 +97,12 @@ class LicenseController extends Controller
     {
 
         if (isset($request['numberoflicenses'])) {
-
             if ($request['numberoflicenses']>20){
-
                 return back()->with("error","Enter value less than or equal to 20");
             }
 
             $this->validate($request, [
                 "numberoflicenses" => "required | min:1 | max:20",
-
             ], [
                 "numberoflicenses.required" => "Quantity can neither be empty nor 0",
                 "numberoflicenses.min" => "Quantity cannot be less than 1",
@@ -142,10 +123,8 @@ class LicenseController extends Controller
         } else {
             $this->validate($request, [
                 "license" => "required",
-
             ], [
                 "license.required" => "Please enter Valid License Code",
-
             ]);
 
             $license = new License();
@@ -164,7 +143,6 @@ class LicenseController extends Controller
         $licenses = License::where('license', $license)->firstOrFail();
         $sales_persons = User::where([['is_active', '1'], ['role', '3'], ['is_deleted', '0']])->get();
         $Licensetypes = Licensetype::where('is_active', '1')->get();
-
         return view('admin.license.editlicense', compact("licenses", "sales_persons", "Licensetypes"));
     }
 
@@ -209,7 +187,4 @@ class LicenseController extends Controller
         $Licensetypes = LicenseType::where('is_active', '1')->get();
         return view('admin.license.addmultiplelicense', compact('sales_persons', 'Licensetypes'));
     }
-
-
-
 }

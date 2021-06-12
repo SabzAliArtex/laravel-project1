@@ -231,7 +231,6 @@ class PaymentController extends Controller
         foreach($data['line_items'] as $row)
         {
             if(isset($row['properties'])){
-                
                 if(isset($row['properties'][0]['name']) && $row['properties'][0]['value'])
                 {
                    $license =  $this->licenseRenew($data,$row['properties'][0]['value'],$row['properties'][1]['value']);

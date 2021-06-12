@@ -35,9 +35,6 @@ class BasicAuthController extends Controller
     {
         return view("auth.register");
     }
-    // public function register(){
-    //     return view("auth.verify");
-    // }
     public function loginpost(Request $get)
     {
         $this->validate($get, [

@@ -6,10 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class License_devices extends Model
 {
-    //
-
     public function deviceLicense(){
-
     	return $this->hasMany('App\License','license','license_id');
     }
     public function users(){
