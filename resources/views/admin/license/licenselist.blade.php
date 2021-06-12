@@ -29,7 +29,7 @@
                     </div>
                     @if(count($licenses) >0)
 
-                    <table id="tableListing" border="1" style="overflow: scroll;"  class="table table-striped table-responsive">
+                    <table id="tableListing" border="1"  class="table table-striped table-responsive">
                         <thead class="thead-dark">
                             <tr>
                                 <th> {{ __('Sr no') }} </th>

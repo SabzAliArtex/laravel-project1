@@ -54,6 +54,7 @@ class ClientController extends Controller
         ]);
         $user->first_name= $get->first_name;
         $user->last_name = $get->last_name;
+        $user->phone = $get->phone;
         $user->save();
         $path = 'files/upload/user/';
         if ($get->file('thumb')) {
@@ -82,18 +83,6 @@ class ClientController extends Controller
 
     public function alluseranddevs()
     {
-
-        // $licenses = License_devices::with('deviceLicense')->paginate(10);
-        // $licenses = DB::connection()
-        // ->table('license_devices as ld')
-        // ->join('licenses as li', 'li.license', 'ld.license_id')
-        // ->join('license_types', 'license_types.id', 'li.license_type_id')
-        // ->Join('users', function ($join) {
-        //     $join->on('users.id', '=', 'ld.user_id');
-        //     $join->where('ld.is_deleted', '=', '0');
-        // })->get();
-        //pausing 9.56 am wednesday 4/28/2021 
-        //$license = License_devices::with('deviceLicense','license_type','users')->get();
         $licenses = License_devices::with('users','deviceLicense')->get();
         foreach($licenses as $license)
         { 
@@ -104,13 +93,7 @@ class ClientController extends Controller
                 
             }
         }
-        
-        //pausing 9.56 am wednesday 4/28/2021 
-            
-
-
         return view('admin.useranddevslist', compact('licenses'));
-
     }
 
     public function alluseranddevssearch(Request $request)
@@ -144,61 +127,34 @@ class ClientController extends Controller
                 ->orWhere('li.license', 'LIKE', '%' . $query . '%')
                 ->orWhere('ld.device_id', 'LIKE', '%' . $query . '%')
                 ->get();
-            
-                
-
-
-
-
-
-
-
-
-            return view('admin.subviews.userdevsanddevicessearchresults', [
-                
-                'licenses' => $licenses,
-            ]);
+            return view('admin.subviews.userdevsanddevicessearchresults', ['licenses' => $licenses,]);
         }
     }
 
     public function LicensesActivated($licenseid)
 
     {
-        
-        $LicenseCode = License::find($licenseid);
-        
+        $LicenseCode = License::find($licenseid);   
         $licenses = License_devices::with('deviceLicense', 'users', 'license_type')
         ->where([['license_id', '=', $LicenseCode->license], ['user_id', '=', Auth::user()->id], ['is_deleted', '=', 0]])->orderByRaw('id DESC')->get();
         return $licenses;
-
-
     }
     public function LicensesActivatedSub(Request $licenseid)
 
     {
-        
         $LicenseCode = License::find($licenseid['search']);
-        
         $licenses = License_devices::with('deviceLicense', 'users', 'license_type')
         ->where([['license_id', '=', $LicenseCode->license], ['user_id', '=', Auth::user()->id], ['is_deleted', '=', 0]])->orderByRaw('id DESC')->get();
         return $licenses;
-
-
     }
 
     public function LicenseListLessDetails()
     {
-      
-
         $licenses = License::with('sales_person', 'user', 'license_type')->
         where([['user_id', Auth::user()->id], ['is_deleted', '=', 0]])
             ->orderByRaw('id DESC')
-            ->paginate(10);
-            
-            
+            ->paginate(10);  
         return view('user.activelicenselist', compact('licenses'));
-        
-
     }
     public function purchaseLicense(Request $request){
        
@@ -220,15 +176,12 @@ class ClientController extends Controller
     public function searchResults(Request $request)
     {
         $query = $request->get('search');
-        
         if ($query == "") {
 
             $licenses = License::with('sales_person', 'user', 'license_type')
             ->where([['user_id', Auth::user()->id], ['is_deleted', '=', 0]])
             ->orderByRaw('id DESC')
             ->paginate(10);
-            
-
         } else {
            
             $licenses = License::with('sales_person', 'user', 'license_type_search')
@@ -236,11 +189,7 @@ class ClientController extends Controller
             ->orderByRaw('id DESC')
             ->paginate(10);
         }
-
-
         return view('user.subviews.usersearchresulttable', compact('licenses'));
-
-
     }
 
 

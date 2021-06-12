@@ -1,12 +1,11 @@
 <?php
 return [
     'VARIANT_ID' => [
-        'MONTHLY' => 'Daily',
-        'YEARLY' => 'Weekly',
-        'LIFETIME' => 'Monthly',
-       
+        'MONTHLY' => 'Monthly',
+        'YEARLY' => 'Yearly',
+        'LIFETIME' => 'Lifetime',
     ],
-
+    'SHOPIFY_PRODUCT_LINK' => env('SHOPIFY_PRODUCT_LINK'),
 ];
 
 ?>

@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\LicenseHistory;
 use App\License_devices;
 use App\LicenseActivation;
+use App\PurchaseHistory;
 use Jenssegers\Agent\Agent;
 use Illuminate\Http\Request;
 use App\Traits\LicenseBooking;
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 use App\Notifications\LicensePurchased;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Notification;
+
 
 /**
  * Premium Checker
@@ -296,65 +298,85 @@ function findUser($user)
   }
 
 }
+
   function findLicense($data)
-{   
-  $user = User::where('email','=',$data['email'])->first();
-  $checkUserFromWebApp = License::where('user_id','=',$user->id)->first();
-   if(isset($checkUserFromWebApp->license)){
+  {   
+    $user = User::where('email','=',$data['email'])->first();
+    $license = License::where('user_id','=',$user->id)->first();
+    Storage::put('licensecheck.txt', json_encode($license));
      
-    Storage::put('licensecheck.txt', json_encode($checkUserFromWebApp));
+    if(!isset($license->license)){
+      $license = new License();
+      $is_new_license = 1;
+    }
+     
     foreach($data['line_items'] as $row){
 
-      if($row['properties'][1]['value'] == 'Daily')
+      if($row['properties'][1]['value'] == 'Monthly')
       {
-         $checkUserFromWebApp->license_type_id = 1;
+        $license->license_expiry = date('Y:m:d H:i:s', strtotime('+1 month'));
+        $license->license_type_id = 1;
       }
-      else if($row['properties'][1]['value'] == 'Weekly')
+      else if($row['properties'][1]['value'] == 'Yearly')
       {
-          $checkUserFromWebApp->license_type_id = 2;
-
+        $license->license_expiry = date('Y:m:d H:i:s', strtotime('+1 year'));
+        $license->license_type_id = 2;
       }
-      else if($row['properties'][1]['value'] == 'Monthly')
+      else if($row['properties'][1]['value'] == 'Lifetime')
       {
-          $checkUserFromWebApp->license_type_id = 3;
-
+        $license->license_expiry = date('Y:m:d H:i:s', strtotime('+100 year'));
+        $license->license_type_id = 3;
       }
       else
       {
-             $checkUserFromWebApp->license_type_id = 4;
+        $license->license_type_id = 4;
       }
-       $checkUserFromWebApp->save();   
-     }
-    Notification::send($user,new LicensePurchased($user, $checkUserFromWebApp));
-   }else{
-    foreach($data['line_items'] as $row){
-      $newLicense = new License();
-      $newLicense->user_id = $user->id;
-      echo json_encode($row['variant_id']);
-      foreach($row['properties'] as $license)
-      {
-        if($license['value'] == 'Daily')
-        { 
-          $newLicense->license_type_id = 1;
-        }
-        else if($license['value'] == 'Weekly')
-        {
-          $newLicense->license_type_id = 2;
-        }else if($license['value'] == 'Monthly')
-        {
-          $newLicense->license_type_id = 3;
-        }
-        else
-        {
-          $newLicense->license_type_id = 4;
-        }           
+
+      if(isset($is_new_license)){
+        $license->user_id = $user->id;
+        $license->license = generate_license_key();
+        $license->no_of_devices_allowed=1;
+        $license->is_active = 0;
+        $license->save(); 
+        Storage::put('licensecheck.txt', json_encode($license));
+      }else{
+        $license->save(); 
       }
-      $newLicense->license = generate_license_key();
-      $newLicense->no_of_devices_allowed=1;
-      $newLicense->is_active = 0;
-      $newLicense->save();
+      Notification::send($user,new LicensePurchased($user, $license));
+      return $license;
     }
-    Storage::put('licensecheck.txt', json_encode($newLicense));
-    Notification::send($user,new LicensePurchased($user, $newLicense));
   }
-}
+
+  function maintainPurchaseHistory($data , $license){
+    $purchaseHistory = new PurchaseHistory();
+    if(isset($data)){
+      foreach($data['line_items'] as $row)
+      {    
+          $purchaseHistory->email = $data['email'];
+          if(isset($row['properties'])){
+              $purchaseHistory->license = $row['properties'][0]['value']??'';          
+          }
+          // 
+          if($row['properties'][1]['value'] == Config::get('constants.VARIANT_ID.MONTHLY'))
+          {
+              $purchaseHistory->license_type_id = 1;
+          }else if($row['properties'][1]['value'] == Config::get('constants.VARIANT_ID.YEARLY'))
+          {
+              $purchaseHistory->license_type_id = 2;
+          }else if($row['properties'][1]['value'] == Config::get('constants.VARIANT_ID.LIFETIME'))
+          {
+              $purchaseHistory->license_type_id = 3;
+          }
+          else
+          {
+              $purchaseHistory->license_type_id = 4;
+          }
+      
+          $purchaseHistory->license =  $license->license;
+          $purchaseHistory->purchase_date =  date("Y-m-d H:i:s");
+          $purchaseHistory->activation_date = date("Y-m-d H:i:s");
+          $purchaseHistory->status = 1; 
+          $purchaseHistory->save();
+      }
+    }
+  }
