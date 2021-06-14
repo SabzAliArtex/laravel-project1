@@ -47,7 +47,7 @@ class PaymentFailed extends Notification
         $user = $this->user;
         $url = URL::temporarySignedRoute('login', now()->addMinutes(5), ['user' => $this->user->email]);
         $emaillayout = EmailLayout::where('name','=','payment_failed')->first();
-        return (new MailMessage)->view("emails.trialActivated", compact("user" ,'token', "url", "license","emaillayout"))->subject('License Renewal');
+        return (new MailMessage)->view("emails.trialactivated", compact("user" ,'token', "url", "license","emaillayout"))->subject('License Renewal');
        
     }
 

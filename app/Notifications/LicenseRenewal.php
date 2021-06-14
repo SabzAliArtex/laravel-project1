@@ -51,7 +51,7 @@ class LicenseRenewal extends Notification
         
         $url = URL::temporarySignedRoute('login', now()->addMinutes(5), ['user' => $this->user->email]);
         $emaillayout = EmailLayout::where('name','=','license_renewal')->first();
-        return (new MailMessage)->view("emails.trialActivated", compact("user" ,'token', "url", "license","emaillayout"))->subject('License Renewal');
+        return (new MailMessage)->view("emails.trialactivated", compact("user" ,'token', "url", "license","emaillayout"))->subject('License Renewal');
         // return (new MailMessage)->view("emails.licenserenewal",['user'=>$this->user,'license'=>$this->license,'url'=>$url])->subject('License Renewal');
         
             

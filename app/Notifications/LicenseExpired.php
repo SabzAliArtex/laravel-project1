@@ -52,7 +52,7 @@ class LicenseExpired extends Notification
         $url = URL::temporarySignedRoute('user.activelicense', now()->addDays(0), ['user' => $this->user]);
         
         $emaillayout = EmailLayout::where('name','=','license_expired')->first();
-        return (new MailMessage)->view("emails.trialActivated", compact("user" ,'token', "url", "license","emaillayout"))->subject('Trial Expired');
+        return (new MailMessage)->view("emails.trialactivated", compact("user" ,'token', "url", "license","emaillayout"))->subject('Trial Expired');
         // return (new MailMessage)->view("emails.licenseexpired", compact("user" ,'token', "url"))->subject('Trial Expired');
         
             

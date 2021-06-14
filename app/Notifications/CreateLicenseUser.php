@@ -52,7 +52,7 @@ class CreateLicenseUser extends Notification
         $url = URL::temporarySignedRoute('user.activelicense', now()->addDays(0), ['user' => $this->user]);
         
         $emaillayout = EmailLayout::where('name','=','create_new_user')->first();
-        return (new MailMessage)->view("emails.trialActivated", [
+        return (new MailMessage)->view("emails.trialactivated", [
             "user"=>$user ,
              "url"=>$url,
               "license"=>$license_key,
