@@ -55,7 +55,7 @@ class UserCreatedFromApp extends Notification
         $url = URL::temporarySignedRoute('user.home', now()->addMinutes(10), ['user' => $this->user]);
         
         $emaillayout = EmailLayout::where('name','=','user_created_from_app')->first();
-        return (new MailMessage)->view("emails.trialActivated", compact("user" ,'token', "url", "license","emaillayout"))->subject('Welcome');
+        return (new MailMessage)->view("emails.trialactivated", compact("user" ,'token', "url", "license","emaillayout"))->subject('Welcome');
         // return (new MailMessage)->view("emails.newuser", compact("user" ,'token', "url", "license"))->subject('Welcome');
 
     }
