@@ -53,7 +53,7 @@ class EmailLayouts extends Seeder
                 </html>',
             'name'=>'license_trial',
             'created_at' => date("Y-m-d H:i:s"),
-            'updated_at' => date("Y-m-d H:i:s")
+            'updated_at' => date("Y-m-d H:i:s"),
         ]);
         DB::table('email_layouts')->insert([
             'email_layout' => '<!DOCTYPE html>
@@ -97,7 +97,7 @@ class EmailLayouts extends Seeder
               </html>',
             'name'=>'create_new_user',
             'created_at' => date("Y-m-d H:i:s"),
-            'updated_at' => date("Y-m-d H:i:s")
+            'updated_at' => date("Y-m-d H:i:s"),
         ]);
         DB::table('email_layouts')->insert([
             'email_layout' => '<!DOCTYPE html>
@@ -141,7 +141,7 @@ class EmailLayouts extends Seeder
               </html>',
             'name'=>'create_new_user',
             'created_at' => date("Y-m-d H:i:s"),
-            'updated_at' => date("Y-m-d H:i:s")
+            'updated_at' => date("Y-m-d H:i:s"),
         ]);
         DB::table('email_layouts')->insert([
             'email_layout' => '<!DOCTYPE html>
@@ -184,7 +184,7 @@ class EmailLayouts extends Seeder
             </html>',
             'name'=>'license_expired',
             'created_at' => date("Y-m-d H:i:s"),
-            'updated_at' => date("Y-m-d H:i:s")
+            'updated_at' => date("Y-m-d H:i:s"),
         ]);
         DB::table('email_layouts')->insert([
             'email_layout' => '<!DOCTYPE html>
@@ -228,7 +228,7 @@ class EmailLayouts extends Seeder
             </html>',
             'name'=>'license_purchased',
             'created_at' => date("Y-m-d H:i:s"),
-            'updated_at' => date("Y-m-d H:i:s")
+            'updated_at' => date("Y-m-d H:i:s"),
         ]);
         DB::table('email_layouts')->insert([
             'email_layout' => '<!DOCTYPE html>
@@ -272,7 +272,7 @@ class EmailLayouts extends Seeder
             </html>',
             'name'=>'license_renewal',
             'created_at' => date("Y-m-d H:i:s"),
-            'updated_at' => date("Y-m-d H:i:s")
+            'updated_at' => date("Y-m-d H:i:s"),
         ]);
         DB::table('email_layouts')->insert([
             'email_layout' => '<!DOCTYPE html>
@@ -316,7 +316,7 @@ class EmailLayouts extends Seeder
             </html>',
             'name'=>'license_renewal',
             'created_at' => date("Y-m-d H:i:s"),
-            'updated_at' => date("Y-m-d H:i:s")
+            'updated_at' => date("Y-m-d H:i:s"),
         ]);
         DB::table('email_layouts')->insert([
             'email_layout' => '<!DOCTYPE html>
@@ -360,7 +360,7 @@ class EmailLayouts extends Seeder
             </html>',
             'name'=>'new_user_added',
             'created_at' => date("Y-m-d H:i:s"),
-            'updated_at' => date("Y-m-d H:i:s")
+            'updated_at' => date("Y-m-d H:i:s"),
         ]);
         DB::table('email_layouts')->insert([
             'email_layout' => '<!DOCTYPE html>
@@ -404,7 +404,7 @@ class EmailLayouts extends Seeder
             </html>',
             'name'=>'trial_activated',
             'created_at' => date("Y-m-d H:i:s"),
-            'updated_at' => date("Y-m-d H:i:s")
+            'updated_at' => date("Y-m-d H:i:s"),
         ]);
         DB::table('email_layouts')->insert([
             'email_layout' => '<!DOCTYPE html>
@@ -447,7 +447,7 @@ class EmailLayouts extends Seeder
             </html>',
             'name'=>'user_created_from_app',
             'created_at' => date("Y-m-d H:i:s"),
-            'updated_at' => date("Y-m-d H:i:s")
+            'updated_at' => date("Y-m-d H:i:s"),
         ]);
         DB::table('email_layouts')->insert([
             'email_layout' => '<!DOCTYPE html>
@@ -484,14 +484,13 @@ class EmailLayouts extends Seeder
                License:  [LICENSE] <br />
                 </p>
                  <p>
-                    
                     <a href="[URL]"> Verify </a>
                 </p>
             </body>
             </html>',
             'name'=>'subscription_alert',
             'created_at' => date("Y-m-d H:i:s"),
-            'updated_at' => date("Y-m-d H:i:s")
+            'updated_at' => date("Y-m-d H:i:s"),
         ]);
     }
 }
