@@ -85,12 +85,12 @@
 
 
                                 <div class="col-md-6">
-                                    @foreach($tests as $row)
+                                    @foreach($tests as $key => $row)
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" name="allowed_test[]"
-                                                   id="allowed_test" value="{{$row->name}}">
+                                                   id="allowed_test_{{ $key }}" value="{{$row->name}}">
 
-                                            <label class="form-check-label" for="allowed_test">
+                                            <label class="form-check-label" for="allowed_test_{{ $key }}">
                                                 {{$row->name}}
 
                                             </label>
