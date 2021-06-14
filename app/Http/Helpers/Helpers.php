@@ -380,3 +380,17 @@ function findUser($user)
       }
     }
   }
+
+  function get_license_type_text($license){
+
+    if($license->license_type && $license->license_type->type == '1' )
+      $type = 'Monthly' .' ('. $license->license_type->price . ') ';
+    elseif ($license->license_type &&  $license->license_type->type == '2' )
+      $type =  'Yearly' .' ('. $license->license_type->price . ') ';
+    elseif ($license->license_type &&  $license->license_type->type == '3' )
+      $type =  'Lifetime' .' ('. $license->license_type->price . ') ';
+    else
+      $type = 'Trial';
+
+    return $type;
+  }

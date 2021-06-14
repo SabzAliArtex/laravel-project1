@@ -47,17 +47,9 @@
                         <td> {{ $key + 1 }} </td>
                         <td> {{ $license->license}} </td>          
                         <td>
-                          @if($license->license_type && $license->license_type->type == '1' )
-                              Monthly {{ '('. $license->license_type->price . ')' }}
-                          @elseif ($license->license_type &&  $license->license_type->type == '2' )
-                              Yearly {{ '('. $license->license_type->price . ')' }}
-                          @elseif ($license->license_type &&  $license->license_type->type == '3' )
-                              Life time {{ '('. $license->license_type->price . ')' }}
-                          @else
-                              Trial
-                          @endif
+                            {{ get_license_type_text($license) }}
                         </td>
-                        <td> {{ $license->user ? $license->user->first_name : '' }} </td>
+                        <td> {{ $license->user ? $license->user->first_name.' '.$license->user->last_name : '' }} </td>
                         <td> {{ $license->user ? $license->user->email : '' }} </td>
                         <td>
                             @if($license->license_type_id == '4')
