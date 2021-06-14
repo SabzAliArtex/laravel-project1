@@ -6,6 +6,7 @@ return [
         'LIFETIME' => 'Lifetime',
     ],
     'SHOPIFY_PRODUCT_LINK' => env('SHOPIFY_PRODUCT_LINK'),
+    'PRODUCT_ID' => env('PRODUCT_ID'),
 ];
 
 ?>

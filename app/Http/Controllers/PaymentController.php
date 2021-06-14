@@ -208,47 +208,50 @@ class PaymentController extends Controller
     {  
         $data = file_get_contents('php://input');
         //logging order meta
-        order_meta_loggs($data , 'order_meta');
-        $file_name = 'attempt1'.time().'.txt';
-        Storage::put($file_name, $data); 
-        $data = json_decode($data , true);
-        //Subcription starts
-        foreach($data['line_items'] as $row)
-        {
-            if(isset($row['properties'])){
-                if(isset($row['properties'][0]['name']) && isset($row['properties'][0]['value']) && $row['properties'][1]=='payment-interval')
-                {
-                    $this->subscriptionAlert($data,$row['properties'][0]['value'],true);
-                }
-            }
-        }
-        //Subcription ends
-        //User renewing license
-        $trigger = false;
-        $file_name = 'attempt1'.time().'.txt';
-        Storage::put($file_name,json_encode($data));
+        if(isset($data['line_items']) && $data['line_items'][0]['product_id'] == Config::get('constants.PRODUCT_ID')) {
+            order_meta_loggs($data , 'order_meta');
+            $file_name = 'attempt1'.time().'.txt';
+            Storage::put($file_name, $data); 
+            $data = json_decode($data , true);
         
-        foreach($data['line_items'] as $row)
-        {
-            if(isset($row['properties'])){
-                if(isset($row['properties'][0]['name']) && $row['properties'][0]['value'])
-                {
-                   $license =  $this->licenseRenew($data,$row['properties'][0]['value'],$row['properties'][1]['value']);
-                }else
-                {   //check if user is coming direct from shopify store
-                    $trigger = true;
+            //Subcription starts
+            foreach($data['line_items'] as $row)
+            {
+                if(isset($row['properties'])){
+                    if(isset($row['properties'][0]['name']) && isset($row['properties'][0]['value']) && $row['properties'][1]=='payment-interval')
+                    {
+                        $this->subscriptionAlert($data,$row['properties'][0]['value'],true);
+                    }
                 }
             }
+            //Subcription ends
+            //User renewing license
+            $trigger = false;
+            $file_name = 'attempt1'.time().'.txt';
+            Storage::put($file_name,json_encode($data));
+            
+            foreach($data['line_items'] as $row)
+            {
+                if(isset($row['properties'])){
+                    if(isset($row['properties'][0]['name']) && $row['properties'][0]['value'])
+                    {
+                       $license =  $this->licenseRenew($data,$row['properties'][0]['value'],$row['properties'][1]['value']);
+                    }else
+                    {   //check if user is coming direct from shopify store
+                        $trigger = true;
+                    }
+                }
 
-            if($trigger == true)
-            {        
-                $user = findUser($data);
-                $license = findLicense($data);
-                $PurchaseHistory = maintainPurchaseHistory($data , $license);
+                if($trigger == true)
+                {        
+                    $user = findUser($data);
+                    $license = findLicense($data);
+                    $PurchaseHistory = maintainPurchaseHistory($data , $license);
+                }
             }
+            echo 'end';
+            exit();
         }
-        echo 'end';
-        exit();
     }
     public function subscriptionAlert($request,$key,$variant)
     {
