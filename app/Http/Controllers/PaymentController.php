@@ -252,6 +252,7 @@ class PaymentController extends Controller
             echo 'end';
             exit();
         }
+        order_meta_loggs($data , 'invalid_product');
     }
     public function subscriptionAlert($request,$key,$variant)
     {
