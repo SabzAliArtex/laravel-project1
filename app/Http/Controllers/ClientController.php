@@ -246,7 +246,7 @@ class ClientController extends Controller
     }
     public function purchaseHistory()
     {
-        $response = PurchaseHistory::where('email','=',Auth::user()->email)->get();
+        $response = PurchaseHistory::where('email','=',Auth::user()->email)->with('license_type')->get();
         return view('user.purchasehistory',[
             'history'=>$response,
         ]);
