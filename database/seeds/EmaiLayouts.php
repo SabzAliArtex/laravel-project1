@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class EmaiLayouts extends Seeder
+class EmailLayouts extends Seeder
 {
     /**
      * Run the database seeds.
