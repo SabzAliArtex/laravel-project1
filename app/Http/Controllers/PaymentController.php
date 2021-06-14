@@ -207,12 +207,12 @@ class PaymentController extends Controller
     public function orderCreation(Request $request)
     {  
         $data = file_get_contents('php://input');
+        $data = json_decode($data , true);
         //logging order meta
         if(isset($data['line_items']) && $data['line_items'][0]['product_id'] == Config::get('constants.PRODUCT_ID')) {
-            order_meta_loggs($data , 'order_meta');
+            order_meta_loggs(json_encode($data), 'order_meta');
             $file_name = 'attempt1'.time().'.txt';
-            Storage::put($file_name, $data); 
-            $data = json_decode($data , true);
+            Storage::put($file_name, json_encode($data)); 
         
             //Subcription starts
             foreach($data['line_items'] as $row)
@@ -252,7 +252,7 @@ class PaymentController extends Controller
             echo 'end';
             exit();
         }
-        order_meta_loggs($data , 'invalid_product');
+        order_meta_loggs(json_encode($data) , 'invalid_product');
     }
     public function subscriptionAlert($request,$key,$variant)
     {

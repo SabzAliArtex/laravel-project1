@@ -51,7 +51,7 @@ class LicensePurchased extends Notification
         $url = URL::temporarySignedRoute('user.createpassword', now()->addMinutes(30), ['user' => $this->user->email]);
         
         $emaillayout = EmailLayout::where('name','=','license_purchased')->first();
-        return (new MailMessage)->view("emails.trialActivated", compact("user" ,'token', "url", "license","emaillayout"))->subject('License Purchased');
+        return (new MailMessage)->view("emails.trialactivated", compact("user" ,'token', "url", "license","emaillayout"))->subject('License Purchased');
 
     }
 
