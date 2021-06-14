@@ -45,7 +45,6 @@ class LicensePurchased extends Notification
      */
     public function toMail($notifiable)
     {
-        
         $user = $this->user;
         $license = $this->license;
         $token = rand();
@@ -53,11 +52,6 @@ class LicensePurchased extends Notification
         
         $emaillayout = EmailLayout::where('name','=','license_purchased')->first();
         return (new MailMessage)->view("emails.trialActivated", compact("user" ,'token', "url", "license","emaillayout"))->subject('License Purchased');
-        // return (new MailMessage)->view("emails.licensepurchased",['user'=>$this->user,'license'=>$this->license,'url'=>$url])->subject('License Purchased');
-        
-            
-        
-
     }
 
     /**
