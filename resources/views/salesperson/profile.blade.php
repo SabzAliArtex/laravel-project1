@@ -14,9 +14,10 @@
                     {{ session('error') }}
                 </div>
             @endif
-        </div></div>
-        <div class="row">
-            @include('layouts.partials_salesman.sidebar')
+        </div>
+    </div>
+    <div class="row">
+        @include('layouts.partials_salesman.sidebar')
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">{{ __('Edit Profile') }}</div>
@@ -111,7 +112,6 @@
         <div class="col-md-3">
             <div class="card">
                 <div class="card-header">{{ __('Picture') }}</div>
-
                 <div class="card-body">
                     <div class="col-md-12">
                         <div class="form-group text-center">

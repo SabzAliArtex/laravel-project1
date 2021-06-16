@@ -60,13 +60,13 @@
                             </div>
                             <div class="form-group row">
                                 <label for="Role"
-                                       class="col-md-4 col-form-label text-md-right">{{ __('Select license Type') }}</label>
+                                       class="col-md-4 col-form-label text-md-right">{{ __('Select license Duration') }}</label>
 
                                 <div class="col-md-6">
                                     <select class="form-control @error('type') is-invalid @enderror role" name="type"
                                             required>
 
-                                        <option value=""> {{ __('Select License Type') }} </option>
+                                        <option value=""> {{ __('Select License Duration') }} </option>
                                         <option value="1"> Monthly</option>
                                         <option value="2"> Yearly</option>
                                         <option value="3"> Lifetime</option>

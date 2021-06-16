@@ -39,8 +39,8 @@
                                 <th> {{ __('User Email') }} </th>
                                 <th> {{ __('Sales Person Name') }} </th>
                                 <th> {{ __('Trial Activated At') }} </th>
-                                <th> {{ __('Expiry Date') }} </th>
                                 <th> {{ __('Activated At') }} </th>
+                                <th> {{ __('Expiry Date') }} </th>
                                 <th colspan="2"> {{ __('Actions') }} </th>
                             </tr>
                         </thead>
@@ -50,29 +50,20 @@
                                         <td> {{ $key+1 }} </td>
                                         <td> {{ $license->license }} </td>
                                         <td>
-                                            @if($license->license_type && $license->license_type->type == '1' )
-                                                Monthly {{ '('. $license->license_type->price . ')' }}
-                                            @elseif ($license->license_type &&  $license->license_type->type == '2' )
-                                                Yearly {{ '('. $license->license_type->price . ')' }}
-                                            @elseif ($license->license_type &&  $license->license_type->type == '3' )
-                                                Life time {{ '('. $license->license_type->price . ')' }}
-                                                 @elseif ($license->license_type &&  $license->license_type->type == '4' )
-                                                Trial {{ '('. $license->license_type->price . ')' }}
-                                            @endif
+                                            {{ get_license_type_text($license) }}
                                         </td>
-                                        <td> {{ $license->user ? $license->user->first_name : 'N/A' }} </td>
-                                        <td> {{ $license->user ? $license->user->email : 'N/A' }} </td>
-                                        <td> {{ $license->sales_person ? $license->sales_person->first_name.' '.$license->sales_person->last_name : 'N/A' }} </td>
+                                        <td> {{ $license->user ? $license->user->first_name.' '.$license->user->last_name : '-' }} </td>
+                                        <td> {{ $license->user ? $license->user->email : '-' }} </td>
+                                        <td> 
+                                            {{ $license->sales_person ? $license->sales_person->first_name.' '.$license->sales_person->last_name : '-' }} 
+                                        </td>
                                         <td> {{ $license->trial_activated_at }} </td>
+                                        <td> {{ $license->license_activated_at }} </td>
                                         <td> {{ $license->license_expiry }} </td>
 
-                                        <td> {{ $license->license_activated_at }} </td>
-
                                         <td colspan="2">
-                                            <a href="{{ route('editlicense',['license'=>$license->license]) }}"> {{ __('Edit') }}  </a>
-
-                                            |
-                                            <a href="{{ route('deletelicense',['id'=>$license->id]) }}" onclick="return confirm('Are you sure.')"> {{ __('Delete') }}  </a>
+                                            <a class="btn btn-sm btn-primary" href="{{ route('editlicense',['license'=>$license->license]) }}"> {{ __('Edit') }}  </a>
+                                            <a class="btn btn-sm btn-danger" href="{{ route('deletelicense',['id'=>$license->id]) }}" onclick="return confirm('Are you sure.')"> {{ __('Delete') }}  </a>
                                         </td>
                                     </tr>
 
