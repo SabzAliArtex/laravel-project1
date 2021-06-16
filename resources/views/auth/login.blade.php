@@ -1,4 +1,5 @@
 @extends('layouts.app')
+{{-- @include('layouts.partials_general.authcheck') --}}
 
 @section('content')
 <div class="container">

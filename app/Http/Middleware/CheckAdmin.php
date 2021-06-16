@@ -23,6 +23,10 @@ class CheckAdmin
             $user_role = 'user';
             return redirect($user_role.'/home');
         }
+        if(\Auth::user() && \Auth::user()->role ==2){
+            $user_role = 'salesperson';
+            return redirect($user_role.'/home');
+        }
         
         return redirect('/');
     }

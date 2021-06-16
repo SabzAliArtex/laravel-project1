@@ -14,7 +14,7 @@ class AddIsDeletedUsers extends Migration
     public function up()
     {
        Schema::table('users', function (Blueprint $table) {
-            $table->tinyInteger('is_deleted')->after('is_active')->nullable();
+            $table->tinyInteger('is_deleted')->after('is_active')->default('0');
         });
     }
 

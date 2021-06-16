@@ -15,12 +15,15 @@ class CheckUser
      */
     public function handle($request, Closure $next)
     {
-        if (\Auth::user() &&  \Auth::user()->role != 1) {
+        if (\Auth::user() &&  \Auth::user()->role == 2) {
             return $next($request);
         }
         
-        if(\Auth::user()->role && $check_user==1){
+        if(\Auth::user()->role && \Auth::user()->role==1){
             return redirect('/home');
+        }
+        if(\Auth::user()->role && \Auth::user()->role==3){
+            return redirect('salesperson/home');
         }
         return redirect('/');
     }
