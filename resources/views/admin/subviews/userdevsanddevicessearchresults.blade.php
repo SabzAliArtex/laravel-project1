@@ -30,8 +30,8 @@
                 {{--          </td>
 
 
-                              <td><a href="{{ route('user.deleteuserlicense',['id'=>$license->id]) }}" onclick="return confirm('Are you sure.')"> {{ __('Delete') }}  </a></td>
-                              <td><a @click="openDetailModal({{$license->id}})" href="#"> {{ __('Details') }}  </a></td>--}}
+                              <td><a class="btn btn-sm btn-primary" href="{{ route('user.deleteuserlicense',['id'=>$license->id]) }}" onclick="return confirm('Are you sure.')"> {{ __('Delete') }}  </a></td>
+                              <td><a class="btn btn-sm btn-danger" @click="openDetailModal({{$license->id}})" href="#"> {{ __('Details') }}  </a></td>--}}
 
             </tr>
             @empty 

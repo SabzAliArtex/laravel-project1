@@ -38,7 +38,7 @@
                                     <th> {{ __('Sr no') }} </th>
                                     <th> {{ __('Title') }} </th>
                                     <th> {{ __('Price') }} </th>
-                                    <th id="thn"> {{ __('Type') }} </th>
+                                    <th> {{ __('Duration') }} </th>
                                     <th> {{ __('Allowed Tests') }} </th>
                                     <th> {{ __('Status') }} </th>
                                     <th> {{ __('Actions') }} </th>
@@ -51,13 +51,7 @@
                                         <td> {{ $license_type->title }} </td>
                                         <td> {{ $license_type->price }} </td>
                                         <td>
-                                            @if( $license_type->type == '1' )
-                                                Monthly
-                                            @elseif ( $license_type->type == '2' )
-                                                Yearly
-                                            @elseif ( $license_type->type == '3' )
-                                                Life time
-                                            @endif
+                                            {{ get_license_duration($license_type) }}
                                         </td>
                                         <td>
                                             @php
@@ -69,9 +63,9 @@
                                         </td>
                                         <td> {{ $license_type->is_active == 1 ? 'Active' : 'Inactive' }} </td>
                                         <td>
-                                            <a href="{{ route('editlicensetype',['id'=>$license_type->id]) }}"> {{ __('Edit') }}  </a>
+                                            <a class="btn btn-sm btn-primary" href="{{ route('editlicensetype',['id'=>$license_type->id]) }}"> {{ __('Edit') }}  </a>
                                             |
-                                            <a href="{{ route('deletelicensetype',['id'=>$license_type->id]) }}"
+                                            <a class="btn btn-sm btn-danger" href="{{ route('deletelicensetype',['id'=>$license_type->id]) }}"
                                                onclick="return confirm('Are you sure.')"> {{ __('Delete') }}  </a>
                                         </td>
                                     </tr>
