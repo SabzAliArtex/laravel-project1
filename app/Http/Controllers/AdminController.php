@@ -160,7 +160,7 @@ class AdminController extends Controller
             'first_name' => $get['first_name'],
             'last_name' => $get['last_name'],
             'role' => $get['role'],
-            'email' => $get['email'],
+            'email' => $get['email'], 
             'verify_token' => $token,
             'commission' => $Comission,
             'phone' => $get['phone'],
