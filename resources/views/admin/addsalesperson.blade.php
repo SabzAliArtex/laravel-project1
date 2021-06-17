@@ -111,7 +111,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            <div class="form-group row hidden">
                                 <label for="Role"
                                        class="col-md-4 col-form-label text-md-right">{{ __('Select Role') }}</label>
 
@@ -121,7 +121,7 @@
                                         <option selected="" disabled="" value=""> Please Select Role</option>
                                         @foreach($roles as $role)
 
-                                            <option value="{{ $role->id }}" {{ ($role->role == 'Admin'|| $role->role == 'User') ? 'disabled' : '' }}> {{ $role->role }} </option>
+                                            <option value="{{ $role->id }}" {{ ($role->id == '3') ? 'selected' : '' }}> {{ $role->role }} </option>
                                         @endforeach
 
                                     </select>
@@ -134,16 +134,16 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row comission_row" style="display: none;">
-                                <label for="comission"
-                                       class="col-md-4 col-form-label text-md-right">{{ __('Comission') }}</label>
+                            <div class="form-group row commission_row">
+                                <label for="commission"
+                                       class="col-md-4 col-form-label text-md-right">{{ __('commission') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="comission" type="number" max="99999" step="1" min="0"
-                                           class="form-control @error('comission') is-invalid @enderror"
-                                           name="comission" autocomplete="comission">
+                                    <input id="commission" type="number" max="99999" step="1" min="0"
+                                           class="form-control @error('commission') is-invalid @enderror"
+                                           name="commission" autocomplete="commission">
 
-                                    @error('comission')
+                                    @error('commission')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -189,11 +189,11 @@
             var role = $(this).find('option:selected').text();
             console.log(role);
             if ($.trim(role) == 'Sales Person') {
-                $('.comission_row').css('display', 'flex');
-                $('#comission').prop('required', 'required');
+                $('.commission_row').css('display', 'flex');
+                $('#commission').prop('required', 'required');
             } else {
-                $('.comission_row').css('display', 'none');
-                $('#comission').prop('required', '');
+                $('.commission_row').css('display', 'none');
+                $('#commission').prop('required', '');
             }
         });
     </script>

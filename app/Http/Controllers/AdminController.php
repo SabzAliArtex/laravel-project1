@@ -155,18 +155,19 @@ class AdminController extends Controller
             "role.required" => 'Please Enter Role',
         ]);
         $token = rand(123456, 987643);
-        $Comission = $get['comission'] != '' ? $get['comission'] : 0;
+        $commission = $get['commission'] != '' ? $get['commission'] : 0;
         $user = User::create([
             'first_name' => $get['first_name'],
             'last_name' => $get['last_name'],
             'role' => $get['role'],
             'email' => $get['email'], 
             'verify_token' => $token,
-            'commission' => $Comission,
+            'commission' => $commission,
             'phone' => $get['phone'],
             'is_active' => $get['is_active'],
             'password' => Hash::make($get['password']),
         ]);
+        
         try {
             Notification::route('mail', $get['email'])->notify(new VerifyAccount($user, $token));
         } catch (\Exception $e) {
@@ -194,13 +195,13 @@ class AdminController extends Controller
             "role.required" => 'Please Enter Role',
         ]);
 
-        $Comission = $get['commission'] != '' ? $get['commission'] : NULL;
+        $commission = $get['commission'] != '' ? $get['commission'] : NULL;
         $user = User::find($id);
         $user->first_name = $get['first_name'];
         $user->last_name = $get['last_name'];
         $user->role = $get['role'];
         $user->email = $get['email'];
-        $user->commission = $Comission;
+        $user->commission = $commission;
         $user->phone = $get['phone'];
         $user->is_active = $get['is_active'];
         $user->save();
