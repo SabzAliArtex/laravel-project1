@@ -54,15 +54,7 @@
                                         {{-- @foreach ($license->deviceLicense as $devicelicense)
                                         <td> {{ $devicelicense->license }} </td>
                                         <td>
-                                            @if($devicelicense->license_type_id == '1' )
-                                          
-                                                Monthly {{
-                                                 '('. $licensetype->price . ')' }}
-                                            @elseif ( $devicelicense->license_type_id == '2' )
-                                                Yearly {{ '('. $licensetype->price . ')' }}
-                                            @elseif ( $devicelicense->license_type_id == '3' )
-                                                Life time {{ '('. $licensetype->price . ')' }}
-                                            @endif
+                                            {{ get_license_type_text($license) }}
                                         </td>
                                          
                                         @endforeach --}}
@@ -84,8 +76,8 @@
                                         {{--          </td>
 
 
-                                                      <td><a href="{{ route('user.deleteuserlicense',['id'=>$license->id]) }}" onclick="return confirm('Are you sure.')"> {{ __('Delete') }}  </a></td>
-                                                      <td><a @click="openDetailModal({{$license->id}})" href="#"> {{ __('Details') }}  </a></td>--}}
+                                                      <td><a class="btn btn-sm btn-primary" href="{{ route('user.deleteuserlicense',['id'=>$license->id]) }}" onclick="return confirm('Are you sure.')"> {{ __('Delete') }}  </a></td>
+                                                      <td><a class="btn btn-sm btn-danger" @click="openDetailModal({{$license->id}})" href="#"> {{ __('Details') }}  </a></td>--}}
 
                                     </tr>
                                     @empty

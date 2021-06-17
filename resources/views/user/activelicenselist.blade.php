@@ -53,13 +53,13 @@
                         <td> {{ $license->user ? $license->user->email : '' }} </td>
                         <td>
                             @if($license->license_type_id == '4')
-                              <a @click="openLicenseActivationModel({{ $license }},{{ $check = 1 }})" href="javascript:void(0)"> {{ __('Purchase') }}  </a>
+                              <a class="btn btn-sm btn-warning" @click="openLicenseActivationModel({{ $license }},{{ $check = 1 }})" href="javascript:void(0)"> {{ __('Purchase') }}  </a>
                             @elseif($license->license_expiry && (strtotime($license->license_expiry) < strtotime(date('Y-m-d H:i:s') )))
-                               <a @click="openLicenseActivationModel({{ $license }},{{ $check = 0 }})" href="javascript:void(0)"> {{ __('Renew') }}  </a>
+                               <a class="btn btn-sm btn-success" @click="openLicenseActivationModel({{ $license }},{{ $check = 0 }})" href="javascript:void(0)"> {{ __('Renew') }}  </a>
                             @else
                                 {{-- <td><a href="{{ route('user.deleteuserlicense',['id'=>$license->id]) }}" onclick="return confirm('Are you sure.')"> {{ __('Delete') }}  </a></td> --}}
                             @endif 
-                            <a @click="openDetailModal({{$license->id}})" href="javascript:void(0)"> {{ __('Details') }}  </a>
+                            <a class="btn btn-sm btn-primary" @click="openDetailModal({{$license->id}})" href="javascript:void(0)"> {{ __('Details') }}  </a>
 
                           </td>
                       </tr>

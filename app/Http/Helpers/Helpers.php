@@ -391,6 +391,15 @@ function findUser($user)
       $type =  'Lifetime' .' ('. $license->license_type->price . ') ';
     else
       $type = 'Trial';
+    return $type;
+  }
+  function get_license_duration($license){
 
+    if( $license->type == '1' )
+      $type ='Monthly';
+    elseif ( $license->type == '2' )
+      $type ='Yearly';
+    elseif ( $license->type == '3' )
+      $type ='Lifetime';
     return $type;
   }

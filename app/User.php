@@ -41,6 +41,10 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasOne('App\UserRole','id','role');
     }
+    public function userlicense()
+    {
+        return $this->hasMany('App\License');
+    }
 
        
 }

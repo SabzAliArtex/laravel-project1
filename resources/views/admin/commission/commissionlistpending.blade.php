@@ -87,17 +87,6 @@ v-on:click=changeStatus({{$payment->id}},{{$payment->is_approved}})
                                             <a class="response" v-on:click="changeActiveStatus({{$payment->id}})"
                                                href="javascript:void(0)" id="Approved"> {{ __('Approve') }}  </a>
 
-
-                                        <!-- |
-
-
-
-
-
-
-                                            <a class="response" v-on:click="changeDeactiveStatus({{$payment->id}})" href="javascript:void(0)" id="Disapprove"  > {{ __('Disapprove') }} </a>
-
-                                        </td> -->
                                     </tr>
 
                                 @endforeach

@@ -11,18 +11,9 @@
 
                                     <td> {{ $key + 1 }} </td>
 
-                                  <td> {{ $row->license?$row->license:'N/A'}} </td>
-                                 <td>
-                                        @if($row->license_type_id &&  $row->license_type_id == '1' )
-                                            Monthly
-                                        @elseif ($row->license_type_id && $row->license_type_id  == '2' )
-                                            Yearly
-                                        @elseif ($row->license_type_id && $row->license_type_id  == '3' )
-                                            Lifetime
-                                        @else
-                                            Trial
-                                       
-                                        @endif
+                                    <td> {{ $row->license?$row->license:'N/A'}} </td>
+                                    <td>
+                                        {{ get_license_type_text($license) }}    
                                     </td>
                                    
                                      <td> {{ $row->email? $row->email : 'N/A' }} </td>
