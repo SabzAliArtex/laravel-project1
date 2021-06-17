@@ -155,7 +155,7 @@ class AdminController extends Controller
             "role.required" => 'Please Enter Role',
         ]);
         $token = rand(123456, 987643);
-        $Comission = $get['commission'] != '' ? $get['commission'] : 0;
+        $Comission = $get['comission'] != '' ? $get['comission'] : 0;
         $user = User::create([
             'first_name' => $get['first_name'],
             'last_name' => $get['last_name'],
