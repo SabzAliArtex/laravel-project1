@@ -93,7 +93,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Licencing App
+                    {{ config('app.name', 'Laravel') }}
                 </div>
             </div>
         </div>
