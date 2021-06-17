@@ -64,7 +64,7 @@
                                         <td> {{ $license_type->is_active == 1 ? 'Active' : 'Inactive' }} </td>
                                         <td>
                                             <a class="btn btn-sm btn-primary" href="{{ route('editlicensetype',['id'=>$license_type->id]) }}"> {{ __('Edit') }}  </a>
-                                            |
+                                            
                                             <a class="btn btn-sm btn-danger" href="{{ route('deletelicensetype',['id'=>$license_type->id]) }}"
                                                onclick="return confirm('Are you sure.')"> {{ __('Delete') }}  </a>
                                         </td>

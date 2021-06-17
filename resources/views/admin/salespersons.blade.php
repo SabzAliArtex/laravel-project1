@@ -54,7 +54,6 @@
                                         <td> {{ $user->is_active == 1 ? 'Active' : 'Inactive' }} </td>
                                         <td>
                                             <a class="btn btn-sm btn-primary" href="{{ route('editsalesperson',['id'=>$user->id]) }}"> {{ __('Edit') }}  </a>
-                                            |
                                             <a class="btn btn-sm btn-danger" href="{{ route('deleteuser',['id'=>$user->id]) }}"
                                                onclick="return confirm('Are you sure.')"> {{ __('Delete') }}  </a>
                                         </td>

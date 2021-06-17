@@ -36,8 +36,6 @@
 
                     <td colspan="2">
                         <a class="btn btn-sm btn-primary" href="{{ route('editlicense',['license'=>$license->license]) }}"> {{ __('Edit') }}  </a>
-
-                        |
                         <a class="btn btn-sm btn-danger" href="{{ route('deletelicense',['id'=>$license->id]) }}"
                            onclick="return confirm('Are you sure.')"> {{ __('Delete') }}  </a>
                     </td> 
