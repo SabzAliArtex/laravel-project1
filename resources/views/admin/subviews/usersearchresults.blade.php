@@ -15,10 +15,9 @@
                         @if($user->role == 3)
                             <a class="btn btn-sm btn-primary" href="{{ route('editsalesperson',['id'=>$user->id]) }}"> {{ __('Edit') }}  </a>
                         @else
-                            <a href="{{ route('edituser',['id'=>$user->id]) }}"> {{ __('Edit') }}  </a>
+                            <a class="btn btn-sm btn-primary" href="{{ route('edituser',['id'=>$user->id]) }}"> {{ __('Edit') }}  </a>
 
                         @endif
-                        |
                         <a class="btn btn-sm btn-danger" href="{{ route('deleteuser',['id'=>$user->id]) }}"
                            onclick="return confirm('Are you sure.')"> {{ __('Delete') }}  </a>
 
