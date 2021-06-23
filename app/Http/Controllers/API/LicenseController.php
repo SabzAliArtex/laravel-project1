@@ -16,6 +16,7 @@ use App\Notifications\TrialActivated;
 use Illuminate\Support\Facades\Route;
 use App\Notifications\LicensePurchased;
 use App\Notifications\UserCreatedFromApp;
+use App\Notifications\LicenseActivated;
 use Illuminate\Support\Facades\Notification;
 
 class LicenseController extends Controller
@@ -25,7 +26,8 @@ class LicenseController extends Controller
     public function licenseActivation(Request $request)
     {
         
-        $payload = $request->all();
+        $payload = file_get_contents('php://input');
+        $payload = json_decode($payload , true);
         loggs($payload);
       
         $response = array();
@@ -39,7 +41,7 @@ class LicenseController extends Controller
         if ($userPerson == NULL) 
         {
             $userPerson = User::create([
-                "email" => $payload['email'],
+                "email" => $payload['UserEmail'],
                 "role" => 2,
                 "first_name" => $payload['UserFirstName'],
                 "last_name" => $payload['UserLastName'],
@@ -90,7 +92,7 @@ class LicenseController extends Controller
             if (is_null($license_dev_count_rows))
             {
                 //$userPerson->role == 2 means that person is of type 'USER'
-                Notification::send($userPerson,new LicensePurchased($userPerson,$license_data));
+                Notification::send($userPerson,new LicenseActivated($userPerson,$license_data));
               return  getLicenseLimit($license_count_user, $license_device_limit, $userPerson->id, $payload['LicenseCode'], $payload['dev_name']??$name='devname', $payload['dev_os']??$name='devos', $payload['DeviceUniqueId'], $licenseValidity,$expiry_date);
             } 
             else if ($license_dev_count_rows->device_id == $payload['DeviceUniqueId'])
@@ -103,7 +105,9 @@ class LicenseController extends Controller
     public function trialActivation(Request $request)
     {
       
-        $payload = $request->all();
+        $payload = file_get_contents('php://input');
+        $payload = json_decode($payload , true);
+
         loggs($payload);
         $time = $payload['StartTrialTime'];
         $numtime = strtotime($time);

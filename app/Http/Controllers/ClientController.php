@@ -83,17 +83,15 @@ class ClientController extends Controller
 
     public function alluseranddevs()
     {
-        $licenses = License_devices::with('users','deviceLicense')->get();
-        foreach($licenses as $license)
-        { 
-            foreach($license->deviceLicense as $licensetype)
-            {
-                
-                $licensetype = LicenseType::where('type','=',$licensetype->license_type_id)->first();
-                
+        $license_devices = License_devices::with('users','deviceLicense','licensetype')->Paginate('10');
+        if(count($license_devices) > 0 ){
+            foreach($license_devices as $key=> $device)
+            {   
+                $license = License::get_license_with_code($device->license_id);
+                $license_devices[$key]->license = $license;  
             }
-        }
-        return view('admin.useranddevslist', compact('licenses'));
+        }    
+        return view('admin.useranddevslist', compact('license_devices'));
     }
 
     public function alluseranddevssearch(Request $request)
