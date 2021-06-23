@@ -105,9 +105,9 @@
                                     <a class="dropdown-item" href="{{ route('profile') }}">
                                         {{ __('Profile') }}
                                     </a>
-                                        <a class="dropdown-item" href="{{ route('settings') }}">
+                                      <!--   <a class="dropdown-item" href="{{ route('settings') }}">
                                         {{ __('Settings') }}
-                                    </a>
+                                    </a> -->
                                     @elseif (Auth::user()->role == 2)
                                     <a class="dropdown-item" href="{{ route('user.profile') }}">
                                         {{ __('Profile') }}
