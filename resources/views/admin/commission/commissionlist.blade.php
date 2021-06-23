@@ -56,8 +56,8 @@
                                     <tr>
 
                                         <td class="ellipsis"> {{ $key+1 }} </td>
-                                        <td class="ellipsis"> {{ $payment->license_id }} </td>
-                                        <td class="ellipsis">{{$payment->sales_person_id}}</td>
+                                        <td class="ellipsis"> {{ $payment->license->license }} </td>
+                                        <td class="ellipsis">{{$payment->sales_person->first_name .' '. $payment->sales_person->last_name}}</td>
                                         <td class="ellipsis">{{$payment->commission??'N/A'}}</td>
 
                                         @if($payment->is_approved == 1)

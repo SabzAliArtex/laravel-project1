@@ -30,6 +30,10 @@ class License extends Model
 	public function license_activation(){
 		return $this->hasmany('App\LicenseActivation','license_id','id');
 	}
+	public static function get_license_with_code($license){
+		$license = License::with('license_type')->where('license' , $license)->first();
+		return $license;
+	}
 	
 }
 

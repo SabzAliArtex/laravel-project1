@@ -24,60 +24,35 @@
                 <div class="card">
                     <div class="card-header">{{ __('User Devices Listing') }}</div>
                     <div class="card-body">
-
                         <div class="row custom_row_position ">
                             <div class="col-md-12 input-group mb-3">
                                 @include('layouts.partials_general.searchbar')
                             </div>
                         </div>
-                        
-                            <table id="tableListing" border="1" class="table table-striped table-responsive">
-                                <thead class="thead-dark">
+                        <table id="tableListing" border="1" class="table table-striped">
+                            <thead class="thead-dark">
                                 <tr>
                                     <th> {{ __('Sr no') }} </th>
                                     <th> {{ __('License Key') }} </th>
-                                    
-                                    <th id="thn"> {{ __('User Name') }} </th>
-                                    <th> {{ __('User Email') }} </th>
-                                    <th> {{ __('Device Id') }} </th>
-                                    <th> {{ __('Status') }} </th>
+                                    <th> {{ __('License Type') }} </th>
+                                    <th> {{ __('Devices Id') }} </th>
+                                    <!-- <th> {{ __('Status') }} </th> -->
                                 <!-- <th colspan="2" > {{ __('Action') }} </th> -->
 
                                 </tr>
-                                </thead>
-                                <tbody>
-                                        
-                                @forelse($licenses as $key=> $license)
+                            </thead>
+                            <tbody>      
+                                @forelse($license_devices as $key=> $license)
                                     <tr>
-
                                         <td> {{ $key + 1 }} </td>
-                                        {{-- @foreach ($license->deviceLicense as $devicelicense)
-                                        <td> {{ $devicelicense->license }} </td>
+                                        <td> {{ $license->license_id }} </td>
                                         <td>
-                                            {{ get_license_type_text($license) }}
+                                            {{ get_license_type_text($license->license) }}
                                         </td>
-                                         
-                                        @endforeach --}}
-                                        @foreach ($license->users as  $user)
-                                        <td> {{ $user->first_name ? $user->first_name : 'N\A' }} </td>
-                                        <td> {{ $user->email ? $user->email : 'N\A' }} </td>
-                                            
-                                        @endforeach
+                                        <td> {{ $license->device_id }} </td>
 
-                                        
-                                      
-                                     
-                                        <td>{{$license->device_id}}</td>
-                                        
-                                        <td> @if($license->is_deleted == 1) Deleted
-                                            @else
-                                                Not Deleted
-                                        @endif
-                                        {{--          </td>
-
-
-                                                      <td><a class="btn btn-sm btn-primary" href="{{ route('user.deleteuserlicense',['id'=>$license->id]) }}" onclick="return confirm('Are you sure.')"> {{ __('Delete') }}  </a></td>
-                                                      <td><a class="btn btn-sm btn-danger" @click="openDetailModal({{$license->id}})" href="#"> {{ __('Details') }}  </a></td>--}}
+                                        <!-- <td><a class="btn btn-sm btn-primary" href="{{ route('user.deleteuserlicense',['id'=>$license->id]) }}" onclick="return confirm('Are you sure.')"> {{ __('Delete') }}  </a></td>
+                                        <td><a class="btn btn-sm btn-danger" @click="openDetailModal({{$license->id}})" href="#"> {{ __('Details') }}  </a></td>--}} -->
 
                                     </tr>
                                     @empty
@@ -85,6 +60,7 @@
                                 @endforelse
                                 </tbody>
                             </table>
+                            <?php echo $license_devices->render(); ?>
                             @include('layouts.partials_general.searchalert')
 
                     <!-- The Modal -->
