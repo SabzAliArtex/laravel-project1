@@ -70,10 +70,12 @@ class LicenseController extends Controller
         else
         {
             $licenseValidity = "license expiry";
-            $license_data->user_id = $userPerson->id;
-            $license_data->license_activated_at = date("Y-m-d H:i:s");
+            if(is_null($license_data->user_id)){
+                $license_data->user_id = $userPerson->id;
+                $license_data->license_activated_at = date("Y-m-d H:i:s");
+                $expiry_date = calculateExpiry($license_data);
+            }
             $license_data->is_active = 1;
-            $expiry_date = calculateExpiry($license_data);
             LicenseHistory::updateOrCreate(
             [
             'license_id'=>$license_data->id
