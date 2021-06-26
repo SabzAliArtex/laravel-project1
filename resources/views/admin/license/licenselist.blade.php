@@ -101,10 +101,9 @@
                                       <th> {{ __('User Email') }} </th>
                                       <th> {{ __('Device Name') }} </th>
                                       <th> {{ __('Device Os') }} </th>
-                                      <th colspan="2" ><div class="action_header">{{ __('Action') }}</div>  </th>
                                     </tr>
                                   </thead>
-                                  <tbody v-if="alldata.length" class="sadfsadfa">
+                                  <tbody v-if="alldata.length">
                                     <tr v-for="(row,key,index) in alldata" :key="row.id">
                                   
                                       <td>@{{key+1}}</td>
@@ -118,19 +117,6 @@
                                       <td>@{{row.users[0].email}}</td>
                                       <td>@{{row.device_name}}</td>
                                       <td>@{{row.device_os}}</td>
-
-                                      <td v-if="row.is_deactive == 0" >
-                                        <a href="javascript:void(0)" @click="deactivedeviceandfetchagain(row.device_id)" class="btn btn-primary">     {{ __('Deactive') }}  
-                                        </a>
-                                      </td>
-                                      <td v-if="row.is_deactive == 1" >
-                                        <a href="javascript:void(0)" @click="activatedeviceandfetchagain(row.device_id)" class="btn btn-success"> {{ __('Active') }}  </a>
-                                      </td>
-                                      <td>
-                                        <a href="javascript:void(0)" @click="deleterecordandfetchagain(row.id)" class="btn btn-danger"> 
-                                          {{ __('Delete') }}  
-                                        </a>
-                                      </td>
                                     </tr>
                                   </tbody>
                                   <tbody v-else>
