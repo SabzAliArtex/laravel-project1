@@ -86,7 +86,7 @@
                             <div class="modal-content">
                               <!-- Modal Header -->
                               <div class="modal-header">
-                                <h4 class="modal-title">All Licenses</h4>
+                                <h4 class="modal-title">Active Devices Details</h4>
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                               </div>
                               <!-- Modal body -->
@@ -104,8 +104,8 @@
                                       <th colspan="2" ><div class="action_header">{{ __('Action') }}</div>  </th>
                                     </tr>
                                   </thead>
-                                  <tbody>
-                                    <tr  v-for="(row,key,index) in alldata" :key="row.id">
+                                  <tbody v-if="alldata.length" class="sadfsadfa">
+                                    <tr v-for="(row,key,index) in alldata" :key="row.id">
                                   
                                       <td>@{{key+1}}</td>
                                       <td>@{{row.license_id}}</td>
@@ -133,7 +133,11 @@
                                       </td>
                                     </tr>
                                   </tbody>
-                                </table>
+                                  <tbody v-else>
+                                    <tr>
+                                        <td colspan="8"> * No Record Found </td>
+                                    </tr>
+                                  </tbody>
                               </div>
                               <!-- Modal footer -->
                               <div class="modal-footer">
