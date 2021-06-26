@@ -61,7 +61,7 @@ Route::group(['middleware' => ['admin','verified']], function () {
 	Route::post('/editlicensetypesLicense', 'LicenseController@EditLicensePost')->name('editlicensepost');
  	Route::get('/deletelicense/{id}', 'LicenseController@DeleteLicense')->name('deletelicense');
 	Route::get('/license/activated', 'LicenseController@ActivatedLicense')->name('license.activated');
-	Route::get('/getlicensedetails/{id}', 'ClientController@LicensesActivated')->name('admin.getlicensedevices');
+	Route::get('/getlicensedetails/{id}', 'LicenseController@LicensesActivated')->name('admin.getlicensedevices');
 	//payments routes
 	Route::get('/payment/list', 'PaymentController@index')->name('paymentlist');
 	Route::get('/payment-search', 'PaymentController@paymentSearch')->name('paymentlistsearch');

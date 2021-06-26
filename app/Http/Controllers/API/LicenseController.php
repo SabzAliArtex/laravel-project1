@@ -164,11 +164,3 @@ class LicenseController extends Controller
         return json_encode(array("result" => true));
     }
 }
-
-public function LicensesActivated($licenseid)
-{
-    $LicenseCode = License::find($licenseid);   
-    $licenses = License_devices::with('deviceLicense', 'users', 'license_type')
-    ->where([['license_id', '=', $LicenseCode->license], ['user_id', '=', Auth::user()->id], ['is_deleted', '=', 0]])->orderByRaw('id DESC')->get();
-    return $licenses;
-}

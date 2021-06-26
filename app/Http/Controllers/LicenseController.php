@@ -187,4 +187,12 @@ class LicenseController extends Controller
         $Licensetypes = LicenseType::where('is_active', '1')->get();
         return view('admin.license.addmultiplelicense', compact('sales_persons', 'Licensetypes'));
     }
+
+    public function LicensesActivated($licenseid)
+    {
+        $LicenseCode = License::find($licenseid);
+        $licenses = License_devices::with('deviceLicense', 'users', 'license_type')
+        ->where([['license_id', '=', $LicenseCode->license], ['is_deleted', '=', 0]])->orderByRaw('id DESC')->get();
+        return $licenses;
+    }
 }
