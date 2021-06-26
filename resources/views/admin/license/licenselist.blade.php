@@ -53,8 +53,8 @@
                                         <td>
                                             {{ get_license_type_text($license) }}
                                         </td>
-                                        <td> {{ $license->user ? $license->user->first_name.' '.$license->user->last_name : '-' }} </td>
                                         <td> {{ $license->no_of_devices_allowed }} </td>
+                                        <td> {{ $license->user ? $license->user->first_name.' '.$license->user->last_name : '-' }} </td>
                                         <td> {{ $license->user ? $license->user->email : '-' }} </td>
                                         <td> 
                                             {{ $license->sales_person ? $license->sales_person->first_name.' '.$license->sales_person->last_name : '-' }} 
