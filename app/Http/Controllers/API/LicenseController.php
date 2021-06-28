@@ -25,7 +25,6 @@ class LicenseController extends Controller
 
     public function licenseActivation(Request $request)
     {
-        
         $payload = file_get_contents('php://input');
         $payload = json_decode($payload , true);
         loggs($payload);
@@ -37,6 +36,34 @@ class LicenseController extends Controller
             $response['Message'] = "License Object is null";
             return json_encode($response);
         }
+
+        $license_dev_count_rows = License_devices::with('deviceLicense')->where('device_id', '=', $payload['DeviceUniqueId'])->where('license_id', '=', $payload['LicenseCode'])->first();
+        $license_count_rows = License_devices::with('deviceLicense')->where('license_id', '=', $payload['LicenseCode'])->get();
+        $license_count_user = $license_count_rows->count();
+        $license_data = License::where('license', '=', $payload['LicenseCode'])->with('license_type')->first();
+
+        // if license is code not found
+        if ($license_data == null) 
+        {
+            $responseLicenseTrial = new LicenseBooking();
+            return json_encode(array(
+                "License" => $responseLicenseTrial,
+                "Message" => "Your License is Invalid",
+                "IsOK" => false,
+                "IsError" => true
+            ));
+        }
+        // if device is already registered for this device
+        if ($license_dev_count_rows != null)
+        {
+            return error_code(500);
+        } 
+        // no of devices allowed Check
+        if ($license_data->no_of_devices_allowed <= $license_count_user) 
+        {
+            return limit_error_code(600 , $license_data->no_of_devices_allowed);
+        }
+        // search user and create new user incase of user not found
         $userPerson = User::where('email', '=', $payload['UserEmail'])->first();
         if ($userPerson == NULL) 
         {
@@ -49,57 +76,12 @@ class LicenseController extends Controller
                 "password" => Hash::make($payload['UserPassword']),
                 "is_active" => 1
             ]);
-            //Notification::send($userPerson,new UserCreatedFromApp($userPerson,$token=rand()));
         }
 
-        $license_dev_count_rows = License_devices::with('deviceLicense')->where('device_id', '=', $payload['DeviceUniqueId'])->first();
-        $license_count_rows = License_devices::with('deviceLicense')->where('license_id', '=', $payload['LicenseCode'])->get();
-        $license_count_user = $license_count_rows->count();
-        $license_data = License::where('license', '=', $payload['LicenseCode'])->with('license_type')->first();
-
-        if ($license_data == null) 
-        {
-            $responseLicenseTrial = new LicenseBooking();
-            return json_encode(array(
-                "License" => $responseLicenseTrial,
-                "Message" => "Your License is Invalid",
-                "IsOK" => false,
-                "IsError" => true
-            ));
-        } 
-        else
-        {
-            $licenseValidity = "license expiry";
-            $license_data->user_id = $userPerson->id;
-            $license_data->license_activated_at = date("Y-m-d H:i:s");
-            $license_data->is_active = 1;
-            $expiry_date = calculateExpiry($license_data);
-            LicenseHistory::updateOrCreate(
-            [
-            'license_id'=>$license_data->id
-            ],
-            [
-                "user_id"=>$license_data->user_id,
-                "license_expiry"=>$license_data->license_expiry,
-                "trial_activated_at"=>$license_data->trial_activated_at,
-                "license_activated_at"=>$license_data->license_activated_at
-                
-            ]);
-            $license_data->save();
-            $admin = User::where('role','=',1)->first();
-            Notification::send($admin,new UserCreatedFromApp($userPerson,$token=rand(),$license_data));
-            $license_device_limit = $license_data->no_of_devices_allowed;
-            if (is_null($license_dev_count_rows))
-            {
-                //$userPerson->role == 2 means that person is of type 'USER'
-                Notification::send($userPerson,new LicenseActivated($userPerson,$license_data));
-              return  getLicenseLimit($license_count_user, $license_device_limit, $userPerson->id, $payload['LicenseCode'], $payload['dev_name']??$name='devname', $payload['dev_os']??$name='devos', $payload['DeviceUniqueId'], $licenseValidity,$expiry_date);
-            } 
-            else if ($license_dev_count_rows->device_id == $payload['DeviceUniqueId'])
-            {
-                return error_code(500);
-            }
-        }
+        $license = licenseUpdate($license_data , $userPerson);
+        Notification::send($userPerson,new LicenseActivated($userPerson,$license_data));
+        return  licenseActivate_android($license_data, $userPerson, $payload); 
+        
     }
     
     public function trialActivation(Request $request)

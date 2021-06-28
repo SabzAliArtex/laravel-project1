@@ -403,3 +403,27 @@ function findUser($user)
       $type ='Lifetime';
     return $type;
   }
+
+  function licenseUpdate($license , $user){
+
+    if(!$license->user_id){
+      $license->license_activated_at = date("Y-m-d H:i:s");
+      $license->user_id = $user->id;
+      $expiry_date = calculateExpiry($license);
+    }
+    $license->is_active = 1;
+    $license->save();
+    return $license;
+  }
+  function licenseActivate_android($license, $user , $payload){
+      $license_devices = new License_devices();
+      $license_devices->user_id = $user->id;
+      $license_devices->license_id = $license->license;
+      $license_devices->device_id = $payload['DeviceUniqueId'];
+      $license_devices->device_name = $payload['DeviceInfo'];
+      $license_devices->device_os = '';
+      $license_devices->activation_date = date("Y-m-d H:i:s");
+      $license_devices->save();
+          
+      return success_code(300,$license_devices,$is_valid = 'ExpiryDate',$expiry_date = $license->license_expiry);
+    }
