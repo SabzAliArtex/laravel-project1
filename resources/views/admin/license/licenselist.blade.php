@@ -95,28 +95,16 @@
                                   <thead>
                                     <tr >
                                       <th> {{ __('Sr no') }} </th>
-                                      <th> {{ __('License Key') }} </th>
-                                      <th> {{ __('License Type') }} </th>
-                                      <th> {{ __('User Name') }} </th>
-                                      <th> {{ __('User Email') }} </th>
-                                      <th> {{ __('Device Name') }} </th>
-                                      <th> {{ __('Device Os') }} </th>
+                                      <th> {{ __('Activation Email') }} </th>
+                                      <th> {{ __('Device id') }} </th>
                                     </tr>
                                   </thead>
                                   <tbody v-if="alldata.length">
                                     <tr v-for="(row,key,index) in alldata" :key="row.id">
                                   
                                       <td>@{{key+1}}</td>
-                                      <td>@{{row.license_id}}</td>
-                                      <td>
-                                        <div v-if="row.license_type && row.license_type.type==1">Monthly(@{{row.license_type.price}})</div>
-                                        <div v-if="row.license_type && row.license_type.type==2">Yearly(@{{row.license_type.price}})</div>
-                                        <div v-if="row.license_type && row.license_type.type==3">Lifetime(@{{row.license_type.price}})</div>
-                                      </td>
-                                      <td>@{{row.users[0].first_name}}</td>
                                       <td>@{{row.users[0].email}}</td>
-                                      <td>@{{row.device_name}}</td>
-                                      <td>@{{row.device_os}}</td>
+                                      <td>@{{row.device_id}}</td>
                                     </tr>
                                   </tbody>
                                   <tbody v-else>
