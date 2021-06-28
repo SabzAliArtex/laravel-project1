@@ -26,7 +26,7 @@ class LicenseController extends Controller
      */
     public function index()
     {
-        $licenses = License::with('sales_person', 'user', 'license_type')->where('is_deleted', 0)->orderByRaw('id DESC')->paginate(10);
+        $licenses = License::with('sales_person', 'user', 'license_type' , 'license_devices')->where('is_deleted', 0)->orderByRaw('id DESC')->paginate(10);
         // echo '<pre>'; print_r($licenses); exit;
         if (Auth::user()->userrole->role == 'User') {
             return view('user.license.licenselist', [
