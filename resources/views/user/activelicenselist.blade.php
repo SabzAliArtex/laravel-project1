@@ -111,65 +111,54 @@
                 </div>
                 <!-- The Modal -->
                 <div class="modal" id="myModal">
-                  <div class="modal-dialog">
-                    <div class="modal-content">
-                      <!-- Modal Header -->
-                      <div class="modal-header">
-                        <h4 class="modal-title">All Licenses</h4>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                      </div>
-                      <!-- Modal body -->
-                      <div class="modal-body">
-                        <table class="table table-striped table-responsive">
-                          <thead>
-                            <tr >
-                              <th> {{ __('Sr no') }} </th>
-                              <th> {{ __('License Key') }} </th>
-                              <th> {{ __('License Type') }} </th>
-                              <th> {{ __('User Name') }} </th>
-                              <th> {{ __('User Email') }} </th>
-                              <th> {{ __('Device Name') }} </th>
-                              <th> {{ __('Device Os') }} </th>
-                              <th colspan="2" ><div class="action_header">{{ __('Action') }}</div>  </th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr  v-for="(row,key,index) in alldata" :key="row.id">
-                          
-                              <td>@{{key+1}}</td>
-                              <td>@{{row.license_id}}</td>
-                              <td>
-                                <div v-if="row.license_type && row.license_type.type==1">Monthly(@{{row.license_type.price}})</div>
-                                <div v-if="row.license_type && row.license_type.type==2">Yearly(@{{row.license_type.price}})</div>
-                                <div v-if="row.license_type && row.license_type.type==3">Lifetime(@{{row.license_type.price}})</div>
-                              </td>
-                              <td>@{{row.users[0].first_name}}</td>
-                              <td>@{{row.users[0].email}}</td>
-                              <td>@{{row.device_name}}</td>
-                              <td>@{{row.device_os}}</td>
-
-                              <td v-if="row.is_deactive == 0" >
-                                <a href="javascript:void(0)" @click="deactivedeviceandfetchagain(row.device_id)" class="btn btn-primary">     {{ __('Deactive') }}  
-                                </a>
-                              </td>
-                              <td v-if="row.is_deactive == 1" >
-                                <a href="javascript:void(0)" @click="activatedeviceandfetchagain(row.device_id)" class="btn btn-success"> {{ __('Active') }}  </a>
-                              </td>
-                              <td>
-                                <a href="javascript:void(0)" @click="deleterecordandfetchagain(row.id)" class="btn btn-danger"> 
-                                  {{ __('Delete') }}  
-                                </a>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                      <!-- Modal footer -->
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                      </div>
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                          <!-- Modal Header -->
+                          <div class="modal-header">
+                            <h4 class="modal-title">Active Devices Details</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          </div>
+                          <!-- Modal body -->
+                          <div class="modal-body">
+                            <table class="table table-striped">
+                              <thead>
+                                <tr >
+                                  <th> {{ __('Sr no') }} </th>
+                                  <th> {{ __('Activation Email') }} </th>
+                                  <th> {{ __('Device id') }} </th>
+                                  <th> {{ __('Action') }} </th>
+                                </tr>
+                              </thead>
+                              <tbody v-if="alldata.length">
+                                <tr v-for="(row,key,index) in alldata" :key="row.id">
+                              
+                                  <td>@{{key+1}}</td>
+                                  <td>@{{row.users[0].email}}</td>
+                                  <td>@{{row.device_id}}</td>
+                                  <td >
+                                    <div v-if="row.is_deactive == 0" >
+                                      <a href="javascript:void(0)" @click="deactivedeviceandfetchagain(row.device_id)" class="btn btn-primary">     {{ __('Deactive') }}  
+                                      </a>
+                                    </div>
+                                    <div v-if="row.is_deactive == 1" >
+                                      <a href="javascript:void(0)" @click="activatedeviceandfetchagain(row.device_id)" class="btn btn-success"> {{ __('Active') }}  </a>
+                                    </div>
+                                  </td>
+                                </tr>
+                              </tbody>
+                              <tbody v-else>
+                                <tr>
+                                    <td colspan="8"> * No Record Found </td>
+                                </tr>
+                              </tbody>
+                            </table>  
+                          </div>
+                          <!-- Modal footer -->
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                          </div>
+                        </div>
                     </div>
-                  </div>
                 </div>
               </div>
             </div>
