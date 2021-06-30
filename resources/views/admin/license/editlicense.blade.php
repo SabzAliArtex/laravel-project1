@@ -70,7 +70,8 @@
                                         <option value=""> Select License Type</option>
                                         @foreach($Licensetypes as $Licensetype)
                                             <option value="{{ $Licensetype->id }}"
-                                                    @if($licenses->license_type_id ==$Licensetype->id ) selected @endif> {{ $Licensetype->title.' ( '.$Licensetype->price .' )' }} </option>
+                                                    @if($licenses->license_type_id ==$Licensetype->id ) selected @endif> {{ $Licensetype->title.' ( '.get_license_duration($Licensetype).' - '.$Licensetype->price .' )' }} 
+                                            </option>
                                         @endforeach
                                     </select>
 
