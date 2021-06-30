@@ -71,7 +71,7 @@
                   <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                       <div class="modal-header border-bottom-0">
-                        <h5 class="modal-title font-weight-bold" id="LicenseModalLabel">License Activation</h5>
+                        <h5 class="modal-title font-weight-bold" id="LicenseModalLabel">Purchase License</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
                         </button>
@@ -99,8 +99,13 @@
                                 </label>
                             </div>
                           </div>
+                          <br>
                         </div>
+                        <div class="imp-message">
+                          <span class="danger" style="color: red">* This will redirect you to <b>Shopify</b> to complete transaction.<br>
+                          ** Use same email while entering information so that <b>Purchase</b> can be reflect on this account. </span>
                         <hr/>
+                        </div>
                         <div class="modal-footer border-top-0 d-flex justify-content-center">
                           <button v-show ="purchase.check==1" type="button" @click="purchaseLicense(purchase.check)" class="btn btn-license">Purchase</button>
                           <button v-show ="purchase.check==0" type="button" @click="purchaseLicense(purchase.check)" class="btn btn-license">Purchase</button>

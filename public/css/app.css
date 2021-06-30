@@ -11279,3 +11279,16 @@ input[type=number] {
 .hidden{
   display: none;
 }
+.imp-message{
+  font-size: 10px;
+  padding :0px 17px;
+}
+.imp-message .danger{
+  color : red;
+}
+.imp-message .danger b{
+  color : black;
+}
+.imp-message hr{
+  margin-top : 0px !important;
+}
