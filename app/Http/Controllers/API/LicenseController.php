@@ -131,12 +131,11 @@ class LicenseController extends Controller
         }
         loggs($request);
     }
-    public function checkLicenseExists($LicenseCode)
+    public function checkLicenseExists($licenseCode)
     {
         $payload = $LicenseCode;
         loggs($payload);
-        $license_key = $LicenseCode;
-        $is_license = License::where('license', '=', $license_key)->first();
+        $is_license = License::where('license', '=', $licenseCode)->first();
         if (!$is_license)
         {
             return json_encode(array("result" => false));
