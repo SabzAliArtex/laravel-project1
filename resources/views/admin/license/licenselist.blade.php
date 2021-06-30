@@ -91,7 +91,7 @@
                               </div>
                               <!-- Modal body -->
                               <div class="modal-body">
-                                <table class="table table-striped table-responsive">
+                                <table class="table table-striped">
                                   <thead>
                                     <tr >
                                       <th> {{ __('Sr no') }} </th>
@@ -112,6 +112,7 @@
                                         <td colspan="8"> * No Record Found </td>
                                     </tr>
                                   </tbody>
+                                </table>  
                               </div>
                               <!-- Modal footer -->
                               <div class="modal-footer">
