@@ -21,8 +21,6 @@ use Illuminate\Support\Facades\Notification;
 
 class LicenseController extends Controller
 {
-
-
     public function licenseActivation(Request $request)
     {
         $payload = file_get_contents('php://input');
@@ -53,15 +51,25 @@ class LicenseController extends Controller
                 "IsError" => true
             ));
         }
+        // check if license is not purchased yet
+        if ($license_data->license_type_id == '4')
+        {
+            return has_error('not_purchased');
+        }
+        // Check if license is Expired
+        if ($license_data->license_expiry <= date('Y-m-d H:i:s'))
+        {
+            return has_error('expired');
+        } 
         // if device is already registered for this device
         if ($license_dev_count_rows != null)
         {
-            return error_code(500);
-        } 
+            return has_error('same_device');
+        }
         // no of devices allowed Check
         if ($license_data->no_of_devices_allowed <= $license_count_user) 
         {
-            return limit_error_code(600 , $license_data->no_of_devices_allowed);
+            return has_error('limit', $license_data->no_of_devices_allowed);
         }
         // search user and create new user incase of user not found
         $userPerson = User::where('email', '=', $payload['UserEmail'])->first();
@@ -81,7 +89,6 @@ class LicenseController extends Controller
         $license = licenseUpdate($license_data , $userPerson);
         Notification::send($userPerson,new LicenseActivated($userPerson,$license_data));
         return  licenseActivate_android($license_data, $userPerson, $payload); 
-        
     }
     
     public function trialActivation(Request $request)
