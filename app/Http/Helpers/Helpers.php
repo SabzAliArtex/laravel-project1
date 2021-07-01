@@ -348,10 +348,11 @@ function get_license_duration($license){
 }
 
 function licenseUpdate($license , $user){
-
+  if(!$license->user_id){
+    $license->user_id = $user->id;
+  }  
   if(!$license->license_activated_at){
     $license->license_activated_at = date("Y-m-d H:i:s");
-    $license->user_id = $user->id;
     $expiry_date = calculateExpiry($license);
   }
   $license->is_active = 1;
