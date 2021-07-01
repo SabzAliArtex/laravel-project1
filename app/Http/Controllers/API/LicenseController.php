@@ -46,12 +46,12 @@ class LicenseController extends Controller
             return has_error('invalid');
         }
         // check if license is not purchased yet
-        if ($license_data->license_type_id == '4')
+        if (!$license_data->is_purchased)
         {
             return has_error('not_purchased');
         }
         // Check if license is Expired
-        if ($license_data->license_expiry <= date('Y-m-d H:i:s'))
+        if ($license_data->is_purchased  && $license_data->license_expiry <= date('Y-m-d H:i:s'))
         {
             return has_error('expired');
         } 

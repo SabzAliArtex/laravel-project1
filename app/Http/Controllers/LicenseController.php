@@ -115,6 +115,7 @@ class LicenseController extends Controller
                     $license->no_of_devices_allowed = $request['numofdevs'];
                     $license->sales_person_id = $request['sales_person'];
                     $license->license_type_id = $request['license_type'];
+                    $license->is_purchased = 1;
                     $license->save();
             }
             
@@ -132,6 +133,7 @@ class LicenseController extends Controller
             $license->no_of_devices_allowed = $request['numofdevs'];
             $license->sales_person_id = $request['sales_person'];
             $license->license_type_id = $request['license_type'];
+            $license->is_purchased = 1;
             $license->save();
 
             Session::flash("success", "License added successfully!");

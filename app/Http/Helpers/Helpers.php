@@ -281,6 +281,7 @@ function findLicense($data)
       $license->user_id = $user->id;
       $license->license = generate_license_key();
       $license->no_of_devices_allowed=1;
+      $license->is_purchased=1;
       $license->is_active = 0;
       $license->save(); 
       Storage::put('licensecheck.txt', json_encode($license));
