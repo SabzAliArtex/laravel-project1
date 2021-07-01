@@ -105,6 +105,10 @@ function has_error(string $code , int $limit = NULL){
     {
       $message = "License is valid for ".$limit." devices.";
     }
+    if($code == 'invalid')
+    {
+      $message = "License is valid for ".$limit." devices.";
+    }
 
     $responseLicense = new LicenseBooking();
       $response = json_encode(array("License"=>$responseLicense,"Message"=>$message,"IsOK"=>false,"IsError"=>true,"IsValid"=>true,"ExpiryDate"=>""));

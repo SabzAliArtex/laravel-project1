@@ -43,13 +43,7 @@ class LicenseController extends Controller
         // if license is code not found
         if ($license_data == null) 
         {
-            $responseLicenseTrial = new LicenseBooking();
-            return json_encode(array(
-                "License" => $responseLicenseTrial,
-                "Message" => "Your License is Invalid",
-                "IsOK" => false,
-                "IsError" => true
-            ));
+            return has_error('invalid');
         }
         // check if license is not purchased yet
         if ($license_data->license_type_id == '4')
