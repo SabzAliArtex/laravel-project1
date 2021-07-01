@@ -107,7 +107,7 @@ function has_error(string $code , int $limit = NULL){
     }
     if($code == 'invalid')
     {
-      $message = "License is valid for ".$limit." devices.";
+      $message = "Your License is Invalid.";
     }
 
     $responseLicense = new LicenseBooking();
