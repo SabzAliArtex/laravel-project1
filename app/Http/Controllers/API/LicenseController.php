@@ -82,8 +82,10 @@ class LicenseController extends Controller
         }
 
         $license = licenseUpdate($license_data , $userPerson);
+        $result = maintain_activation($license_data, $userPerson, $payload); 
         Notification::send($userPerson,new LicenseActivated($userPerson,$license_data));
-        return  licenseActivate_android($license_data, $userPerson, $payload); 
+
+        return result;
     }
     
     public function trialActivation(Request $request)

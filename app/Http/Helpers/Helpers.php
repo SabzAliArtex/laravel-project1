@@ -359,7 +359,8 @@ function licenseUpdate($license , $user){
   $license->save();
   return $license;
 }
-function licenseActivate_android($license, $user , $payload){
+function maintain_activation($license, $user , $payload){
+  
   $license_devices = new License_devices();
   $license_devices->user_id = $user->id;
   $license_devices->license_id = $license->license;
@@ -369,5 +370,6 @@ function licenseActivate_android($license, $user , $payload){
   $license_devices->activation_date = date("Y-m-d H:i:s");
   $license_devices->save();
       
-  return success_code(300,$license_devices,$is_valid = 'ExpiryDate',$expiry_date = $license->license_expiry);
+  $success = success_code(300,$license_devices,$is_valid = 'ExpiryDate',$expiry_date = $license->license_expiry);
+  return $success;
 }
