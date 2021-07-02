@@ -35,7 +35,7 @@
                                 <th> {{ __('Sr no') }} </th>
                                 <th> {{ __('License Key') }} </th>
                                 <th> {{ __('License Type') }} </th>
-                                <th> {{ __('Devices Allowed') }} </th>
+                                <th> {{ __('Devices') }} <br> {{ __('Allowed / Used ') }} </th>
                                 <th> {{ __('User Name') }} </th>
                                 <th> {{ __('User Email') }} </th>
                                 <th> {{ __('Sales Person Name') }} </th>
