@@ -125,6 +125,9 @@
                           </div>
                           <!-- Modal body -->
                           <div class="modal-body">
+                            <div class="error" v-if="isMessage">
+                              @{{ errorMessage }}
+                            </div>
                             <table class="table table-striped table-responsive">
                               <thead>
                                 <tr >
@@ -201,6 +204,8 @@
                   is_active:'',
                   link : '', 
                   interval : '', 
+                  errorMessage : '', 
+                  isMessage : false, 
                                                                                                                                   
 
             },
@@ -288,6 +293,8 @@
                 console.log(this.licid);
                    axios.get('activatedevice/'+id)
                     .then((res)=> {
+                      this.errorMessage = res.data;
+                      this.isMessage = true;
                       this.openDetailModal(this.licid);
                     })
               }else{
