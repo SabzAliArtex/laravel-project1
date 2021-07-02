@@ -227,7 +227,14 @@ class ClientController extends Controller
     }
     public function activateDevice($id)
     {
-        $user_license = License_devices::where('device_id', '=', $id)->first();
+        $user_license = License_devices::with('license')->where('device_id', '=', $id)->first();
+        $total_active_devices = License_devices::where('license_id', '=', $user_license->license_id)->where('is_deactive','0')->get();
+        $active_devices_count = count($total_active_devices);
+       
+        if($user_license->license->no_of_devices_allowed >= $active_devices_count){
+            Session::flash("error", "Maximum allowed devices Reached");
+            return 'Maximum allowed devices Reached';
+        }
         $user_license->is_deactive = 0;
         $user_license->save();
         Session::flash("success", "Device Activated");

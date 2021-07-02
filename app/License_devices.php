@@ -14,14 +14,15 @@ class License_devices extends Model
     }
     public function license_type()
 	{
-   		return $this->hasOne('App\LicenseType','id','App\License.license_type_id');
-           
+   		return $this->hasOne('App\LicenseType','id','App\License.license_type_id');   
 	}
     public function licensetype()
     {
-        return $this->hasOne('App\LicenseType','id','App\License.license_type_id');
-           
+        return $this->hasOne('App\LicenseType','id','App\License.license_type_id'); 
     }
-    
+    public function license()
+    {
+        return $this->hasOne('App\License','license','license_id'); 
+    }
 }
  

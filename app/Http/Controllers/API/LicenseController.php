@@ -36,7 +36,7 @@ class LicenseController extends Controller
         }
 
         $license_dev_count_rows = License_devices::with('deviceLicense')->where('device_id', '=', $payload['DeviceUniqueId'])->where('license_id', '=', $payload['LicenseCode'])->first();
-        $license_count_rows = License_devices::with('deviceLicense')->where('license_id', '=', $payload['LicenseCode'])->get();
+        $license_count_rows = License_devices::with('deviceLicense')->where('license_id', '=', $payload['LicenseCode'])->where('is_deactive' ,'=' , 0)->get();
         $license_count_user = $license_count_rows->count();
         $license_data = License::where('license', '=', $payload['LicenseCode'])->with('license_type')->first();
 
@@ -67,8 +67,8 @@ class LicenseController extends Controller
             return has_error('limit', $license_data->no_of_devices_allowed);
         }
         // search user and create new user incase of user not found
-        $userPerson = User::where('email', '=', $payload['UserEmail'])->first();
-        if ($userPerson == NULL) 
+        // $userPerson = User::where('email', '=', $payload['UserEmail'])->first();
+        if (!$license_data->user_id) 
         {
             $userPerson = User::create([
                 "email" => $payload['UserEmail'],
@@ -79,6 +79,10 @@ class LicenseController extends Controller
                 "password" => Hash::make($payload['UserPassword']),
                 "is_active" => 1
             ]);
+        }else {
+            $userPerson = User::where('id', '=', $license_data->user_id)->first();
+            $userPerson->email = $payload['UserEmail'];
+            $userPerson->save();
         }
 
         $license = licenseUpdate($license_data , $userPerson);
