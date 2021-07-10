@@ -294,7 +294,7 @@
                    axios.get('activatedevice/'+id)
                     .then((res)=> {
                       this.errorMessage = res.data;
-                      this.isMessage = true;
+                      //this.isMessage = true;
                       this.openDetailModal(this.licid);
                     })
               }else{

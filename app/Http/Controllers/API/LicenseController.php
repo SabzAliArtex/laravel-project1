@@ -89,7 +89,7 @@ class LicenseController extends Controller
         $result = maintain_activation($license_data, $userPerson, $payload); 
         Notification::send($userPerson,new LicenseActivated($userPerson,$license_data));
 
-        return result;
+        return $result;
     }
     
     public function trialActivation(Request $request)
